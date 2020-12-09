@@ -7,5 +7,7 @@ Git:版本控制
 commit(已經整合了add)：將修改的東西傳到倉庫（本地）
 
 push：上傳（雲端）的意思
-
+fetch:  檢查github上面的檔案有沒有修改
 pull：（從雲端）下載的意思
+
+branch: 不想要打擾別人
