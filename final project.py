@@ -27,8 +27,7 @@ class Superdonut():
 superdonut = Superdonut(50, 270)
 
 while True:  # 遊戲迴圈
-    clock.tick(FPS)
-    screen.blit(background, (0,0))
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -36,7 +35,9 @@ while True:  # 遊戲迴圈
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 superdonut.isJump = True
-
+                
+    clock.tick(FPS)
+    screen.blit(background, (0,0))
     pressed_keys = pygame.key.get_pressed()
     superdonut.donut()
     superdonut.move()
