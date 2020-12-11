@@ -27,8 +27,6 @@ class Superdonut():
             self.x -= 5
 
     def jump(self):
-        # Check if mario is jumping and then execute the
-        # jumping code.
         if self.isJump:
             if self.jumpCount >= -10:
                 neg = 1
