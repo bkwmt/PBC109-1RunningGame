@@ -1,8 +1,8 @@
 import pygame, time, math, random, sys
 from pygame.locals import *
 pygame.init()
-screen = pygame.display.set_mode((640 , 400))  # 設定介面大小
-background = pygame.Surface((640, 400))  # 設定畫布大小
+screen = pygame.display.set_mode((1280 , 800))  # 設定介面大小
+background = pygame.Surface((1280, 800))  # 設定畫布大小
 background.fill(( 0 , 0 , 120 ))  # 填入顏色
 FPS = 60
 clock = pygame.time.Clock()
