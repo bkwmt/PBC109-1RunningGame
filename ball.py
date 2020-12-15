@@ -43,7 +43,7 @@ while done:
             new_flame = Fireball()
             fire_list.append(new_flame)
         for f in fire_list:
-            if f.fireball_rect.left < 0:
+            if f.fireball_rect.left <= 0:
                 fire_list.remove(f)
             f.update()
         #screen.blit(fireball, (sun_x,100))
