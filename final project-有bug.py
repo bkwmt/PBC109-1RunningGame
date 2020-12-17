@@ -11,21 +11,27 @@ clock = pygame.time.Clock()
 ADD_FIRE_RATE = 25
 
 
-class Superdonut():
+class Superdonut(pygame.sprite.Sprite):
     def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
         self.x = 50
         self.y = 500
+        self.raw_image = pygame.image.load('superdonut.png').convert_alpha()
+        self.image = pygame.transform.scale(self.raw_image, (150, 150))  # 改變主角大小
+        self.rect = self.image.get_rect()
+        self.rect.center = ( self.x + 37.5 , self.y + 37.5 )
+        self.rect.left , self.rect.height = (self.x , self.y)
+        self.rect.right , self.rect.bottom = (self.x + 75 , self.y +75)
         self.isjump = False
         self.jumpspeed = 18  # 跳躍初速度，之後可調整
         
     def donut(self):  # donut用來呼叫主角圖片
-        raw_image = pygame.image.load('superdonut.png').convert_alpha()
-        image = pygame.transform.scale(raw_image, (150, 150))  # 改變主角大小
-        screen.blit(image,(self.x,self.y))  # 顯示主角
+        screen.blit(self.image,(self.x,self.y))  # 顯示主角
 
     def move(self):
         speed = 10  # 運動速度，之後可調整
-        if pressed_keys[K_RIGHT] and self.x < 1100:
+        if pressed_keys[K_RIGHT] and self.x < x:
             self.x += speed
         if pressed_keys[K_LEFT] and self.x > 0:
             self.x -= speed
@@ -41,6 +47,7 @@ class Superdonut():
             else:
                 self.isjump = False
                 self.jumpspeed = 18
+                
 superdonut = Superdonut()
 
 class Fireball(pygame.sprite.Sprite):
@@ -50,8 +57,11 @@ class Fireball(pygame.sprite.Sprite):
         super().__init__()
         self.fireball = pygame.image.load("fireball.png")
         self.fireball_rect = self.fireball.get_rect()
-        self.fireball_rect.right = x
+        self.fireball_rect.left = x
         self.fireball_rect.top = random.randint(50,600)
+        self.fireball_rect.right = x + 50
+        self.fireball_rect.bottom = self.fireball_rect.top - 50
+        self.fireball_rect.center = ( self.fireball_rect.left + 25 , self.fireball_rect.top - 25 )
     
     def update(self):
         screen.blit(self.fireball, self.fireball_rect)
@@ -71,6 +81,7 @@ class Enemy(pygame.sprite.Sprite):
         self.enemy_rect = self.enemy.get_rect()
         self.enemy_rect.right = random.randint(50, 1050)
         self.enemy_rect.top = 0
+        self.enemy_rect.width , self.enemy_rect.height = 50 ,50
         
     def drop(self):
         screen.blit(self.enemy , self.enemy_rect)
@@ -106,5 +117,7 @@ while True:  # 遊戲迴圈
             fire_list.remove(f)
         f.update()
     enemy.drop()
+    if pygame.sprite.collide_rect( superdonut , fireball ) == 1:
+        print('a')
     pygame.display.update()
     pygame.display.flip()

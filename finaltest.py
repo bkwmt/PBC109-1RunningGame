@@ -16,7 +16,7 @@ screen = pygame.display.set_mode((W, H)) # 設定介面大小
 pygame.display.set_caption("Superdonut")
 pressed_keys = pygame.key.get_pressed() # 設定按鍵
 FPS = 120
-ADD_FIRE_RATE = 500 #火球出現頻率
+ADD_FIRE_RATE = 200 #火球出現頻率
 
 bkgd = pygame.image.load("mountains.png").convert() # 匯入背景圖
 
