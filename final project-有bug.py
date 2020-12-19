@@ -60,8 +60,8 @@ class Fireball(pygame.sprite.Sprite):
         self.rect.left = x
         self.rect.top = random.randint(50,600)
         self.rect.right = x + 50
-        self.rect.bottom = self.rect.top - 50
-        self.rect.center = ( self.rect.left + 25 , self.rect.top - 25 )
+        self.rect.bottom = self.rect.top + 50
+        self.rect.center = ( self.rect.left + 25 , self.rect.top + 25 )
         #self.rect = pygame.Rect(self.fireball_rect.left, self.fireball_rect.top, 50, 50)
     def update(self):
         screen.blit(self.fireball, self.rect)
@@ -81,19 +81,20 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         super().__init__()
         self.enemy = pygame.image.load("apple.png")
-        self.enemy_rect = self.enemy.get_rect()
-        self.enemy_rect.right = random.randint(50, 1050)
-        self.enemy_rect.top = 0
-        self.enemy_rect.width , self.enemy_rect.height = 50 ,50
+        self.rect = self.enemy.get_rect()
+        self.rect.left = random.randint(50, 1050)
+        self.rect.top = 0
+        self.rect.right = x + 50
+        self.rect.bottom = self.rect.top + 50
+        self.rect.center = ( self.rect.left + 25 , self.rect.top + 25 )
 
-        
     def drop(self):
-        screen.blit(self.enemy , self.enemy_rect)
-        if self.enemy_rect.top < y:
-            self.enemy_rect.top += self.dropspeed
+        screen.blit(self.enemy , self.rect)
+        if self.rect.top < y:
+            self.rect.top += self.dropspeed
         else:
-            self.enemy_rect.right = random.randint(50, 1050)
-            self.enemy_rect.top = 0
+            self.rect.right = random.randint(50, 1050)
+            self.rect.top = 0
 
 enemy = Enemy()
 
@@ -124,6 +125,9 @@ while True:  # 遊戲迴圈
     for f in fire_list:
         if f.rect.colliderect(superdonut.rect):
             print("die")
-
+            #寫入遊戲結束機制or扣血   
+    if pygame.sprite.collide_rect ( superdonut , enemy ):
+        print('die')
+        #寫入遊戲結束機制or扣血
     pygame.display.update()
     pygame.display.flip()
