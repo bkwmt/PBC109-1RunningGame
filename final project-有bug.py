@@ -8,7 +8,7 @@ background = pygame.Surface((x , y))  # 設定畫布大小
 background.fill(( 0 , 0 , 120 ))  # 填入顏色(之後可調整)
 FPS = 60
 clock = pygame.time.Clock()
-ADD_FIRE_RATE = 25
+ADD_FIRE_RATE = 100
 
 
 class Superdonut(pygame.sprite.Sprite):
@@ -56,18 +56,21 @@ class Fireball(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         super().__init__()
         self.fireball = pygame.image.load("fireball.png")
-        self.fireball_rect = self.fireball.get_rect()
-        self.fireball_rect.left = x
-        self.fireball_rect.top = random.randint(50,600)
-        self.fireball_rect.right = x + 50
-        self.fireball_rect.bottom = self.fireball_rect.top - 50
-        self.fireball_rect.center = ( self.fireball_rect.left + 25 , self.fireball_rect.top - 25 )
-    
+        self.rect = self.fireball.get_rect()
+        self.rect.left = x
+        self.rect.top = random.randint(50,600)
+        self.rect.right = x + 50
+        self.rect.bottom = self.rect.top - 50
+        self.rect.center = ( self.rect.left + 25 , self.rect.top - 25 )
+        #self.rect = pygame.Rect(self.fireball_rect.left, self.fireball_rect.top, 50, 50)
     def update(self):
-        screen.blit(self.fireball, self.fireball_rect)
+        screen.blit(self.fireball, self.rect)
 
-        if self.fireball_rect.left > 0:
-            self.fireball_rect.left -= self.vel
+        if self.rect.left > 0:
+            self.rect.left -= self.vel
+
+
+
 fireball = Fireball()
 fire_list = []
 add_fire_rate = 0    
@@ -82,6 +85,7 @@ class Enemy(pygame.sprite.Sprite):
         self.enemy_rect.right = random.randint(50, 1050)
         self.enemy_rect.top = 0
         self.enemy_rect.width , self.enemy_rect.height = 50 ,50
+
         
     def drop(self):
         screen.blit(self.enemy , self.enemy_rect)
@@ -113,11 +117,13 @@ while True:  # 遊戲迴圈
         new_flame = Fireball()
         fire_list.append(new_flame)
     for f in fire_list:
-        if f.fireball_rect.left < 0:
+        if f.rect.left < 0:
             fire_list.remove(f)
         f.update()
     enemy.drop()
-    if pygame.sprite.collide_rect( superdonut , fireball ) == 1:
-        print('a')
+    for f in fire_list:
+        if f.rect.colliderect(superdonut.rect):
+            print("die")
+
     pygame.display.update()
     pygame.display.flip()
