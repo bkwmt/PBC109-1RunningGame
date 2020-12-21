@@ -10,7 +10,6 @@ FPS = 60
 clock = pygame.time.Clock()
 ADD_FIRE_RATE = 100
 
-
 class Superdonut(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -20,29 +19,32 @@ class Superdonut(pygame.sprite.Sprite):
         self.raw_image = pygame.image.load('superdonut.png').convert_alpha()
         self.image = pygame.transform.scale(self.raw_image, (150, 150))  # 改變主角大小
         self.rect = self.image.get_rect()
-        self.rect.center = ( self.x + 37.5 , self.y + 37.5 )
-        self.rect.left , self.rect.height = (self.x , self.y)
-        self.rect.right , self.rect.bottom = (self.x + 75 , self.y +75)
+        self.rect.center = (self.x , self.y)
+        self.rect.width , self.rect.height = ( 75 , 75 )
         self.isjump = False
         self.jumpspeed = 18  # 跳躍初速度，之後可調整
         
     def donut(self):  # donut用來呼叫主角圖片
-        screen.blit(self.image,(self.x,self.y))  # 顯示主角
+        screen.blit(self.image , self.rect)  # 顯示主角
 
     def move(self):
         speed = 10  # 運動速度，之後可調整
         if pressed_keys[K_RIGHT] and self.x < x:
             self.x += speed
+            self.rect.left += speed
         if pressed_keys[K_LEFT] and self.x > 0:
             self.x -= speed
+            self.rect.left -= speed
     
     def jump(self):
         if self.isjump == True:  # 執行跳躍
             if self.jumpspeed >= -18:
                 if self.jumpspeed > 0:
                     self.y -= self.jumpspeed** 2 * 0.1 * 1
+                    self.rect.top -= self.jumpspeed** 2 * 0.1 * 1
                 elif self.jumpspeed < 0:
                     self.y -= self.jumpspeed** 2 * 0.1 * -1
+                    self.rect.top += self.jumpspeed** 2 * 0.1 * 1
                 self.jumpspeed -= 1
             else:
                 self.isjump = False
@@ -98,6 +100,16 @@ class Enemy(pygame.sprite.Sprite):
 
 enemy = Enemy()
 
+class Blood(self):
+   
+    def __init__(self):
+        self.raw_image = pygame.image.load("blood.png").convert_alpha()
+        self.image = pygame.transform.scale(self.raw_image, (50, 50)) 
+        self.now_blood = 5
+    def show(self):
+        screen.blit(self.image , (50,50))
+blood = Blood()
+
 while True:  # 遊戲迴圈
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -109,6 +121,7 @@ while True:  # 遊戲迴圈
     clock.tick(FPS)
     pressed_keys = pygame.key.get_pressed()
     screen.blit(background, (0,0))
+    blood.show()
     superdonut.donut()
     superdonut.move()
     superdonut.jump()
@@ -125,6 +138,7 @@ while True:  # 遊戲迴圈
     for f in fire_list:
         if f.rect.colliderect(superdonut.rect):
             print("die")
+            pygame.quit()
             #寫入遊戲結束機制or扣血   
     if pygame.sprite.collide_rect ( superdonut , enemy ):
         print('die')
