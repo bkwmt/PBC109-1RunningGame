@@ -63,6 +63,8 @@ class Fireball(pygame.sprite.Sprite):
 
         if self.rect.left > 0:
             self.rect.left -= self.vel
+        else:
+            self.rect.center = (x,random.randint(50,600))
 
 fireball = Fireball()
 fire_list = []
@@ -131,7 +133,7 @@ while True:  # 遊戲迴圈
     for f in fire_list:
         if f.rect.colliderect(superdonut.rect):
             blood.hurt() 
-            fireball = Fireball()       
+            fire_list.remove(f)       
     if pygame.sprite.collide_rect( superdonut , enemy ):
         blood.hurt()
         enemy = Enemy()
