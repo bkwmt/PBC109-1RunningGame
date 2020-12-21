@@ -20,7 +20,7 @@ class Superdonut(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.raw_image, (150, 150))  # 改變主角大小
         self.rect = self.image.get_rect()
         self.rect.center = (self.x , self.y)
-        self.rect.width , self.rect.height = ( 75 , 75 )
+        self.rect.width , self.rect.height = ( 100 , 100 )
         self.isjump = False
         self.jumpspeed = 18  # 跳躍初速度，之後可調整
         
@@ -30,21 +30,17 @@ class Superdonut(pygame.sprite.Sprite):
     def move(self):
         speed = 10  # 運動速度，之後可調整
         if pressed_keys[K_RIGHT] and self.x < x:
-            self.x += speed
-            self.rect.left += speed
+            self.rect.centerx += speed
         if pressed_keys[K_LEFT] and self.x > 0:
-            self.x -= speed
-            self.rect.left -= speed
+            self.rect.centerx -= speed
     
     def jump(self):
         if self.isjump == True:  # 執行跳躍
             if self.jumpspeed >= -18:
                 if self.jumpspeed > 0:
-                    self.y -= self.jumpspeed** 2 * 0.1 * 1
-                    self.rect.top -= self.jumpspeed** 2 * 0.1 * 1
+                    self.rect.centery -= self.jumpspeed** 2 * 0.1 * 1
                 elif self.jumpspeed < 0:
-                    self.y -= self.jumpspeed** 2 * 0.1 * -1
-                    self.rect.top += self.jumpspeed** 2 * 0.1 * 1
+                    self.rect.centery += self.jumpspeed** 2 * 0.1 * 1
                 self.jumpspeed -= 1
             else:
                 self.isjump = False
@@ -59,19 +55,14 @@ class Fireball(pygame.sprite.Sprite):
         super().__init__()
         self.fireball = pygame.image.load("fireball.png")
         self.rect = self.fireball.get_rect()
-        self.rect.left = x
-        self.rect.top = random.randint(50,600)
-        self.rect.right = x + 50
-        self.rect.bottom = self.rect.top + 50
-        self.rect.center = ( self.rect.left + 25 , self.rect.top + 25 )
+        self.rect.center = (x,random.randint(50,600))
+        self.rect.width , self.rect.height = ( 30 , 30 )
         #self.rect = pygame.Rect(self.fireball_rect.left, self.fireball_rect.top, 50, 50)
     def update(self):
         screen.blit(self.fireball, self.rect)
 
         if self.rect.left > 0:
             self.rect.left -= self.vel
-
-
 
 fireball = Fireball()
 fire_list = []
@@ -84,30 +75,32 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__()
         self.enemy = pygame.image.load("apple.png")
         self.rect = self.enemy.get_rect()
-        self.rect.left = random.randint(50, 1050)
-        self.rect.top = 0
-        self.rect.right = x + 50
-        self.rect.bottom = self.rect.top + 50
-        self.rect.center = ( self.rect.left + 25 , self.rect.top + 25 )
+        self.rect.center = (random.randint(50, 1050),25)
+        self.rect.width , self.rect.height = ( 50 , 50 )
 
     def drop(self):
         screen.blit(self.enemy , self.rect)
         if self.rect.top < y:
-            self.rect.top += self.dropspeed
+            self.rect.centery += self.dropspeed
         else:
             self.rect.right = random.randint(50, 1050)
-            self.rect.top = 0
+            self.rect.centery = 0
 
 enemy = Enemy()
 
-class Blood(self):
-   
+class Blood:
     def __init__(self):
-        self.raw_image = pygame.image.load("blood.png").convert_alpha()
-        self.image = pygame.transform.scale(self.raw_image, (50, 50)) 
+        self.raw_image = pygame.image.load("blood.png")
+        self.image = pygame.transform.scale(self.raw_image, (70, 70)) 
         self.now_blood = 5
+        self.b_x = 0
     def show(self):
-        screen.blit(self.image , (50,50))
+        all_blood = [self.image]*self.now_blood
+        position = [ 50 , 100 , 150 , 200 , 250 ]
+        for i in range (len(all_blood)):
+            screen.blit( self.image , (position[i],50))
+    def hurt(self):
+        self.now_blood -= 1
 blood = Blood()
 
 while True:  # 遊戲迴圈
@@ -137,11 +130,9 @@ while True:  # 遊戲迴圈
     enemy.drop()
     for f in fire_list:
         if f.rect.colliderect(superdonut.rect):
-            print("die")
-            pygame.quit()
-            #寫入遊戲結束機制or扣血   
-    if pygame.sprite.collide_rect ( superdonut , enemy ):
-        print('die')
+            blood.hurt()        
+    if pygame.sprite.collide_rect( superdonut , enemy ):
+        blood.hurt()
         #寫入遊戲結束機制or扣血
     pygame.display.update()
     pygame.display.flip()
