@@ -111,7 +111,7 @@ strangebomb = Strangebomb()
 theta = 0  # 波狀飛行物用
 while True:  # 遊戲迴圈
     
-    theta += 0.1  # 波狀飛行物用
+    theta += 0.1  # 波狀飛行物用:角度需要一直增加
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
