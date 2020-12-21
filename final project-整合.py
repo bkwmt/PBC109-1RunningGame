@@ -82,7 +82,36 @@ class Enemy(pygame.sprite.Sprite):
 
 enemy = Enemy()
 
+
+# 波狀飛行物
+class Strangebomb(pygame.sprite.Sprite):    
+    w = 2 * (math.pi) / 3
+    amplitude = 5
+    
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
+        self.strangebomb = pygame.image.load("orange.png")
+        self.strangebomb = pygame.transform.scale(self.strangebomb, (20, 20))
+        self.strangebomb_rect = self.strangebomb.get_rect()
+        self.strangebomb_rect.right = x
+        self.strangebomb_rect.top = random.randint(300,400)
+        
+    def appear(self):
+        screen.blit(self.strangebomb , self.strangebomb_rect)       
+        speed_x = 10
+        speed_y = (self.w) * (self.amplitude) * math.sin(theta)
+        if self.strangebomb_rect.left > 0:
+            self.strangebomb_rect.left -= speed_x
+        self.strangebomb_rect.top -= speed_y
+
+
+strangebomb = Strangebomb()
+
+theta = 0  # 波狀飛行物用
 while True:  # 遊戲迴圈
+    
+    theta += 0.1  # 波狀飛行物用
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -106,5 +135,6 @@ while True:  # 遊戲迴圈
             fire_list.remove(f)
         f.update()
     enemy.drop()
+    strangebomb.appear()  # 波狀飛行物用
     pygame.display.update()
     pygame.display.flip()
