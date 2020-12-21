@@ -130,9 +130,11 @@ while True:  # 遊戲迴圈
     enemy.drop()
     for f in fire_list:
         if f.rect.colliderect(superdonut.rect):
-            blood.hurt()        
+            blood.hurt() 
+            fireball = Fireball()       
     if pygame.sprite.collide_rect( superdonut , enemy ):
         blood.hurt()
+        enemy = Enemy()
         #寫入遊戲結束機制or扣血
     pygame.display.update()
     pygame.display.flip()
