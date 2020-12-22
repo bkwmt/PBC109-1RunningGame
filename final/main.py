@@ -14,7 +14,7 @@ class Game:
         pg.mixer.init()     # 有用聲音的起手式
         self.screen = pg.display.set_mode(SIZE)  # 設定介面大小
         pg.display.set_caption(TITLE)
-        self.bkgd = pg.image.load("mountains.png").convert() # 匯入背景圖
+        self.bkgd = pg.image.load(os.path.join(img_folder, "mountains.png")).convert() # 匯入背景圖
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
@@ -23,8 +23,20 @@ class Game:
     def new(self):
         # 重新開始一個遊戲
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
-        self.donut = Superdonut()
+        self.platforms = pg.sprite.Group()    # 初始化平台群組
+        ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
+        self.donut = Superdonut(self)   # !!!!!!!!!!!!!!!!
         self.all_sprites.add(self.donut)
+        ### 讀入地板
+        gnd = Platform(0, HEIGHT - GROUND, WIDTH, GROUND)     # 地板單獨設定
+        self.all_sprites.add(gnd)
+        self.platforms.add(gnd)
+        ### 讀入其他平台
+        for plat in PLATFORM_LIST:
+            p = Platform(plat[0], plat[1], plat[2], plat[3])
+            self.all_sprites.add(p)
+            self.platforms.add(p)
+
         self.run()  # 執行遊戲
 
     def run(self):
@@ -39,6 +51,19 @@ class Game:
     def update(self):
         # 更新群組內每一個每個精靈的動作
         self.all_sprites.update()
+        # 檢查「落下」碰撞（放入一個list）
+        if self.donut.vel.y > 0:    # 檢查落下（y>0）時的碰撞
+            hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
+            if hits:
+            ### 撞到的話就讓他的位置維持在那個地板上，速度歸零。
+                self.donut.pos.y = hits[0].rect.top + 1
+                self.donut.vel.y = 0
+        if self.donut.vel.y < 0:    # 檢查向上碰撞
+            hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
+            if hits:
+            ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
+                self.donut.pos.y = hits[0].rect.bottom + DONUT_H
+                self.donut.vel.y = 0
 
     def events(self):
         for event in pg.event.get():
@@ -47,6 +72,10 @@ class Game:
                 if self.playing:    # 不玩了
                     self.playing = False
                 self.running = False    # 不執行了
+
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    self.donut.jump()
 
     def draw(self):
         self.screen.fill(BLACK)    # 填滿背景（還需要嗎？？？
