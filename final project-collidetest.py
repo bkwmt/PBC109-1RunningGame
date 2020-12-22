@@ -14,24 +14,22 @@ class Superdonut(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         super().__init__()
-        self.x = 50
-        self.y = 500
         self.raw_image = pygame.image.load('superdonut.png').convert_alpha()
         self.image = pygame.transform.scale(self.raw_image, (150, 150))  # 改變主角大小
         self.rect = self.image.get_rect()
-        self.rect.center = (self.x , self.y)
+        self.rect.center = ( 50 , 500 )
         self.rect.width , self.rect.height = ( 100 , 100 )
         self.isjump = False
         self.jumpspeed = 18  # 跳躍初速度，之後可調整
         
     def donut(self):  # donut用來呼叫主角圖片
-        screen.blit(self.image , self.rect)  # 顯示主角
+        screen.blit(self.image , self.rect.center )  # 顯示主角
 
     def move(self):
         speed = 10  # 運動速度，之後可調整
-        if pressed_keys[K_RIGHT] and self.x < x:
+        if pressed_keys[K_RIGHT] and self.rect.centerx < x:
             self.rect.centerx += speed
-        if pressed_keys[K_LEFT] and self.x > 0:
+        if pressed_keys[K_LEFT] and self.rect.centerx > 0:
             self.rect.centerx -= speed
     
     def jump(self):
