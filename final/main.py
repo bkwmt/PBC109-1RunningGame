@@ -24,9 +24,12 @@ class Game:
         # 重新開始一個遊戲
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
         self.platforms = pg.sprite.Group()    # 初始化平台群組
+        self.enemies = pg.sprite.Group()   # 初始化敵人群組
+
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
         self.donut = Superdonut(self)   # !!!!!!!!!!!!!!!!
         self.all_sprites.add(self.donut)
+
         ### 讀入地板
         gnd = Platform(0, HEIGHT - GROUND, WIDTH, GROUND)     # 地板單獨設定
         self.all_sprites.add(gnd)
@@ -37,7 +40,20 @@ class Game:
             self.all_sprites.add(p)
             self.platforms.add(p)
 
-        self.run()  # 執行遊戲
+        self.drop = Dropdown()
+        self.all_sprites.add(self.drop)
+        self.enemies.add(self.drop)
+
+        self.sbomb = Strangebomb()
+        self.all_sprites.add(self.sbomb)
+        self.enemies.add(self.sbomb)
+
+        self.fball = Fireball()
+        self.all_sprites.add(self.fball)
+        self.enemies.add(self.fball)
+
+        ### 執行遊戲
+        self.run()
 
     def run(self):
         # 遊戲迴圈：

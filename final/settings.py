@@ -1,4 +1,4 @@
-import os
+import os, math
 ### 常數
 TITLE = "The Rolling Donuts"
 FPS = 120    # 每秒刷新次數
@@ -25,6 +25,19 @@ DONUT_ACC = 0.5             # 加速度，越大可以跑快一點
 DONUT_FRICTION = -0.06      # 摩擦力，越小會滑行越遠，最大速度亦會變大。
 GRAVITY = 0.6               # 重力
 JMP = -20                   # 跳躍力（加速度／絕對值越大越強）
+
+### 波狀飛行物用常數
+BSPEED = 3
+THETA = 0
+WAVE = 2 * (math.pi) / 3
+AMPLITUDE = 5
+### firball用常數
+FSPEED = 7
+fire_list = []
+add_fire_rate = 0
+
+### dropdown用常數
+DSPEED = 1
 
 ### 平台（x, y, 寬度, 厚度）
 ### 因為目前人物寬100，所以平台寬度至少150吧，暫定以５０為單位增加
