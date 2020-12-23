@@ -14,7 +14,7 @@ class Game:
         pg.mixer.init()     # 有用聲音的起手式
         self.screen = pg.display.set_mode(SIZE)  # 設定介面大小
         pg.display.set_caption(TITLE)
-        self.bkgd = pg.image.load(os.path.join(img_folder, "mountains.png")).convert() # 匯入背景圖
+        self.bkgd = pg.image.load("img/mountains.png").convert() # 匯入背景圖
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
@@ -59,7 +59,6 @@ class Game:
         self.fball = Fireball()
         self.all_sprites.add(self.fball)
         self.enemies.add(self.fball)
-
         ### 執行遊戲
         self.run()
 
@@ -73,6 +72,13 @@ class Game:
             self.draw()
 
     def update(self):
+        # 更新背景
+        global Bstart
+        self.rel_x = Bstart % self.bkgd.get_rect().width
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -250)) # 捲動螢幕
+        if self.rel_x < WIDTH:
+            self.screen.blit(self.bkgd, (self.rel_x, -250))
+        Bstart -= 1
         # 更新群組內每一個每個精靈的動作
         self.all_sprites.update()
         # 檢查「落下」碰撞（放入一個list）
@@ -99,7 +105,7 @@ class Game:
     def events(self):
         for event in pg.event.get():
             # 遊戲結束
-            if event.type == pg.QUIT:
+            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 if self.playing:    # 不玩了
                     self.playing = False
                 self.running = False    # 不執行了
@@ -109,7 +115,6 @@ class Game:
                     self.donut.jump()
 
     def draw(self):
-        self.screen.fill(BLACK)    # 填滿背景（還需要嗎？？？
         self.all_sprites.draw(self.screen)
         ### 每次畫好畫滿所有的東西之後，就要flip。
         pg.display.flip()   # 把畫好的東西翻到正面的

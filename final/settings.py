@@ -59,3 +59,5 @@ PLATFORM_LIST = [(0, 450, PW, THICK),
 game_folder = os.path.dirname(__file__)
 ### 將img指定在上面這個目錄下
 img_folder = os.path.join(game_folder, "img")
+
+Bstart = 0 #背景起始值
