@@ -32,6 +32,7 @@ BSPEED = 3
 THETA = 0
 WAVE = 2 * (math.pi) / 3
 AMPLITUDE = 5
+
 ### firball用常數
 FSPEED = 7
 fire_list = []

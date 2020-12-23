@@ -10,7 +10,7 @@ def keyPressed(keyCheck=""):
     if sum(keys) > 0:
         if keyCheck == "" or keys[keydict[keyCheck.lower()]]:
             return True
-    return False  
+    return False
 def loadImage(fileName, useColorKey=False):
     if os.path.isfile(fileName):
         image = pg.image.load(fileName)
@@ -99,7 +99,7 @@ class Superdonut(pg.sprite.Sprite):
             self.acc.x = DONUT_ACC
         # if pressed_keys[pg.K_LEFT] and self.x > 0:
         elif pressed_keys[pg.K_LEFT]:
-            self.acc.x = -DONUT_ACC       
+            self.acc.x = -DONUT_ACC
 
         ### 麻擦力與加速度（某種物理）
         self.acc.x += self.vel.x * DONUT_FRICTION
@@ -190,7 +190,7 @@ class Superdonut2(pg.sprite.Sprite):
             self.acc.x = DONUT_ACC
         # if pressed_keys[pg.K_LEFT] and self.x > 0:
         elif pressed_keys[pg.K_a]:
-            self.acc.x = -DONUT_ACC       
+            self.acc.x = -DONUT_ACC
 
         ### 麻擦力與加速度（某種物理）
         self.acc.x += self.vel.x * DONUT_FRICTION
@@ -290,15 +290,16 @@ class Strangebomb(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.image.load(os.path.join(img_folder, "orange.png"))
-        self.image = pg.transform.scale(self.image, (20, 20))
+        self.image = pg.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.right = WIDTH + 100
         self.rect.top = random.randint(150, HEIGHT - 150)
 
     def update(self):
         # screen.blit(self.strangebomb , self.strangebomb_rect) 這行不需要
+        theta = pg.time.get_ticks()/170
         self.speed_x = BSPEED
-        self.speed_y = (WAVE) * (AMPLITUDE) * math.sin(THETA)
+        self.speed_y = (AMPLITUDE) * math.sin(theta)
         if self.rect.left >= -30:
             self.rect.left -= self.speed_x
         else:
@@ -306,4 +307,3 @@ class Strangebomb(pg.sprite.Sprite):
             self.rect.top = random.randint(150, HEIGHT - 150)
 
         self.rect.top -= self.speed_y
-
