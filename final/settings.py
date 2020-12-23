@@ -28,8 +28,6 @@ JMP = -20                   # 跳躍力（加速度／絕對值越大越強）
 
 ### 波狀飛行物用常數
 BSPEED = 3
-THETA = 0
-WAVE = 2 * (math.pi) / 3
 AMPLITUDE = 5
 ### firball用常數
 FSPEED = 7
