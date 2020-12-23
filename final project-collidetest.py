@@ -98,7 +98,7 @@ class Blood:
         all_blood = [self.image]*self.now_blood
         position = [ 50 , 100 , 150 , 200 , 250 ]
         for i in range (len(all_blood)):
-            screen.blit( self.image , (position[i],50))
+            screen.blit( self.image , (position[i],50) )
     def hurt(self):
         self.now_blood -= 1
 blood = Blood()
