@@ -34,14 +34,16 @@ class Game:
         self.all_sprites.add(self.donutp2)
 
         ### 讀入地板
-        gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
-        self.all_sprites.add(gnd)
-        self.grounds.add(gnd)
+        self.gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
+        self.all_sprites.add(self.gnd)
+        self.grounds.add(self.gnd)
 
-        ### 讀入洞
-        hole = Hole()
-        self.all_sprites.add(hole)
-        self.holes.add(hole)
+        # ### 讀入洞
+        self.holeedges = Holeedge()
+        self.all_sprites.add(self.holeedges)
+        self.hole = Hole()
+        self.all_sprites.add(self.hole)
+        self.holes.add(self.hole)
 
         ### 讀入其他平台
         for plat in PLATFORM_LIST:
@@ -74,8 +76,8 @@ class Game:
                     self.frame += 1
                     frame += 1
                 else:
-                    frame = 0 
-                nextFrame += 40   
+                    frame = 0
+                nextFrame += 40
             self.clock.tick(FPS)
             self.events()
             self.update()
@@ -89,7 +91,8 @@ class Game:
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -250)) # 捲動螢幕
         if self.rel_x < WIDTH:
             self.screen.blit(self.bkgd, (self.rel_x, -250))
-        Bstart -= 1
+        Bstart -= PSPEED
+
         # 更新群組內每一個每個精靈的動作
         self.all_sprites.update()
         # 檢查「落下」碰撞（放入一個list）
@@ -112,6 +115,7 @@ class Game:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
                     self.donut.pos.y = hits[0].rect.bottom + DONUT_H
                     self.donut.vel.y = 0
+
         oops1 = pg.sprite.spritecollide(self.donutp2, self.holes, False)
         if not oops1:
             if self.donutp2.vel.y > 0:    # 檢查落下（y>0）時的碰撞
@@ -132,7 +136,21 @@ class Game:
                     self.donutp2.pos.y = hits[0].rect.bottom + DONUT_H
                     self.donutp2.vel.y = 0
 
-    def events(self): 
+        ### 利用地板出現的時間差製造會掉下去的洞
+
+        # if self.gnd.rect.right > 0:
+        #     self.gnd.rect.right -= PSPEED
+        #
+        # if self.gnd.rect.right == WIDTH - 200:
+        #     new_gnd = Ground(WIDTH,
+        #                      HEIGHT - GHEIGHT,
+        #                      random.randint((2 * WIDTH - 350), (2 * WIDTH - 200)),
+        #                      GHEIGHT)
+        #     self.grounds.add(new_gnd)
+        #     self.all_sprites.add(new_gnd)
+        #     new_gnd.rect.left -= PSPEED
+
+    def events(self):
         for event in pg.event.get():
             # 遊戲結束
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
@@ -146,12 +164,12 @@ class Game:
                 if event.key == pg.K_w:
                     self.donutp2.jump()
 
-        
+
     def change(self):
         if keyPressed("right"):
-            changeSpriteImage(self.donut, frame)   
+            changeSpriteImage(self.donut, frame)
         elif keyPressed("left"):
-            changeSpriteImage(self.donut, frame) 
+            changeSpriteImage(self.donut, frame)
         else:
             changeSpriteImage(self.donut, 0)
         pg.display.update()
@@ -160,7 +178,6 @@ class Game:
         self.all_sprites.draw(self.screen)
         ### 每次畫好畫滿所有的東西之後，就要flip。
         pg.display.flip()   # 把畫好的東西翻到正面的
-
 
     def show_start_screen(self):
         # 開始畫面
@@ -174,13 +191,13 @@ class Game:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
-                    sys.exit()
+                    sys.exit()      # 結束在這裏
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
                         pg.quit()
-                        sys.exit()
+                        sys.exit()      # 還有這裏
                     else:
-                        go = False
+                        go = False      # ??????
                     #g.new()
             pg.display.update()
 
@@ -195,5 +212,6 @@ while g.running:
     g.new()
     g.show_go_screen()
 
-pg.quit()
-sys.exit()
+# pg.quit()
+# sys.exit()
+# 上面有啦～我按一次就可以結束呀？

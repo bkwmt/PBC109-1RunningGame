@@ -8,7 +8,8 @@ WIDTH, HEIGHT = 1250, 650   # 畫面大小
 SIZE = (WIDTH, HEIGHT)
 HW, HH = WIDTH / 2, HEIGHT / 2
 AREA = WIDTH * HEIGHT
-GHEIGHT = 50    # 地面高度
+GHEIGHT = 66    # 地面高度
+PSPEED = 1     ### 此為畫面捲動速度，敬請多加利用。
 
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
@@ -18,23 +19,30 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 LIGHTBLUE = (0, 155, 155)
+CHOCOLATE = (210, 105, 30)
+TAN = (210, 180, 140)
+GOLDENROD = (218, 165, 32)
+ROSYBROWN = (188, 143, 143)
+STEELBLUE = (70, 130, 180)
+NAVY = (0, 0, 128)
+DARKSLATEBLUE = (72, 61, 139)
 
 ### 精靈會用到的屬性
 DONUT_W = 30    # 暫定
 DONUT_H = 40
 DONUT_ACC = 0.5             # 加速度，越大可以跑快一點
-DONUT_FRICTION = -0.06      # 摩擦力，越小會滑行越遠，最大速度亦會變大。
+DONUT_FRICTION = -0.035      # 摩擦力，越小會滑行越遠，最大速度亦會變大。
 GRAVITY = 0.6               # 重力
 JMP = -20                   # 跳躍力（加速度／絕對值越大越強）
 
 ### 波狀飛行物用常數
-BSPEED = 3
-THETA = 0
-WAVE = 2 * (math.pi) / 3
-AMPLITUDE = 5
+BSPEED = 2      # 兩者之間的比例
+AMPLITUDE = 2   # 與運動軌跡有關
+### 影響振幅？
+WAVE = 2.5
 
 ### firball用常數
-FSPEED = 7
+FSPEED = 10
 fire_list = []
 add_fire_rate = 0
 
@@ -45,8 +53,7 @@ DSPEED = 1
 ### 因為目前人物寬100，所以平台寬度至少150吧，暫定以５０為單位增加
 ### 或者寬度也可固定幾種
 ### 或者位置也可以固定
-PSPEED = 1
-THICK = 15
+THICK = 20
 PW = 150
 PWADD = 50
 PLATFORM_LIST = [(0, 450, PW, THICK),
@@ -54,8 +61,14 @@ PLATFORM_LIST = [(0, 450, PW, THICK),
                  (2 * WIDTH / 6, 100, PW, THICK),
                  (3 * WIDTH / 6 + 100, 450, PW, THICK),
                  (4 * WIDTH / 6, 100, PW + PWADD, THICK),
-                 (5 * WIDTH / 6, 250, PW, THICK),]
+                 (5 * WIDTH / 6, 250, PW, THICK)]
 
+GROUND_LIST = [(WIDTH, HEIGHT - GHEIGHT, (2 * WIDTH) - 200, GHEIGHT),
+               (WIDTH, HEIGHT - GHEIGHT, (2 * WIDTH) - 200, GHEIGHT),
+               (WIDTH, HEIGHT - GHEIGHT, WIDTH + (WIDTH / 2), GHEIGHT),
+               (WIDTH, HEIGHT - GHEIGHT, 4 * WIDTH / 3 , GHEIGHT),
+               (WIDTH, HEIGHT - GHEIGHT, 4 * WIDTH / 3, GHEIGHT),
+               (WIDTH, HEIGHT - GHEIGHT, 9 * WIDTH / 5 , GHEIGHT)]
 ### 設定assets： 圖片與聲音的存放
 ### 取得這個檔案的目錄位置
 game_folder = os.path.dirname(__file__)

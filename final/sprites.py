@@ -2,8 +2,10 @@
 import random
 import pygame as pg
 from settings import *
+
 ### 向量用來製造加速與減速的感覺
 vec = pg.math.Vector2
+
 def keyPressed(keyCheck=""):
     global keydict
     keys = pg.key.get_pressed()
@@ -11,6 +13,7 @@ def keyPressed(keyCheck=""):
         if keyCheck == "" or keys[keydict[keyCheck.lower()]]:
             return True
     return False
+
 def loadImage(fileName, useColorKey=False):
     if os.path.isfile(fileName):
         image = pg.image.load(fileName)
@@ -27,6 +30,7 @@ def changeSpriteImage(sprite, index=0):
 def clock():
     current_time = pg.time.get_ticks()
     return current_time
+
 class Superdonut(pg.sprite.Sprite):
     def __init__(self, game, filename, frames=1):   # 注意這裡有來自Game裡Superdonut回傳的一個自己 frame donut move picture change
         pg.sprite.Sprite.__init__(self)
@@ -66,6 +70,7 @@ class Superdonut(pg.sprite.Sprite):
         self.pos = vec(self.x, self.y)
         self.vel = vec(0, 0)    # 初速度
         self.acc = vec(0, 0)    # 加速度一般為零
+
     def changeImage(self, index):
         self.currentImage = index
         if self.angle == 0 and self.scale == 1:
@@ -83,12 +88,12 @@ class Superdonut(pg.sprite.Sprite):
     def jump(self):
         # 檢查是否有站在某個平台上，有站在上面才能跳。
         # 檢查的方式是，看是否有發生碰撞：只要站在任一平台上，其實是一直有發生碰撞。
-        falls = pg.sprite.spritecollide(self, self.game.holes, False)
-        if not falls:
-            hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-            hitsground = pg.sprite.spritecollide(self, self.game.grounds, False)
-            if hits or hitsground:
-                self.vel.y = JMP
+        # falls = pg.sprite.spritecollide(self, self.game.holes, False)
+        # if not falls:
+        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        hitsground = pg.sprite.spritecollide(self, self.game.grounds, False)
+        if hits or hitsground:
+            self.vel.y = JMP
 
     def update(self):
         frame = 0
@@ -114,10 +119,6 @@ class Superdonut(pg.sprite.Sprite):
         ### 取得新的位置並準備顯示（主角的中間底部位置）
         self.rect.midbottom = self.pos
 
-        # self.x = 50
-        # self.y = 450
-        # self.isjump = False
-        # self.jumpspeed = 15  # 跳躍初速度，之後可調整
 class Superdonut2(pg.sprite.Sprite):
     def __init__(self, game, filename, frames=1):   # 注意這裡有來自Game裡Superdonut回傳的一個自己 frame donut move picture change
         pg.sprite.Sprite.__init__(self)
@@ -133,7 +134,6 @@ class Superdonut2(pg.sprite.Sprite):
             self.images.append(frameSurf.copy())
             x -= self.originalWidth
         self.image = pg.Surface.copy(self.images[0])
-
         self.currentImage = 0
         self.rect = self.image.get_rect()
         self.rect.topleft = (0, 0)
@@ -157,6 +157,7 @@ class Superdonut2(pg.sprite.Sprite):
         self.pos = vec(self.x, self.y)
         self.vel = vec(0, 0)    # 初速度
         self.acc = vec(0, 0)    # 加速度一般為零
+
     def changeImage(self, index):
         self.currentImage = index
         if self.angle == 0 and self.scale == 1:
@@ -174,12 +175,12 @@ class Superdonut2(pg.sprite.Sprite):
     def jump(self):
         # 檢查是否有站在某個平台上，有站在上面才能跳。
         # 檢查的方式是，看是否有發生碰撞：只要站在任一平台上，其實是一直有發生碰撞。
-        falls = pg.sprite.spritecollide(self, self.game.holes, False)
-        if not falls:
-            hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-            hitsground = pg.sprite.spritecollide(self, self.game.grounds, False)
-            if hits or hitsground:
-                self.vel.y = JMP
+        # falls = pg.sprite.spritecollide(self, self.game.holes, False)
+        # if not falls:
+        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        hitsground = pg.sprite.spritecollide(self, self.game.grounds, False)
+        if hits or hitsground:
+            self.vel.y = JMP
 
     def update(self):
         frame = 0
@@ -205,15 +206,12 @@ class Superdonut2(pg.sprite.Sprite):
         ### 取得新的位置並準備顯示（主角的中間底部位置）
         self.rect.midbottom = self.pos
 
-        # self.x = 50
-        # self.y = 450
-        # self.isjump = False
-        # self.jumpspeed = 15  # 跳躍初速度，之後可調整
 class Ground(pg.sprite.Sprite):
     def __init__(self, x, y, w, h):
         pg.sprite.Sprite.__init__(self)
+
         self.image = pg.Surface((w, h))      # 設定地板在某寬度與高度
-        self.image.fill(GREEN)
+        self.image.fill(GOLDENROD)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -221,26 +219,61 @@ class Ground(pg.sprite.Sprite):
 class Hole(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((150, GHEIGHT))      # 設定洞的寬度，與地板同高
-        self.image.fill(RED)
+        self.image = pg.Surface((160, GHEIGHT))      # 設定洞的寬度，略低於地板
+        self.image.fill(DARKSLATEBLUE)
+        self.rect = self.image.get_rect()
+        self.rect.left = WIDTH + 50
+        self.rect.top = HEIGHT - GHEIGHT
+
+    def update(self):
+        if self.rect.right > -80:
+            self.rect.right -= PSPEED
+        if self.rect.right == -80:
+            self.rect.left = WIDTH +50
+
+class Holeedge(pg.sprite.Sprite):
+    # 用來彌補視覺上的誤差
+    def __init__(self):
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.Surface((260, GHEIGHT))
+        self.image.fill(DARKSLATEBLUE)
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH
         self.rect.top = HEIGHT - GHEIGHT
 
     def update(self):
-        if self.rect.right > 0:
+        if self.rect.right > -30:
             self.rect.right -= PSPEED
-        if self.rect.right == 0:
+        if self.rect.right == -30:
             self.rect.left = WIDTH
 
 class Platform(pg.sprite.Sprite):
     def __init__(self, x, y, w, h):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((w, h))      # 設定平台在某寬度與高度
-        self.image.fill(GREEN)
+        self.image.fill(CHOCOLATE)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+    #
+    # def update(self):
+    #     if self.rect.y > 0:
+    #         self.rect.right -= PSPEED
+    #     if self.rect.right <= 500:
+    #         self.rect.right += PSPEED
+
+class Highplatform(pg.sprite.Sprite):
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.w = 0
+        self.h = 0
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.Surface((self.w, self.h))      # 設定平台在某寬度與高度
+        self.image.fill(BLUE)
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
     #
     # def update(self):
     #     if self.rect.y > 0:
@@ -271,7 +304,8 @@ class Dropdown(pg.sprite.Sprite):
 
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(os.path.join(img_folder, "apple.png"))
+        self.image = pg.image.load(os.path.join(img_folder, "orange.png"))
+        self.image = pg.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.right = random.randint(50, (WIDTH - 50))
         self.rect.top = -500    # 從螢幕外掉進來
@@ -289,7 +323,7 @@ class Strangebomb(pg.sprite.Sprite):
 
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(os.path.join(img_folder, "orange.png"))
+        self.image = pg.image.load(os.path.join(img_folder, "apple.png"))
         self.image = pg.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.right = WIDTH + 100
@@ -299,7 +333,7 @@ class Strangebomb(pg.sprite.Sprite):
         # screen.blit(self.strangebomb , self.strangebomb_rect) 這行不需要
         theta = pg.time.get_ticks()/170
         self.speed_x = BSPEED
-        self.speed_y = (AMPLITUDE) * math.sin(theta)
+        self.speed_y = WAVE * AMPLITUDE * math.sin(theta)
         if self.rect.left >= -30:
             self.rect.left -= self.speed_x
         else:
