@@ -28,8 +28,10 @@ class Game:
         self.enemies = pg.sprite.Group()   # 初始化敵人群組
 
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
-        self.donut = Superdonut(self, "img/don.png", 4)   # !!!!!!!!!!!!!!!!
+        self.donut = Superdonut(self, "img/don.png", 4)
+        self.donutp2 = Superdonut2(self, "img/don.png", 4)   # !!!!!!!!!!!!!!!!
         self.all_sprites.add(self.donut)
+        self.all_sprites.add(self.donutp2)
 
         ### 讀入地板
         gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
@@ -110,6 +112,25 @@ class Game:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
                     self.donut.pos.y = hits[0].rect.bottom + DONUT_H
                     self.donut.vel.y = 0
+        oops1 = pg.sprite.spritecollide(self.donutp2, self.holes, False)
+        if not oops1:
+            if self.donutp2.vel.y > 0:    # 檢查落下（y>0）時的碰撞
+                hits = pg.sprite.spritecollide(self.donutp2, self.platforms, False)
+                hitsground = pg.sprite.spritecollide(self.donutp2, self.grounds, False)
+                if hits:
+                ### 撞到的話就讓他的位置維持在那個平台上，速度歸零。
+                    self.donutp2.pos.y = hits[0].rect.top + 1
+                    self.donutp2.vel.y = 0
+                elif hitsground:
+                ### 撞到的話就讓他的位置維持在地板上，速度歸零。
+                    self.donutp2.pos.y = hitsground[0].rect.top + 1
+                    self.donutp2.vel.y = 0
+            if self.donutp2.vel.y < 0:    # 檢查向上碰撞
+                hits = pg.sprite.spritecollide(self.donutp2, self.platforms, False)
+                if hits:
+                ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
+                    self.donutp2.pos.y = hits[0].rect.bottom + DONUT_H
+                    self.donutp2.vel.y = 0
 
     def events(self): 
         for event in pg.event.get():
@@ -120,8 +141,11 @@ class Game:
                 self.running = False    # 不執行了
 
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
+                if event.key == pg.K_UP:
                     self.donut.jump()
+                if event.key == pg.K_w:
+                    self.donutp2.jump()
+
         
     def change(self):
         if keyPressed("right"):
