@@ -161,17 +161,37 @@ class Game:
         ### 每次畫好畫滿所有的東西之後，就要flip。
         pg.display.flip()   # 把畫好的東西翻到正面的
 
+
     def show_start_screen(self):
         # 開始畫面
-        pass
+        self.screen.fill(BLACK)
+        self.start_img = pg.image.load('img/start.jpg')
+        self.start_img_rect = self.start_img.get_rect()
+        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+        self.screen.blit(self.start_img, self.start_img_rect)
+        go = True
+        while go:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pg.quit()
+                        sys.exit()
+                    else:
+                        go = False
+                    #g.new()
+            pg.display.update()
 
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
         pass
 
 g = Game()
-g.show_start_screen()
+#g.show_start_screen()
 while g.running:
+    g.show_start_screen()
     g.new()
     g.show_go_screen()
 
