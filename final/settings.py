@@ -7,7 +7,7 @@ WIDTH, HEIGHT = 1250, 650   # 畫面大小
 SIZE = (WIDTH, HEIGHT)
 HW, HH = WIDTH / 2, HEIGHT / 2
 AREA = WIDTH * HEIGHT
-GHEIGHT = 50    # 地面高度
+GROUND = 50    # 地面高度
 
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
@@ -43,7 +43,6 @@ DSPEED = 1
 ### 因為目前人物寬100，所以平台寬度至少150吧，暫定以５０為單位增加
 ### 或者寬度也可固定幾種
 ### 或者位置也可以固定
-PSPEED = 1
 THICK = 15
 PW = 150
 PWADD = 50

@@ -26,12 +26,9 @@ class Superdonut(pg.sprite.Sprite):
     def jump(self):
         # 檢查是否有站在某個平台上，有站在上面才能跳。
         # 檢查的方式是，看是否有發生碰撞：只要站在任一平台上，其實是一直有發生碰撞。
-        falls = pg.sprite.spritecollide(self, self.game.holes, False)
-        if not falls:
-            hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-            hitsground = pg.sprite.spritecollide(self, self.game.grounds, False)
-            if hits or hitsground:
-                self.vel.y = JMP
+        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        if hits:
+            self.vel.y = JMP
 
     def update(self):
         self.acc = vec(0, GRAVITY)    # 初始值在y上面即有重力加速度向下
@@ -61,30 +58,6 @@ class Superdonut(pg.sprite.Sprite):
         # self.isjump = False
         # self.jumpspeed = 15  # 跳躍初速度，之後可調整
 
-class Ground(pg.sprite.Sprite):
-    def __init__(self, x, y, w, h):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((w, h))      # 設定地板在某寬度與高度
-        self.image.fill(GREEN)
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-
-class Hole(pg.sprite.Sprite):
-    def __init__(self):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((150, GHEIGHT))      # 設定洞的寬度，與地板同高
-        self.image.fill(RED)
-        self.rect = self.image.get_rect()
-        self.rect.left = WIDTH
-        self.rect.top = HEIGHT - GHEIGHT
-
-    def update(self):
-        if self.rect.right > 0:
-            self.rect.right -= PSPEED
-        if self.rect.right == 0:
-            self.rect.left = WIDTH
-
 class Platform(pg.sprite.Sprite):
     def __init__(self, x, y, w, h):
         pg.sprite.Sprite.__init__(self)
@@ -93,12 +66,6 @@ class Platform(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-    #
-    # def update(self):
-    #     if self.rect.y > 0:
-    #         self.rect.right -= PSPEED
-    #     if self.rect.right <= 500:
-    #         self.rect.right += PSPEED
 
 # 火球（正面飛行物）
 class Fireball(pg.sprite.Sprite):
