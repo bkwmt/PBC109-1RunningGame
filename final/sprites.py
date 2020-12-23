@@ -146,11 +146,13 @@ class Strangebomb(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.right = WIDTH + 100
         self.rect.top = random.randint(150, HEIGHT - 150)
-
+    
+   
     def update(self):
         # screen.blit(self.strangebomb , self.strangebomb_rect) 這行不需要
+        theta = pg.time.get_ticks()/170
         self.speed_x = BSPEED
-        self.speed_y = (WAVE) * (AMPLITUDE) * math.sin(THETA)
+        self.speed_y = (AMPLITUDE) * math.sin(theta)
         if self.rect.left >= -30:
             self.rect.left -= self.speed_x
         else:
