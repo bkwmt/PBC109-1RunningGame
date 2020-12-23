@@ -23,6 +23,8 @@ class Game:
     def new(self):
         # 重新開始一個遊戲
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
+        self.grounds = pg.sprite.Group()    # 初始化地面群組
+        self.holes = pg.sprite.Group()    # 初始化洞群組
         self.platforms = pg.sprite.Group()    # 初始化平台群組
         self.enemies = pg.sprite.Group()   # 初始化敵人群組
 
@@ -31,9 +33,15 @@ class Game:
         self.all_sprites.add(self.donut)
 
         ### 讀入地板
-        gnd = Platform(0, HEIGHT - GROUND, WIDTH, GROUND)     # 地板單獨設定
+        gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
         self.all_sprites.add(gnd)
-        self.platforms.add(gnd)
+        self.grounds.add(gnd)
+
+        ### 讀入洞
+        hole = Hole()
+        self.all_sprites.add(hole)
+        self.holes.add(hole)
+
         ### 讀入其他平台
         for plat in PLATFORM_LIST:
             p = Platform(plat[0], plat[1], plat[2], plat[3])
@@ -68,18 +76,25 @@ class Game:
         # 更新群組內每一個每個精靈的動作
         self.all_sprites.update()
         # 檢查「落下」碰撞（放入一個list）
-        if self.donut.vel.y > 0:    # 檢查落下（y>0）時的碰撞
-            hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
-            if hits:
-            ### 撞到的話就讓他的位置維持在那個地板上，速度歸零。
-                self.donut.pos.y = hits[0].rect.top + 1
-                self.donut.vel.y = 0
-        if self.donut.vel.y < 0:    # 檢查向上碰撞
-            hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
-            if hits:
-            ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
-                self.donut.pos.y = hits[0].rect.bottom + DONUT_H
-                self.donut.vel.y = 0
+        oops = pg.sprite.spritecollide(self.donut, self.holes, False)
+        if not oops:
+            if self.donut.vel.y > 0:    # 檢查落下（y>0）時的碰撞
+                hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
+                hitsground = pg.sprite.spritecollide(self.donut, self.grounds, False)
+                if hits:
+                ### 撞到的話就讓他的位置維持在那個平台上，速度歸零。
+                    self.donut.pos.y = hits[0].rect.top + 1
+                    self.donut.vel.y = 0
+                elif hitsground:
+                ### 撞到的話就讓他的位置維持在地板上，速度歸零。
+                    self.donut.pos.y = hitsground[0].rect.top + 1
+                    self.donut.vel.y = 0
+            if self.donut.vel.y < 0:    # 檢查向上碰撞
+                hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
+                if hits:
+                ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
+                    self.donut.pos.y = hits[0].rect.bottom + DONUT_H
+                    self.donut.vel.y = 0
 
     def events(self):
         for event in pg.event.get():
