@@ -3,6 +3,7 @@ import pygame as pg
 from pygame.locals import *
 from settings import *
 from sprites import *
+
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
 
@@ -28,7 +29,7 @@ class Game:
         self.enemies = pg.sprite.Group()   # 初始化敵人群組
 
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
-        self.donut = Superdonut(self, "img/don.png", 4)   # !!!!!!!!!!!!!!!!
+        self.donut = Superdonut(self)   # !!!!!!!!!!!!!!!!
         self.all_sprites.add(self.donut)
 
         ### 讀入地板
@@ -65,20 +66,10 @@ class Game:
         # 遊戲迴圈：
         self.playing = True
         while self.playing:      # 每回畫面更新都要做的事情
-            global frame, nextFrame
-            self.frame = frame
-            if clock() > nextFrame:
-                if frame < 3:
-                    self.frame += 1
-                    frame += 1
-                else:
-                    frame = 0 
-                nextFrame += 40   
             self.clock.tick(FPS)
             self.events()
             self.update()
             self.draw()
-            self.change()
 
     def update(self):
         # 更新背景
@@ -111,7 +102,7 @@ class Game:
                     self.donut.pos.y = hits[0].rect.bottom + DONUT_H
                     self.donut.vel.y = 0
 
-    def events(self): 
+    def events(self):
         for event in pg.event.get():
             # 遊戲結束
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
@@ -122,15 +113,6 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     self.donut.jump()
-        
-    def change(self):
-        if keyPressed("right"):
-            changeSpriteImage(self.donut, frame)   
-        elif keyPressed("left"):
-            changeSpriteImage(self.donut, frame) 
-        else:
-            changeSpriteImage(self.donut, 0)
-        pg.display.update()
 
     def draw(self):
         self.all_sprites.draw(self.screen)

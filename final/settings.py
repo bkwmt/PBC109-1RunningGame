@@ -1,5 +1,4 @@
 import os, math
-import pygame as pg
 ### 常數
 TITLE = "The Rolling Donuts"
 FPS = 120    # 每秒刷新次數
@@ -61,58 +60,4 @@ game_folder = os.path.dirname(__file__)
 ### 將img指定在上面這個目錄下
 img_folder = os.path.join(game_folder, "img")
 
-Bstart = 0
-frame = 0
-def clock():
-    current_time = pg.time.get_ticks()
-    return current_time
-nextFrame = clock()
-
-keydict = {"space": pg.K_SPACE, "esc": pg.K_ESCAPE, "up": pg.K_UP, "down": pg.K_DOWN,
-           "left": pg.K_LEFT, "right": pg.K_RIGHT, "return": pg.K_RETURN,
-           "a": pg.K_a,
-           "b": pg.K_b,
-           "c": pg.K_c,
-           "d": pg.K_d,
-           "e": pg.K_e,
-           "f": pg.K_f,
-           "g": pg.K_g,
-           "h": pg.K_h,
-           "i": pg.K_i,
-           "j": pg.K_j,
-           "k": pg.K_k,
-           "l": pg.K_l,
-           "m": pg.K_m,
-           "n": pg.K_n,
-           "o": pg.K_o,
-           "p": pg.K_p,
-           "q": pg.K_q,
-           "r": pg.K_r,
-           "s": pg.K_s,
-           "t": pg.K_t,
-           "u": pg.K_u,
-           "v": pg.K_v,
-           "w": pg.K_w,
-           "x": pg.K_x,
-           "y": pg.K_y,
-           "z": pg.K_z,
-           "1": pg.K_1,
-           "2": pg.K_2,
-           "3": pg.K_3,
-           "4": pg.K_4,
-           "5": pg.K_5,
-           "6": pg.K_6,
-           "7": pg.K_7,
-           "8": pg.K_8,
-           "9": pg.K_9,
-           "0": pg.K_0,
-           "num0": pg.K_KP0,
-           "num1": pg.K_KP1,
-           "num2": pg.K_KP2,
-           "num3": pg.K_KP3,
-           "num4": pg.K_KP4,
-           "num5": pg.K_KP5,
-           "num6": pg.K_KP6,
-           "num7": pg.K_KP7,
-           "num8": pg.K_KP8,
-           "num9": pg.K_KP9}
+Bstart = 0 #背景起始值
