@@ -3,7 +3,10 @@ import os, time, math, random, sys
 import pygame as pg
 from pygame.locals import *
 from settings import *
-from sprites import *
+from players import *
+from platforms import *
+from enemies import *
+
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
 

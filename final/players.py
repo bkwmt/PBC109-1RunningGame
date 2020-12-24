@@ -206,143 +206,143 @@ class Superdonut2(pg.sprite.Sprite):
         ### 取得新的位置並準備顯示（主角的中間底部位置）
         self.rect.midbottom = self.pos
 
-class Ground(pg.sprite.Sprite):
-    def __init__(self, x, y, w, h):
-        pg.sprite.Sprite.__init__(self)
+# class Ground(pg.sprite.Sprite):
+#     def __init__(self, x, y, w, h):
+#         pg.sprite.Sprite.__init__(self)
+#
+#         self.image = pg.Surface((w, h))      # 設定地板在某寬度與高度
+#         self.image.fill(GOLDENROD)
+#         self.rect = self.image.get_rect()
+#         self.rect.x = x
+#         self.rect.y = y
+#
+# class Hole(pg.sprite.Sprite):
+#     global Direction
+#     def __init__(self):
+#         pg.sprite.Sprite.__init__(self)
+#         self.image = pg.Surface((160, GHEIGHT))      # 設定洞的寬度，略低於地板
+#         self.image.fill(DARKSLATEBLUE)
+#         self.rect = self.image.get_rect()
+#         self.rect.left = WIDTH + 50
+#         self.rect.top = HEIGHT - GHEIGHT
+#
+#     def update(self):
+#         if self.rect.right > -80:
+#             self.rect.right -= PSPEED
+#         if self.rect.right == -80:
+#             self.rect.left = WIDTH +50
+#
+# class Holeedge(pg.sprite.Sprite):
+#     # 用來彌補視覺上的誤差（就是還沒有碰到洞卻掉了下去）
+#     global Direction
+#     def __init__(self):
+#         pg.sprite.Sprite.__init__(self)
+#         self.image = pg.Surface((260, GHEIGHT))
+#         self.image.fill(BLACK)  # 暫時用黑色，之後再調成一樣。
+#         self.rect = self.image.get_rect()
+#         self.rect.left = WIDTH
+#         self.rect.top = HEIGHT - GHEIGHT
+#
+#     def update(self):
+#         if self.rect.right > -30:
+#             self.rect.right -= PSPEED
+#         if self.rect.right == -30:
+#             self.rect.left = WIDTH
+#
+# class Platform(pg.sprite.Sprite):
+#     def __init__(self, x, y, w, h):
+#         pg.sprite.Sprite.__init__(self)
+#         self.image = pg.Surface((w, h))      # 設定平台在某寬度與高度
+#         self.image.fill(CHOCOLATE)
+#         self.rect = self.image.get_rect()
+#         self.rect.x = x
+#         self.rect.y = y
+#     #
+#     # def update(self):
+#     #     if self.rect.y > 0:
+#     #         self.rect.right -= PSPEED
+#     #     if self.rect.right <= 500:
+#     #         self.rect.right += PSPEED
+#
+# class Highplatform(pg.sprite.Sprite):
+#     def __init__(self):
+#         self.x = 0
+#         self.y = 0
+#         self.w = 0
+#         self.h = 0
+#         pg.sprite.Sprite.__init__(self)
+#         self.image = pg.Surface((self.w, self.h))      # 設定平台在某寬度與高度
+#         self.image.fill(BLUE)
+#         self.rect = self.image.get_rect()
+#         self.rect.x = self.x
+#         self.rect.y = self.y
+#     #
+#     # def update(self):
+#     #     if self.rect.y > 0:
+#     #         self.rect.right -= PSPEED
+#     #     if self.rect.right <= 500:
+#     #         self.rect.right += PSPEED
 
-        self.image = pg.Surface((w, h))      # 設定地板在某寬度與高度
-        self.image.fill(GOLDENROD)
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-
-class Hole(pg.sprite.Sprite):
-    global Direction
-    def __init__(self):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((160, GHEIGHT))      # 設定洞的寬度，略低於地板
-        self.image.fill(DARKSLATEBLUE)
-        self.rect = self.image.get_rect()
-        self.rect.left = WIDTH + 50
-        self.rect.top = HEIGHT - GHEIGHT
-
-    def update(self):
-        if self.rect.right > -80:
-            self.rect.right -= PSPEED
-        if self.rect.right == -80:
-            self.rect.left = WIDTH +50
-
-class Holeedge(pg.sprite.Sprite):
-    # 用來彌補視覺上的誤差
-    global Direction
-    def __init__(self):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((260, GHEIGHT))
-        self.image.fill(DARKSLATEBLUE)
-        self.rect = self.image.get_rect()
-        self.rect.left = WIDTH
-        self.rect.top = HEIGHT - GHEIGHT
-
-    def update(self):
-        if self.rect.right > -30:
-            self.rect.right -= PSPEED
-        if self.rect.right == -30:
-            self.rect.left = WIDTH
-
-class Platform(pg.sprite.Sprite):
-    def __init__(self, x, y, w, h):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((w, h))      # 設定平台在某寬度與高度
-        self.image.fill(CHOCOLATE)
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-    #
-    # def update(self):
-    #     if self.rect.y > 0:
-    #         self.rect.right -= PSPEED
-    #     if self.rect.right <= 500:
-    #         self.rect.right += PSPEED
-
-class Highplatform(pg.sprite.Sprite):
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.w = 0
-        self.h = 0
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((self.w, self.h))      # 設定平台在某寬度與高度
-        self.image.fill(BLUE)
-        self.rect = self.image.get_rect()
-        self.rect.x = self.x
-        self.rect.y = self.y
-    #
-    # def update(self):
-    #     if self.rect.y > 0:
-    #         self.rect.right -= PSPEED
-    #     if self.rect.right <= 500:
-    #         self.rect.right += PSPEED
-
-# 火球（正面飛行物）
-class Fireball(pg.sprite.Sprite):
-    def __init__(self):
-        pg.sprite.Sprite.__init__(self)
-        # super().__init__() 這跟上面一行是一樣的作用，下面的都刪了
-        self.image = pg.image.load(os.path.join(img_folder, "fireball.png"))
-        self.rect = self.image.get_rect()
-        self.rect.right = WIDTH
-        self.rect.top = random.randint(50,600)
-
-    def update(self):
-        # screen.blit(self.fireball, self.fireball_rect) 不需要
-        if self.rect.left > 0:
-            self.rect.left -= FSPEED
-        else:
-            self.rect.right = WIDTH
-            self.rect.top = random.randint(50,600)
-
-# 上面掉落物
-class Dropdown(pg.sprite.Sprite):
-
-    def __init__(self):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(os.path.join(img_folder, "orange.png"))
-        self.image = pg.transform.scale(self.image, (50, 50))
-        self.rect = self.image.get_rect()
-        self.rect.right = random.randint(50, (WIDTH - 50))
-        self.rect.top = -500    # 從螢幕外掉進來
-
-    def update(self):
-        # screen.blit(self.dropdown , self.dropdown_rect) 這行不需要
-        if self.rect.top < HEIGHT:
-            self.rect.top += DSPEED
-        else:
-            self.rect.right = random.randint(50, (WIDTH - 50))
-            self.rect.top = -500
-
-# 波狀飛行物
-class Strangebomb(pg.sprite.Sprite):
-
-    def __init__(self):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(os.path.join(img_folder, "apple.png"))
-        self.image = pg.transform.scale(self.image, (50, 50))
-        self.rect = self.image.get_rect()
-        self.rect.right = WIDTH + 100
-        self.rect.top = random.randint(150, HEIGHT - 150)
-
-    def update(self):
-        # screen.blit(self.strangebomb , self.strangebomb_rect) 這行不需要
-        theta = pg.time.get_ticks()/170
-        self.speed_x = BSPEED
-        self.speed_y = WAVE * AMPLITUDE * math.sin(theta)
-        if self.rect.left >= -30:
-            self.rect.left -= self.speed_x
-        else:
-            self.rect.left = WIDTH + 100
-            self.rect.top = random.randint(150, HEIGHT - 150)
-
-        self.rect.top -= self.speed_y
+# # 火球（正面飛行物）
+# class Fireball(pg.sprite.Sprite):
+#     def __init__(self):
+#         pg.sprite.Sprite.__init__(self)
+#         # super().__init__() 這跟上面一行是一樣的作用，下面的都刪了
+#         self.image = pg.image.load(os.path.join(img_folder, "fireball.png"))
+#         self.rect = self.image.get_rect()
+#         self.rect.right = WIDTH
+#         self.rect.top = random.randint(50,600)
+#
+#     def update(self):
+#         # screen.blit(self.fireball, self.fireball_rect) 不需要
+#         if self.rect.left > 0:
+#             self.rect.left -= FSPEED
+#         else:
+#             self.rect.right = WIDTH
+#             self.rect.top = random.randint(50,600)
+#
+# # 上面掉落物
+# class Dropdown(pg.sprite.Sprite):
+#
+#     def __init__(self):
+#         pg.sprite.Sprite.__init__(self)
+#         self.image = pg.image.load(os.path.join(img_folder, "orange.png"))
+#         self.image = pg.transform.scale(self.image, (50, 50))
+#         self.rect = self.image.get_rect()
+#         self.rect.right = random.randint(50, (WIDTH - 50))
+#         self.rect.top = -500    # 從螢幕外掉進來
+#
+#     def update(self):
+#         # screen.blit(self.dropdown , self.dropdown_rect) 這行不需要
+#         if self.rect.top < HEIGHT:
+#             self.rect.top += DSPEED
+#         else:
+#             self.rect.right = random.randint(50, (WIDTH - 50))
+#             self.rect.top = -500
+#
+# # 波狀飛行物
+# class Strangebomb(pg.sprite.Sprite):
+#
+#     def __init__(self):
+#         pg.sprite.Sprite.__init__(self)
+#         self.image = pg.image.load(os.path.join(img_folder, "apple.png"))
+#         self.image = pg.transform.scale(self.image, (50, 50))
+#         self.rect = self.image.get_rect()
+#         self.rect.right = WIDTH + 100
+#         self.rect.top = random.randint(150, HEIGHT - 150)
+#
+#     def update(self):
+#         # screen.blit(self.strangebomb , self.strangebomb_rect) 這行不需要
+#         theta = pg.time.get_ticks()/170
+#         self.speed_x = BSPEED
+#         self.speed_y = WAVE * AMPLITUDE * math.sin(theta)
+#         if self.rect.left >= -30:
+#             self.rect.left -= self.speed_x
+#         else:
+#             self.rect.left = WIDTH + 100
+#             self.rect.top = random.randint(150, HEIGHT - 150)
+#
+#         self.rect.top -= self.speed_y
 
 #集滿螢幕會倒轉
 class Reverse(pg.sprite.Sprite):
