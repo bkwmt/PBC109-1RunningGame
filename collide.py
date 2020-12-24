@@ -1,7 +1,7 @@
 class Blood:
     def __init__(self):
-        self.raw_image = pygame.image.load("blood.png")
-        self.image = pygame.transform.scale(self.raw_image, (70, 70)) 
+        self.raw_image = pg.image.load("blood.png")
+        self.image = pg.transform.scale(self.raw_image, (70, 70)) 
         self.now_blood = 5  # 初始血量
     def show(self):  # 左上角顯示血量(可能需要美編)
         all_blood = [self.image]*self.now_blood
@@ -15,5 +15,5 @@ class Blood:
             # 寫入遊戲結束機制
 blood = Blood()
 
-if pygame.sprite.spritecollide( superdonut , , True ):  #　中間放敵人的group(我找不到)
+if pg.sprite.spritecollide( superdonut , , True ):  #　中間放敵人的group(我找不到)
         blood.hurt()

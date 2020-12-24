@@ -9,6 +9,7 @@ background.fill(( 0 , 0 , 120 ))  # 填入顏色(之後可調整)
 FPS = 60
 clock = pygame.time.Clock()
 ADD_FIRE_RATE = 100
+abc = 10
 
 class Superdonut(pygame.sprite.Sprite):
     def __init__(self):
@@ -114,6 +115,7 @@ while True:  # 遊戲迴圈
     clock.tick(FPS)
     pressed_keys = pygame.key.get_pressed()
     screen.blit(background, (0,0))
+    screen.blit(50 , (500,500))
     blood.show()
     superdonut.donut()
     superdonut.move()
