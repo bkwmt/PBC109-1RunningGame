@@ -26,12 +26,15 @@ class Game:
         self.holes = pg.sprite.Group()    # 初始化洞群組
         self.platforms = pg.sprite.Group()    # 初始化平台群組
         self.enemies = pg.sprite.Group()   # 初始化敵人群組
+        self.weapon = pg.sprite.Group()  # 初始化道具群組
+        self.superdonut = pg.sprite.Group()  # 初始化donut群組
 
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
         self.donut = Superdonut(self, "img/don.png", 4)
         self.donutp2 = Superdonut2(self, "img/don.png", 4)   # !!!!!!!!!!!!!!!!
         self.all_sprites.add(self.donut)
         self.all_sprites.add(self.donutp2)
+        self.superdonut.add(self.donut)
 
         ### 讀入地板
         self.gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
@@ -62,6 +65,10 @@ class Game:
         self.fball = Fireball()
         self.all_sprites.add(self.fball)
         self.enemies.add(self.fball)
+
+        self.reverse = Reverse()
+        self.all_sprites.add(self.reverse)
+        self.weapon.add(self.reverse)
         ### 執行遊戲
         self.run()
 
@@ -87,7 +94,8 @@ class Game:
     def update(self):
         # 更新背景
         global Bstart
-        self.rel_x = Bstart % self.bkgd.get_rect().width
+        global Direction
+        self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -250)) # 捲動螢幕
         if self.rel_x < WIDTH:
             self.screen.blit(self.bkgd, (self.rel_x, -250))
@@ -113,7 +121,7 @@ class Game:
                 hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
                 if hits:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
-                    self.donut.pos.y = hits[0].rect.bottom + DONUT_H
+                    self.donut.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donut.vel.y = 0
 
         oops1 = pg.sprite.spritecollide(self.donutp2, self.holes, False)
@@ -133,9 +141,12 @@ class Game:
                 hits = pg.sprite.spritecollide(self.donutp2, self.platforms, False)
                 if hits:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
-                    self.donutp2.pos.y = hits[0].rect.bottom + DONUT_H
+                    self.donutp2.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donutp2.vel.y = 0
-
+        getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
+        if getweapon:
+            self.reverse.rect.right = 4000
+            Direction = -1
         ### 利用地板出現的時間差製造會掉下去的洞
 
         # if self.gnd.rect.right > 0:
@@ -197,8 +208,8 @@ class Game:
                         pg.quit()
                         sys.exit()      # 還有這裏
                     else:
-                        go = False      # ??????
-                    #g.new()
+                        go = False      # 停止迴圈
+                    #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
 
     def show_go_screen(self):

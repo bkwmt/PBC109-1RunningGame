@@ -18,7 +18,7 @@ def loadImage(fileName, useColorKey=False):
     if os.path.isfile(fileName):
         image = pg.image.load(fileName)
         image = image.convert_alpha()
-        image = pg.transform.scale(image, (400, 100))
+        image = pg.transform.scale(image, (DONUT_H, DONUT_W))
         # Return the image
         return image
     else:
@@ -341,3 +341,23 @@ class Strangebomb(pg.sprite.Sprite):
             self.rect.top = random.randint(150, HEIGHT - 150)
 
         self.rect.top -= self.speed_y
+
+#集滿螢幕會倒轉
+class Reverse(pg.sprite.Sprite):
+
+    def __init__(self):
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.image.load(os.path.join(img_folder, "reverse.png"))
+        self.image = pg.transform.scale(self.image, (70, 70))
+        self.rect = self.image.get_rect()
+        self.rect.right = WIDTH
+        self.rect.top = 530
+
+    def update(self):
+        self.speed = PSPEED
+        if self.rect.right >= - 400:
+            self.rect.right -= self.speed
+        else:
+            self.rect.right = WIDTH + 80
+
+

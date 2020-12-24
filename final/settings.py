@@ -28,8 +28,8 @@ NAVY = (0, 0, 128)
 DARKSLATEBLUE = (72, 61, 139)
 
 ### 精靈會用到的屬性
-DONUT_W = 30    # 暫定
-DONUT_H = 40
+DONUT_W = 75    # 暫定
+DONUT_H = 300
 DONUT_ACC = 0.5             # 加速度，越大可以跑快一點
 DONUT_FRICTION = -0.035      # 摩擦力，越小會滑行越遠，最大速度亦會變大。
 GRAVITY = 0.6               # 重力
@@ -75,13 +75,15 @@ game_folder = os.path.dirname(__file__)
 ### 將img指定在上面這個目錄下
 img_folder = os.path.join(game_folder, "img")
 
-Bstart = 0
-frame = 0
+Bstart = 0  # 螢幕初始設定
+Direction = 1  # 螢幕捲動方向
+frame = 0  # 主角所在動作的index
 def clock():
     current_time = pg.time.get_ticks()
     return current_time
 nextFrame = clock()
 
+# 鍵盤用
 keydict = {"space": pg.K_SPACE, "esc": pg.K_ESCAPE, "up": pg.K_UP, "down": pg.K_DOWN,
            "left": pg.K_LEFT, "right": pg.K_RIGHT, "return": pg.K_RETURN,
            "a": pg.K_a,
