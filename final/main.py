@@ -1,3 +1,4 @@
+# in PBC
 import os, time, math, random, sys
 import pygame as pg
 from pygame.locals import *
@@ -33,7 +34,7 @@ class Game:
 
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
         self.donut = Superdonut(self, "img/don.png", 4)
-        self.donutp2 = Superdonut2(self, "img/don.png", 4)   # !!!!!!!!!!!!!!!!
+        self.donutp2 = Superdonut2(self, "img/don2.png", 4)   # !!!!!!!!!!!!!!!!
         self.all_sprites.add(self.donut)
         self.all_sprites.add(self.donutp2)
         self.superdonut.add(self.donut)
