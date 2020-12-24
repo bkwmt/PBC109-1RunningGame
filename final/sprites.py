@@ -217,6 +217,7 @@ class Ground(pg.sprite.Sprite):
         self.rect.y = y
 
 class Hole(pg.sprite.Sprite):
+    global Direction
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((160, GHEIGHT))      # 設定洞的寬度，略低於地板
@@ -233,6 +234,7 @@ class Hole(pg.sprite.Sprite):
 
 class Holeedge(pg.sprite.Sprite):
     # 用來彌補視覺上的誤差
+    global Direction
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((260, GHEIGHT))

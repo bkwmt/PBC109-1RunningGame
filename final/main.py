@@ -28,6 +28,8 @@ class Game:
         self.enemies = pg.sprite.Group()   # 初始化敵人群組
         self.weapon = pg.sprite.Group()  # 初始化道具群組
         self.superdonut = pg.sprite.Group()  # 初始化donut群組
+        self.p1 = pg.sprite.Group()
+        self.p2 = pg.sprite.Group()
 
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
         self.donut = Superdonut(self, "img/don.png", 4)
@@ -35,6 +37,9 @@ class Game:
         self.all_sprites.add(self.donut)
         self.all_sprites.add(self.donutp2)
         self.superdonut.add(self.donut)
+        self.superdonut.add(self.donutp2)
+        self.p1.add(self.donut)
+        self.p2.add(self.donutp2)
 
         ### 讀入地板
         self.gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
@@ -143,10 +148,34 @@ class Game:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
                     self.donutp2.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donutp2.vel.y = 0
+
+        ###判斷是否吃到倒轉武器
         getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
         if getweapon:
-            self.reverse.rect.right = 4000
-            Direction = -1
+            self.reverse.rect.right = 4000 #重置倒轉武器位置
+            Direction = -1  # 背景倒轉
+
+        ###donut互撞
+        if (self.donut.vel.x > 0 and self.donutp2.vel.x > 0) or (self.donut.vel.x < 0 and self.donutp2.vel.x < 0):
+            pass
+        else:
+            if self.donut.vel.x > 0:
+                push = pg.sprite.spritecollide(self.donut, self.p2, False)
+                if push:
+                    self.donut.pos.x = push[0].rect.right - DONUT_W * 1.5
+            if self.donut.vel.x < 0:
+                push = pg.sprite.spritecollide(self.donut, self.p2, False)
+                if push:
+                    self.donut.pos.x = push[0].rect.left + DONUT_W * 1.5
+            if self.donutp2.vel.x > 0:
+                push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
+                if push:
+                    self.donutp2.pos.x = push[0].rect.right - DONUT_W * 1.5
+            if self.donutp2.vel.x < 0:
+                push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
+                if push:
+                    self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.5
+
         ### 利用地板出現的時間差製造會掉下去的洞
 
         # if self.gnd.rect.right > 0:
@@ -183,6 +212,12 @@ class Game:
             changeSpriteImage(self.donut, frame)
         else:
             changeSpriteImage(self.donut, 0)
+        if keyPressed("d"):
+            changeSpriteImage(self.donutp2, frame)
+        elif keyPressed("a"):
+            changeSpriteImage(self.donutp2, frame)
+        else:
+            changeSpriteImage(self.donutp2, 0)
         pg.display.update()
 
     def draw(self):
