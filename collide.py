@@ -12,7 +12,9 @@ class Blood:
         if self.now_blood > 1:
             self.now_blood -= 1
         else:
+            pass
             # 寫入遊戲結束機制
+
 blood = Blood()
 
 if pg.sprite.spritecollide( superdonut , , True ):  #　中間放敵人的group(我找不到)

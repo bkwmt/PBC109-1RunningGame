@@ -14,11 +14,11 @@ def keyPressed(keyCheck=""):
             return True
     return False
 
-def loadImage(fileName, useColorKey=False):
+def loadImage(fileName, useColorKey=False, img_H=DONUT_H, img_W=DONUT_W):
     if os.path.isfile(fileName):
         image = pg.image.load(fileName)
         image = image.convert_alpha()
-        image = pg.transform.scale(image, (DONUT_H, DONUT_W))
+        image = pg.transform.scale(image, (img_H, img_W))
         # Return the image
         return image
     else:
@@ -48,8 +48,6 @@ class Superdonut(pg.sprite.Sprite):
         self.image = pg.Surface.copy(self.images[0])
 
         self.currentImage = 0
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (0, 0)
         self.mask = pg.mask.from_surface(self.image)
         self.angle = 0
         self.scale = 1
@@ -135,8 +133,6 @@ class Superdonut2(pg.sprite.Sprite):
             x -= self.originalWidth
         self.image = pg.Surface.copy(self.images[0])
         self.currentImage = 0
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (0, 0)
         self.mask = pg.mask.from_surface(self.image)
         self.angle = 0
         self.scale = 1
@@ -206,6 +202,46 @@ class Superdonut2(pg.sprite.Sprite):
         ### 取得新的位置並準備顯示（主角的中間底部位置）
         self.rect.midbottom = self.pos
 
+class Blood(pg.sprite.Sprite):
+    def __init__(self, filename, frames=1, pos=0):
+        pg.sprite.Sprite.__init__(self)
+        self.images = []
+        img = loadImage(filename, img_H=800, img_W=60)
+        self.originalWidth = img.get_width() // frames
+        self.originalHeight = img.get_height()
+        frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
+        x = 0
+        for frameNo in range(frames):
+            frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
+            frameSurf.blit(img, (x, 0))
+            self.images.append(frameSurf.copy())
+            x -= self.originalWidth
+        self.image = pg.Surface.copy(self.images[0])
+        self.currentImage = 0
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (10, pos)
+        self.mask = pg.mask.from_surface(self.image)
+        self.angle = 0
+        self.scale = 1
+        """
+        self.raw_image = pg.image.load("img/blood.png")
+        self.image = pg.transform.scale(self.raw_image, (70, 70)) 
+        self.now_blood = 5  # 初始血量
+        self.rect = self.image.get_rect()
+
+    #def show(self):  # 左上角顯示血量(可能需要美編)
+        self.all_blood = [self.image]*self.now_blood
+        self.position = [ 50 , 100 , 150 , 200 , 250 ]
+        
+        for i in range (len(self.all_blood)):
+            screen.blit( self.image , (position[i],50) )
+        
+    def hurt(self):  # 撞到敵人就扣血
+        if self.now_blood > 1:
+            self.now_blood -= 1
+        else:
+            pass
+        """
 # class Ground(pg.sprite.Sprite):
 #     def __init__(self, x, y, w, h):
 #         pg.sprite.Sprite.__init__(self)
