@@ -156,7 +156,9 @@ class Lowplatform1(pg.sprite.Sprite):
 
 class Lowplatform2(pg.sprite.Sprite):
     def __init__(self):
-        self.x = HW + random.randint(150, 250) + random.randint(WIDTH + 100, WIDTH + 250)
+        self.pos = HW + random.randint(50, 150) + \
+                   random.randint(WIDTH + 50, WIDTH + 150)
+        self.x = self.pos
         self.y = HEIGHT - GHEIGHT - random.randint(100, 150)
         self.w = PW * 1.2 + (PW/random.randint(2, 5))
         self.h = THICK
@@ -171,4 +173,4 @@ class Lowplatform2(pg.sprite.Sprite):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
         if self.rect.right == -30:
-            self.rect.left = HW + random.randint(150, 250) + random.randint(WIDTH + 100, WIDTH + 250)
+            self.rect.left = self.pos
