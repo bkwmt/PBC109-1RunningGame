@@ -108,6 +108,10 @@ class Game:
         self.reverse = Reverse()
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
+
+        self.genemy = GEnemy("img/genemy.png",8)
+        self.all_sprites.add(self.genemy)
+        #self.weapon.add(self.genemy)
         ### 執行遊戲
         self.run()
         
@@ -129,15 +133,12 @@ class Game:
             self.update()
             self.draw()
             self.change()
-<<<<<<< HEAD
             self.check_gameover()
-=======
     
     def bgm(self):
         bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
         pg.mixer.music.play( -1 , 0 )
         pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
->>>>>>> 3f06c96e9e8423d83fb52ab1e53c042fbd42ec49
 
     def update(self):
         # 更新背景
@@ -145,6 +146,7 @@ class Game:
         global Direction
         global life
         global life2
+        global gframe
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
@@ -269,6 +271,13 @@ class Game:
                 pg.quit()
                 sys.exit()
             changeSpriteImage(self.bloodp2, life2)
+
+        if gframe < 7:
+            gframe += 0.05
+            changeSpriteImage(self.genemy, int(gframe))
+        else:
+            gframe = 0
+            changeSpriteImage(self.genemy, int(gframe))
         ### 利用地板出現的時間差製造會掉下去的洞
 
         # if self.gnd.rect.right > 0:
