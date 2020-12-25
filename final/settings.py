@@ -1,6 +1,5 @@
 import os, math , sys
 import pygame as pg
-pg.init()
 ### 常數
 TITLE = "The Rolling Donuts"
 FPS = 120    # 每秒刷新次數
@@ -11,11 +10,6 @@ HW, HH = WIDTH / 2, HEIGHT / 2
 AREA = WIDTH * HEIGHT
 GHEIGHT = 66    # 地面高度
 PSPEED = 1    ### 此為畫面捲動速度，敬請多加利用。
-
-#音樂用
-bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
-pg.mixer.music.play( -1 , 0 )
-pg.mixer.music.set_volume(0.7)
 
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
@@ -34,6 +28,7 @@ NAVY = (0, 0, 128)
 DARKSLATEBLUE = (72, 61, 139)
 
 ### 精靈會用到的屬性
+life = 0
 DONUT_W = 75    # 暫定
 DONUT_H = 300
 DONUT_ACC = 0.5             # 加速度，越大可以跑快一點

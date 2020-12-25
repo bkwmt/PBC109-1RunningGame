@@ -22,6 +22,7 @@ class Game:
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
+        self.bgm()
 
     def new(self):
         # 重新開始一個遊戲
@@ -109,7 +110,7 @@ class Game:
         self.weapon.add(self.reverse)
         ### 執行遊戲
         self.run()
-
+        
     def run(self):
         # 遊戲迴圈：
         self.playing = True
@@ -128,11 +129,21 @@ class Game:
             self.update()
             self.draw()
             self.change()
+<<<<<<< HEAD
+            self.check_gameover()
+=======
+    
+    def bgm(self):
+        bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
+        pg.mixer.music.play( -1 , 0 )
+        pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
+>>>>>>> 3f06c96e9e8423d83fb52ab1e53c042fbd42ec49
 
     def update(self):
         # 更新背景
         global Bstart
         global Direction
+        global life
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
@@ -208,6 +219,18 @@ class Game:
                 push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
                 if push:
                     self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.5
+        ###donut撞enemies
+
+        crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
+        drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
+        if crash and drcrash:
+            self.drop.rect.top = -500
+            life += 1
+            if life >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.blood, life)
+
 
         ### 利用地板出現的時間差製造會掉下去的洞
 
@@ -279,10 +302,20 @@ class Game:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
-
+    
+    def check_gameover(self):
+        if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
+            self.playing = 0
+            self.screen.fill(BLACK)
+            self.gameover_img = pg.image.load('img/start.jpg')
+            self.gameover_img_rect = self.gameover_img.get_rect()
+            self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.gameover_img, self.gameover_img_rect)
+            
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
         pass
+        
 
 g = Game()
 #g.show_start_screen()

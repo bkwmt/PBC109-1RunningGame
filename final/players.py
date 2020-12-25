@@ -223,25 +223,21 @@ class Blood(pg.sprite.Sprite):
         self.mask = pg.mask.from_surface(self.image)
         self.angle = 0
         self.scale = 1
-        """
-        self.raw_image = pg.image.load("img/blood.png")
-        self.image = pg.transform.scale(self.raw_image, (70, 70)) 
-        self.now_blood = 5  # 初始血量
-        self.rect = self.image.get_rect()
 
-    #def show(self):  # 左上角顯示血量(可能需要美編)
-        self.all_blood = [self.image]*self.now_blood
-        self.position = [ 50 , 100 , 150 , 200 , 250 ]
-        
-        for i in range (len(self.all_blood)):
-            screen.blit( self.image , (position[i],50) )
-        
-    def hurt(self):  # 撞到敵人就扣血
-        if self.now_blood > 1:
-            self.now_blood -= 1
+    def changeImage(self, index):
+        self.currentImage = index
+        if self.angle == 0 and self.scale == 1:
+            self.image = self.images[index]
         else:
-            pass
-        """
+            self.image = pg.transform.rotozoom(self.images[self.currentImage], -self.angle, self.scale)
+        oldcenter = self.rect.center
+        self.rect = self.image.get_rect()
+        originalRect = self.images[self.currentImage].get_rect()
+        self.originalWidth = originalRect.width
+        self.originalHeight = originalRect.height
+        self.rect.center = oldcenter
+        self.mask = pg.mask.from_surface(self.image)
+
 # class Ground(pg.sprite.Sprite):
 #     def __init__(self, x, y, w, h):
 #         pg.sprite.Sprite.__init__(self)
