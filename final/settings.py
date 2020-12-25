@@ -1,4 +1,4 @@
-import os, math
+import os, math , sys
 import pygame as pg
 ### 常數
 TITLE = "The Rolling Donuts"
@@ -9,7 +9,7 @@ SIZE = (WIDTH, HEIGHT)
 HW, HH = WIDTH / 2, HEIGHT / 2
 AREA = WIDTH * HEIGHT
 GHEIGHT = 66    # 地面高度
-PSPEED = 1     ### 此為畫面捲動速度，敬請多加利用。
+PSPEED = 1    ### 此為畫面捲動速度，敬請多加利用。
 
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
@@ -28,6 +28,7 @@ NAVY = (0, 0, 128)
 DARKSLATEBLUE = (72, 61, 139)
 
 ### 精靈會用到的屬性
+life = 0
 DONUT_W = 75    # 暫定
 DONUT_H = 300
 DONUT_ACC = 0.5             # 加速度，越大可以跑快一點

@@ -62,12 +62,12 @@ class Platform(pg.sprite.Sprite):
 class Highplatform1(pg.sprite.Sprite):
     def __init__(self):
         self.x = random.randint(WIDTH + 50, WIDTH + 150)
-        self.y = 200 - random.randint(-50, 50)
-        self.w = PW + (PW/random.randint(2, 5))
+        self.y = 150 - random.randint(-50, 50)
+        self.w = PW * 1.2 + (PW/random.randint(2, 5))
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -75,16 +75,18 @@ class Highplatform1(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left = random.randint(WIDTH + 50, WIDTH + 150)
 
 class Highplatform2(pg.sprite.Sprite):
     def __init__(self):
         self.x = HW + random.randint(200, 250) + random.randint(WIDTH + 50, WIDTH + 150)
-        self.y = 200 - random.randint(-50, 50)
-        self.w = PW + (PW/random.randint(2, 5))
+        self.y = 150 - random.randint(-50, 50)
+        self.w = PW * 1.2 + (PW/random.randint(2, 5))
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -92,16 +94,18 @@ class Highplatform2(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left = HW + random.randint(200, 250) + random.randint(WIDTH + 50, WIDTH + 150)
 
 class Midplatform1(pg.sprite.Sprite):
     def __init__(self):
-        self.x = random.randint(WIDTH + 50, WIDTH + 150)
+        self.x = random.randint(WIDTH + 350, WIDTH + 450)
         self.y = HH + random.randint(-50, 50)
-        self.w = PW + (PW/random.randint(2, 5))
+        self.w = PW * 1.2 + (PW/random.randint(2, 5))
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -109,16 +113,18 @@ class Midplatform1(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left = random.randint(WIDTH + 350, WIDTH + 450)
 
 class Midplatform2(pg.sprite.Sprite):
     def __init__(self):
-        self.x = HW + random.randint(200, 250) + random.randint(WIDTH + 50, WIDTH + 150)
+        self.x = HW + random.randint(150, 200) + random.randint(WIDTH + 350, WIDTH + 450)
         self.y = HH + random.randint(-50, 50)
-        self.w = PW + (PW/random.randint(2, 5))
+        self.w = PW * 1.2 + (PW/random.randint(2, 5))
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -126,16 +132,18 @@ class Midplatform2(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left = HW + random.randint(150, 200) + random.randint(WIDTH + 350, WIDTH + 450)
 
 class Lowplatform1(pg.sprite.Sprite):
     def __init__(self):
-        self.x = random.randint(WIDTH + 50, WIDTH + 150)
+        self.x = random.randint(WIDTH + 100, WIDTH + 250)
         self.y = HEIGHT - GHEIGHT - random.randint(100, 150)
-        self.w = PW + (PW/random.randint(2, 5))
+        self.w = PW * 1.2 + (PW/random.randint(2, 5))
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -143,16 +151,20 @@ class Lowplatform1(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left = random.randint(WIDTH + 100, WIDTH + 250)
 
 class Lowplatform2(pg.sprite.Sprite):
     def __init__(self):
-        self.x = HW + random.randint(200, 250) + random.randint(WIDTH + 50, WIDTH + 150)
+        self.pos = HW + random.randint(50, 150) + \
+                   random.randint(WIDTH + 50, WIDTH + 150)
+        self.x = self.pos
         self.y = HEIGHT - GHEIGHT - random.randint(100, 150)
-        self.w = PW + (PW/random.randint(2, 5))
+        self.w = PW * 1.2 + (PW/random.randint(2, 5))
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -160,3 +172,5 @@ class Lowplatform2(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left = self.pos

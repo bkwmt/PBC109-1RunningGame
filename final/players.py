@@ -14,11 +14,11 @@ def keyPressed(keyCheck=""):
             return True
     return False
 
-def loadImage(fileName, useColorKey=False):
+def loadImage(fileName, useColorKey=False, img_H=DONUT_H, img_W=DONUT_W):
     if os.path.isfile(fileName):
         image = pg.image.load(fileName)
         image = image.convert_alpha()
-        image = pg.transform.scale(image, (DONUT_H, DONUT_W))
+        image = pg.transform.scale(image, (img_H, img_W))
         # Return the image
         return image
     else:
@@ -48,8 +48,6 @@ class Superdonut(pg.sprite.Sprite):
         self.image = pg.Surface.copy(self.images[0])
 
         self.currentImage = 0
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (0, 0)
         self.mask = pg.mask.from_surface(self.image)
         self.angle = 0
         self.scale = 1
@@ -135,8 +133,6 @@ class Superdonut2(pg.sprite.Sprite):
             x -= self.originalWidth
         self.image = pg.Surface.copy(self.images[0])
         self.currentImage = 0
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (0, 0)
         self.mask = pg.mask.from_surface(self.image)
         self.angle = 0
         self.scale = 1
@@ -205,6 +201,42 @@ class Superdonut2(pg.sprite.Sprite):
             self.pos.x = (DONUT_W / 2)
         ### 取得新的位置並準備顯示（主角的中間底部位置）
         self.rect.midbottom = self.pos
+
+class Blood(pg.sprite.Sprite):
+    def __init__(self, filename, frames=1, pos=0):
+        pg.sprite.Sprite.__init__(self)
+        self.images = []
+        img = loadImage(filename, img_H=800, img_W=60)
+        self.originalWidth = img.get_width() // frames
+        self.originalHeight = img.get_height()
+        frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
+        x = 0
+        for frameNo in range(frames):
+            frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
+            frameSurf.blit(img, (x, 0))
+            self.images.append(frameSurf.copy())
+            x -= self.originalWidth
+        self.image = pg.Surface.copy(self.images[0])
+        self.currentImage = 0
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (10, pos)
+        self.mask = pg.mask.from_surface(self.image)
+        self.angle = 0
+        self.scale = 1
+
+    def changeImage(self, index):
+        self.currentImage = index
+        if self.angle == 0 and self.scale == 1:
+            self.image = self.images[index]
+        else:
+            self.image = pg.transform.rotozoom(self.images[self.currentImage], -self.angle, self.scale)
+        oldcenter = self.rect.center
+        self.rect = self.image.get_rect()
+        originalRect = self.images[self.currentImage].get_rect()
+        self.originalWidth = originalRect.width
+        self.originalHeight = originalRect.height
+        self.rect.center = oldcenter
+        self.mask = pg.mask.from_surface(self.image)
 
 # class Ground(pg.sprite.Sprite):
 #     def __init__(self, x, y, w, h):

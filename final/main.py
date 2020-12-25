@@ -17,11 +17,12 @@ class Game:
         pg.mixer.init()     # 有用聲音的起手式
         self.screen = pg.display.set_mode(SIZE)  # 設定介面大小
         pg.display.set_caption(TITLE)
-        self.bkgd = pg.image.load("img/mountains.png").convert() # 匯入背景圖
+        self.bkgd = pg.image.load("img/back.png").convert() # 匯入背景圖
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
+        self.bgm()
 
     def new(self):
         # 重新開始一個遊戲
@@ -46,6 +47,10 @@ class Game:
         self.superdonut.add(self.donutp2)
         self.p1.add(self.donut)
         self.p2.add(self.donutp2)
+        self.blood = Blood("img/p1blood.png", 6, 0)
+        self.bloodp2 = Blood("img/p2blood.png", 6, 70)
+        self.all_sprites.add(self.blood)
+        self.all_sprites.add(self.bloodp2)
 
         ### 讀入地板
         self.gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
@@ -105,7 +110,7 @@ class Game:
         self.weapon.add(self.reverse)
         ### 執行遊戲
         self.run()
-
+        
     def run(self):
         # 遊戲迴圈：
         self.playing = True
@@ -124,16 +129,25 @@ class Game:
             self.update()
             self.draw()
             self.change()
+<<<<<<< HEAD
             self.check_gameover()
+=======
+    
+    def bgm(self):
+        bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
+        pg.mixer.music.play( -1 , 0 )
+        pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
+>>>>>>> 3f06c96e9e8423d83fb52ab1e53c042fbd42ec49
 
     def update(self):
         # 更新背景
         global Bstart
         global Direction
+        global life
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -250)) # 捲動螢幕
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
-            self.screen.blit(self.bkgd, (self.rel_x, -250))
+            self.screen.blit(self.bkgd, (self.rel_x, -50))
         Bstart -= PSPEED
 
         # 更新群組內每一個每個精靈的動作
@@ -183,7 +197,7 @@ class Game:
         getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
         if getweapon:
             self.reverse.rect.right = 4000 #重置倒轉武器位置
-            Direction = -1  # 背景倒轉
+            Direction *= -1  # 背景倒轉
 
         ###donut互撞
         if (self.donut.vel.x > 0 and self.donutp2.vel.x > 0) or (self.donut.vel.x < 0 and self.donutp2.vel.x < 0):
@@ -205,6 +219,18 @@ class Game:
                 push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
                 if push:
                     self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.5
+        ###donut撞enemies
+
+        crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
+        drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
+        if crash and drcrash:
+            self.drop.rect.top = -500
+            life += 1
+            if life >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.blood, life)
+
 
         ### 利用地板出現的時間差製造會掉下去的洞
 
