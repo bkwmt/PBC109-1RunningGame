@@ -17,7 +17,7 @@ class Game:
         pg.mixer.init()     # 有用聲音的起手式
         self.screen = pg.display.set_mode(SIZE)  # 設定介面大小
         pg.display.set_caption(TITLE)
-        self.bkgd = pg.image.load("img/mountains.png").convert() # 匯入背景圖
+        self.bkgd = pg.image.load("img/back.png").convert() # 匯入背景圖
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
@@ -47,6 +47,10 @@ class Game:
         self.superdonut.add(self.donutp2)
         self.p1.add(self.donut)
         self.p2.add(self.donutp2)
+        self.blood = Blood("img/p1blood.png", 6, 0)
+        self.bloodp2 = Blood("img/p2blood.png", 6, 70)
+        self.all_sprites.add(self.blood)
+        self.all_sprites.add(self.bloodp2)
 
         ### 讀入地板
         self.gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
@@ -136,9 +140,9 @@ class Game:
         global Bstart
         global Direction
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -250)) # 捲動螢幕
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
-            self.screen.blit(self.bkgd, (self.rel_x, -250))
+            self.screen.blit(self.bkgd, (self.rel_x, -50))
         Bstart -= PSPEED
 
         # 更新群組內每一個每個精靈的動作
@@ -188,7 +192,7 @@ class Game:
         getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
         if getweapon:
             self.reverse.rect.right = 4000 #重置倒轉武器位置
-            Direction = -1  # 背景倒轉
+            Direction *= -1  # 背景倒轉
 
         ###donut互撞
         if (self.donut.vel.x > 0 and self.donutp2.vel.x > 0) or (self.donut.vel.x < 0 and self.donutp2.vel.x < 0):
