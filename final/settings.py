@@ -29,6 +29,7 @@ DARKSLATEBLUE = (72, 61, 139)
 
 ### 精靈會用到的屬性
 life = 0
+life2 = 0
 DONUT_W = 75    # 暫定
 DONUT_H = 300
 DONUT_ACC = 0.5             # 加速度，越大可以跑快一點

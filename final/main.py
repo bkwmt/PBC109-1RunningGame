@@ -140,6 +140,7 @@ class Game:
         global Bstart
         global Direction
         global life
+        global life2
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
@@ -218,7 +219,10 @@ class Game:
         ###donut撞enemies
 
         crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
+        crash2 = pg.sprite.spritecollide(self.donutp2, self.enemies, False)
         drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
+        sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, False)
+        fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, False)
         if crash and drcrash:
             self.drop.rect.top = -500
             life += 1
@@ -226,8 +230,41 @@ class Game:
                 pg.quit()
                 sys.exit()
             changeSpriteImage(self.blood, life)
-
-
+        if crash and sbcrash:
+            self.sbomb.rect.right = 2000
+            life += 1
+            if life >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.blood, life)
+        if crash and fbcrash:
+            self.fball.rect.right = 2000
+            life += 1
+            if life >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.blood, life)
+        if crash2 and drcrash:
+            self.drop.rect.top = -500
+            life2 += 1
+            if life2 >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.bloodp2, life2)
+        if crash2 and sbcrash:
+            self.sbomb.rect.right = 3000
+            life2 += 1
+            if life2 >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.bloodp2, life2)
+        if crash2 and fbcrash:
+            self.fball.rect.right = 3000
+            life2 += 1
+            if life2 >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.bloodp2, life2)
         ### 利用地板出現的時間差製造會掉下去的洞
 
         # if self.gnd.rect.right > 0:
