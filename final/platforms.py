@@ -19,14 +19,14 @@ class Hole(pg.sprite.Sprite):
         self.image = pg.Surface((160, GHEIGHT))      # 設定洞的寬度，略低於地板
         self.image.fill(DARKSLATEBLUE)
         self.rect = self.image.get_rect()
-        self.rect.left = WIDTH + 50
+        self.rect.left = 3 * WIDTH + 50
         self.rect.top = HEIGHT - GHEIGHT
 
     def update(self):
         if self.rect.right > -80:
             self.rect.right -= PSPEED
         if self.rect.right == -80:
-            self.rect.left = WIDTH +50
+            self.rect.left = 2 * WIDTH +50
 
 class Holeedge(pg.sprite.Sprite):
     # 用來彌補視覺上的誤差（就是還沒有碰到洞卻掉了下去）
@@ -36,14 +36,14 @@ class Holeedge(pg.sprite.Sprite):
         self.image = pg.Surface((260, GHEIGHT))
         self.image.fill(DARKSLATEBLUE)  # 暫時用黑色，之後再調成一樣。
         self.rect = self.image.get_rect()
-        self.rect.left = WIDTH
+        self.rect.left = 3 * WIDTH
         self.rect.top = HEIGHT - GHEIGHT
 
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
         if self.rect.right == -30:
-            self.rect.left = WIDTH
+            self.rect.left = 2 * WIDTH
 
 class Platform(pg.sprite.Sprite):
     def __init__(self, x, y, w, h):
