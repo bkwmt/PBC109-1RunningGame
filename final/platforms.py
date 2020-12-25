@@ -67,7 +67,7 @@ class Highplatform1(pg.sprite.Sprite):
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -84,7 +84,7 @@ class Highplatform2(pg.sprite.Sprite):
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -101,7 +101,7 @@ class Midplatform1(pg.sprite.Sprite):
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -118,7 +118,7 @@ class Midplatform2(pg.sprite.Sprite):
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -135,7 +135,7 @@ class Lowplatform1(pg.sprite.Sprite):
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -152,7 +152,7 @@ class Lowplatform2(pg.sprite.Sprite):
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
