@@ -13,9 +13,9 @@ GHEIGHT = 66    # 地面高度
 PSPEED = 1     ### 此為畫面捲動速度，敬請多加利用。
 
 #音樂用
-bgm = pg.mixer.music.load("bgm/vanishing-horizon.ogg")
+bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
 pg.mixer.music.play( -1 , 0 )
-pg.mixer.music.set_volume(0.5)
+pg.mixer.music.set_volume(0.7)
 
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
