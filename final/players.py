@@ -145,7 +145,7 @@ class Superdonut2(pg.sprite.Sprite):
         #showSprite(self.image)
         #self.image = pg.image.load(os.path.join(img_folder, "donut0.png"))
         ### 初始位置
-        self.x = WIDTH - 50
+        self.x = WIDTH - 200
         self.y = 100
         self.rect = self.image.get_rect()
         # self.rect.center = (self.x, self.y)

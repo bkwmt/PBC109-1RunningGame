@@ -17,5 +17,5 @@ class Blood:
 
 blood = Blood()
 
-if pg.sprite.spritecollide( superdonut , , True ):  #　中間放敵人的group(我找不到)
+if pg.sprite.spritecollide( superdonut , enemies , True ):  #　中間放敵人的group(我找不到)
         blood.hurt()
