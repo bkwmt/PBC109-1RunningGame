@@ -22,6 +22,7 @@ class Game:
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
+        self.bgm()
 
     def new(self):
         # 重新開始一個遊戲
@@ -105,7 +106,7 @@ class Game:
         self.weapon.add(self.reverse)
         ### 執行遊戲
         self.run()
-
+        
     def run(self):
         # 遊戲迴圈：
         self.playing = True
@@ -124,6 +125,11 @@ class Game:
             self.update()
             self.draw()
             self.change()
+    
+    def bgm(self):
+        bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
+        pg.mixer.music.play( -1 , 0 )
+        pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
 
     def update(self):
         # 更新背景
