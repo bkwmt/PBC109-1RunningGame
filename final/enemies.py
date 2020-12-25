@@ -9,7 +9,7 @@ class Fireball(pg.sprite.Sprite):
         # super().__init__() 這跟上面一行是一樣的作用，下面的都刪了
         self.image = pg.image.load(os.path.join(img_folder, "fireball.png"))
         self.rect = self.image.get_rect()
-        self.rect.right = WIDTH + WIDTH
+        self.rect.right =  10 * WIDTH
         self.rect.top = random.randint(50,600)
 
     def update(self):
@@ -17,7 +17,7 @@ class Fireball(pg.sprite.Sprite):
         if self.rect.left > -400:
             self.rect.left -= FSPEED
         else:
-            self.rect.right = WIDTH + WIDTH
+            self.rect.right = 5 * WIDTH + WIDTH
             self.rect.top = random.randint(50,600)
 
 # 上面掉落物
