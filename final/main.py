@@ -129,11 +129,15 @@ class Game:
             self.update()
             self.draw()
             self.change()
+<<<<<<< HEAD
+            self.check_gameover()
+=======
     
     def bgm(self):
         bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
         pg.mixer.music.play( -1 , 0 )
         pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
+>>>>>>> 3f06c96e9e8423d83fb52ab1e53c042fbd42ec49
 
     def update(self):
         # 更新背景
@@ -335,10 +339,20 @@ class Game:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
-
+    
+    def check_gameover(self):
+        if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
+            self.playing = 0
+            self.screen.fill(BLACK)
+            self.gameover_img = pg.image.load('img/start.jpg')
+            self.gameover_img_rect = self.gameover_img.get_rect()
+            self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.gameover_img, self.gameover_img_rect)
+            
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
         pass
+        
 
 g = Game()
 #g.show_start_screen()
