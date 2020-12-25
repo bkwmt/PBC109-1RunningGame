@@ -76,7 +76,7 @@ class Highplatform1(pg.sprite.Sprite):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
         if self.rect.right == -30:
-            self.rect.left =
+            self.rect.left = random.randint(WIDTH + 50, WIDTH + 150)
 
 class Highplatform2(pg.sprite.Sprite):
     def __init__(self):
@@ -95,7 +95,7 @@ class Highplatform2(pg.sprite.Sprite):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
         if self.rect.right == -30:
-            self.rect.left =
+            self.rect.left = HW + random.randint(200, 250) + random.randint(WIDTH + 50, WIDTH + 150)
 
 class Midplatform1(pg.sprite.Sprite):
     def __init__(self):
@@ -114,7 +114,7 @@ class Midplatform1(pg.sprite.Sprite):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
         if self.rect.right == -30:
-            self.rect.left =
+            self.rect.left = random.randint(WIDTH + 350, WIDTH + 450)
 
 class Midplatform2(pg.sprite.Sprite):
     def __init__(self):
@@ -133,7 +133,7 @@ class Midplatform2(pg.sprite.Sprite):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
         if self.rect.right == -30:
-            self.rect.left =
+            self.rect.left = HW + random.randint(150, 200) + random.randint(WIDTH + 350, WIDTH + 450)
 
 class Lowplatform1(pg.sprite.Sprite):
     def __init__(self):
@@ -152,7 +152,7 @@ class Lowplatform1(pg.sprite.Sprite):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
         if self.rect.right == -30:
-            self.rect.left =
+            self.rect.left = random.randint(WIDTH + 100, WIDTH + 250)
 
 class Lowplatform2(pg.sprite.Sprite):
     def __init__(self):
@@ -171,4 +171,4 @@ class Lowplatform2(pg.sprite.Sprite):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
         if self.rect.right == -30:
-            self.rect.left = 
+            self.rect.left = HW + random.randint(150, 250) + random.randint(WIDTH + 100, WIDTH + 250)
