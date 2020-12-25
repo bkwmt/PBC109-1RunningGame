@@ -75,6 +75,8 @@ class Highplatform1(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left =
 
 class Highplatform2(pg.sprite.Sprite):
     def __init__(self):
@@ -92,6 +94,8 @@ class Highplatform2(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left =
 
 class Midplatform1(pg.sprite.Sprite):
     def __init__(self):
@@ -109,6 +113,8 @@ class Midplatform1(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left =
 
 class Midplatform2(pg.sprite.Sprite):
     def __init__(self):
@@ -126,6 +132,8 @@ class Midplatform2(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left =
 
 class Lowplatform1(pg.sprite.Sprite):
     def __init__(self):
@@ -143,6 +151,8 @@ class Lowplatform1(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left =
 
 class Lowplatform2(pg.sprite.Sprite):
     def __init__(self):
@@ -160,3 +170,5 @@ class Lowplatform2(pg.sprite.Sprite):
     def update(self):
         if self.rect.right > -30:
             self.rect.right -= PSPEED
+        if self.rect.right == -30:
+            self.rect.left = 
