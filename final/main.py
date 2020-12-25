@@ -35,6 +35,8 @@ class Game:
         self.p1 = pg.sprite.Group()
         self.p2 = pg.sprite.Group()
 
+
+
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
         self.donut = Superdonut(self, "img/don.png", 4)
         self.donutp2 = Superdonut2(self, "img/don2.png", 4)   # !!!!!!!!!!!!!!!!
@@ -62,6 +64,29 @@ class Game:
             p = Platform(plat[0], plat[1], plat[2], plat[3])
             self.all_sprites.add(p)
             self.platforms.add(p)
+
+        self.high_p1 = Highplatform1()
+        self.high_p2 = Highplatform2()
+        self.mid_p1 = Midplatform1()
+        self.mid_p2 = Midplatform2()
+        self.lo_p1 = Lowplatform1()
+        self.lo_p2 = Lowplatform2()
+
+        ### 待初始走遠後
+        self.all_sprites.add(self.high_p1)
+        self.platforms.add(self.high_p1)
+        self.all_sprites.add(self.high_p2)
+        self.platforms.add(self.high_p2)
+
+        self.all_sprites.add(self.mid_p1)
+        self.platforms.add(self.mid_p1)
+        self.all_sprites.add(self.mid_p2)
+        self.platforms.add(self.mid_p2)
+
+        self.all_sprites.add(self.lo_p1)
+        self.platforms.add(self.lo_p1)
+        self.all_sprites.add(self.lo_p2)
+        self.platforms.add(self.lo_p2)
 
         self.drop = Dropdown()
         self.all_sprites.add(self.drop)
