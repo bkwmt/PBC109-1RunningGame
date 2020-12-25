@@ -133,6 +133,7 @@ class Game:
         # 更新背景
         global Bstart
         global Direction
+        global life
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
@@ -208,6 +209,18 @@ class Game:
                 push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
                 if push:
                     self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.5
+        ###donut撞enemies
+
+        crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
+        drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
+        if crash and drcrash:
+            self.drop.rect.top = -500
+            life += 1
+            if life >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.blood, life)
+
 
         ### 利用地板出現的時間差製造會掉下去的洞
 
