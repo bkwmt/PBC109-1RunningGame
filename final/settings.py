@@ -2,7 +2,7 @@ import os, math , sys
 import pygame as pg
 ### 常數
 TITLE = "The Rolling Donuts"
-FPS = 120    # 每秒刷新次數
+FPS = 60    # 每秒刷新次數
 ADD_FIRE_RATE = 200
 WIDTH, HEIGHT = 1250, 650   # 畫面大小
 SIZE = (WIDTH, HEIGHT)
@@ -32,9 +32,9 @@ life = 0
 life2 = 0
 DONUT_W = 75    # 暫定
 DONUT_H = 300
-DONUT_ACC = 0.5             # 加速度，越大可以跑快一點
-DONUT_FRICTION = -0.035      # 摩擦力，越小會滑行越遠，最大速度亦會變大。
-GRAVITY = 0.6               # 重力
+DONUT_ACC = 1.5             # 加速度，越大可以跑快一點
+DONUT_FRICTION = -0.35      # 摩擦力，越小會滑行越遠，最大速度亦會變大。
+GRAVITY = 0.75               # 重力
 JMP = -20                   # 跳躍力（加速度／絕對值越大越強）
 
 ### 波狀飛行物用常數
