@@ -354,6 +354,28 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
+        self.screen.fill(BLACK)
+        self.start_img = pg.image.load('img/start.jpg')
+        self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+        self.start_img_rect = self.start_img.get_rect()
+        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+        self.screen.blit(self.start_img, self.start_img_rect)
+        go = True
+        while go:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()      # 結束在這裏
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pg.quit()
+                        sys.exit()      # 還有這裏
+                    else:
+                        go = False      # 停止迴圈
+                    #g.new()    # 寫這裡我都要按兩次才會結束誒
+            pg.display.update()
+    def choose_game(self):
+        # 開始畫面
         global g
         g = Game2()
         def player1(self):
@@ -392,8 +414,29 @@ class Game:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
+    def rule_explain(self):
+        # 開始畫面
+        self.screen.fill(BLACK)
+        self.start_img = pg.image.load('img/rule.png')
+        self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+        self.start_img_rect = self.start_img.get_rect()
+        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+        self.screen.blit(self.start_img, self.start_img_rect)
 
-
+        go = True
+        while go:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()      # 結束在這裏
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pg.quit()
+                        sys.exit()      # 還有這裏
+                    else:
+                        go = False      # 停止迴圈
+                    #g.new()    # 寫這裡我都要按兩次才會結束誒
+            pg.display.update()
     def check_gameover(self):
         global game
         global life
@@ -428,6 +471,8 @@ g = Game()
 #g.show_start_screen()
 while g.running:
     g.show_start_screen()
+    g.choose_game()
+    g.rule_explain()
     g.new()
     g.show_go_screen()
 

@@ -281,7 +281,29 @@ class Game2:
             self.gameover_img_rect = self.gameover_img.get_rect()
             self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.gameover_img, self.gameover_img_rect)
+    def rule_explain(self):
+        # 開始畫面
+        self.screen.fill(BLACK)
+        self.start_img = pg.image.load('img/rule.png')
+        self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+        self.start_img_rect = self.start_img.get_rect()
+        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+        self.screen.blit(self.start_img, self.start_img_rect)
 
+        go = True
+        while go:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()      # 結束在這裏
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pg.quit()
+                        sys.exit()      # 還有這裏
+                    else:
+                        go = False      # 停止迴圈
+                    #g.new()    # 寫這裡我都要按兩次才會結束誒
+            pg.display.update()
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
         pass
