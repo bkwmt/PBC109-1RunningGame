@@ -410,7 +410,7 @@ class Game:
         if game == "gameover":
             self.playing = 0
             self.screen.fill(BLACK)
-            self.gameover_img = pg.image.load('img/startp1.png')
+            self.gameover_img = pg.image.load('img/startp2.png')
             self.gameover_img_rect = self.gameover_img.get_rect()
             self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.gameover_img, self.gameover_img_rect)

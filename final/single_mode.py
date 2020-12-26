@@ -281,3 +281,7 @@ class Game2:
             self.gameover_img_rect = self.gameover_img.get_rect()
             self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.gameover_img, self.gameover_img_rect)
+
+    def show_go_screen(self):
+        # 遊戲結束／再來一場？的畫面
+        pass
