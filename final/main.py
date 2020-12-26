@@ -25,6 +25,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         self.bgm()
+        # self.font_name = pg.font.SysFont(FONT_NAME)
 
     def new(self):
         # 重新開始一個遊戲
@@ -37,8 +38,6 @@ class Game:
         self.superdonut = pg.sprite.Group()  # 初始化donut群組
         self.p1 = pg.sprite.Group()
         self.p2 = pg.sprite.Group()
-
-
 
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
         self.donut = Superdonut(self, "img/don.png", 4)
@@ -114,8 +113,6 @@ class Game:
         self.reverse = Reverse()
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
-
-
         ### 執行遊戲
         self.run()
 
@@ -135,9 +132,10 @@ class Game:
             self.clock.tick(FPS)
             self.events()
             self.update()
-            self.draw()
+            # self.draw()
             self.change()
             self.check_gameover()
+            self.draw()
 
     def bgm(self):
         bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
@@ -240,57 +238,49 @@ class Game:
             self.drop.rect.top = -500
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                self.playing = False
             changeSpriteImage(self.blood, life)
         if crash and sbcrash:
             self.sbomb.rect.right = 2000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                self.playing = False
             changeSpriteImage(self.blood, life)
         if crash and fbcrash:
             self.fball.rect.right = 2000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                self.playing = False
             changeSpriteImage(self.blood, life)
         if crash and grcrash:
             self.genemy.rect.right = 3000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                self.playing = False
             changeSpriteImage(self.blood, life)
         if crash2 and drcrash:
             self.drop.rect.top = -500
             life2 += 1
             if life2 >= 5:
-                pg.quit()
-                sys.exit()
+                self.playing = False
             changeSpriteImage(self.bloodp2, life2)
         if crash2 and sbcrash:
             self.sbomb.rect.right = 3000
             life2 += 1
             if life2 >= 5:
-                pg.quit()
-                sys.exit()
+                self.playing = False
             changeSpriteImage(self.bloodp2, life2)
         if crash2 and fbcrash:
             self.fball.rect.right = 3000
             life2 += 1
             if life2 >= 5:
-                pg.quit()
-                sys.exit()
+                self.playing = False
             changeSpriteImage(self.bloodp2, life2)
         if crash2 and grcrash:
             self.genemy.rect.right = 3000
             life2 += 1
             if life2 >= 5:
-                pg.quit()
-                sys.exit()
+                self.playing = False
             changeSpriteImage(self.bloodp2, life2)
 
         if gframe < 7:
@@ -311,19 +301,6 @@ class Game:
         else:
             flframe = 0
             changeSpriteImage(self.sbomb, int(flframe))
-        ### 利用地板出現的時間差製造會掉下去的洞
-
-        # if self.gnd.rect.right > 0:
-        #     self.gnd.rect.right -= PSPEED
-        #
-        # if self.gnd.rect.right == WIDTH - 200:
-        #     new_gnd = Ground(WIDTH,
-        #                      HEIGHT - GHEIGHT,
-        #                      random.randint((2 * WIDTH - 350), (2 * WIDTH - 200)),
-        #                      GHEIGHT)
-        #     self.grounds.add(new_gnd)
-        #     self.all_sprites.add(new_gnd)
-        #     new_gnd.rect.left -= PSPEED
 
     def events(self):
         for event in pg.event.get():
@@ -338,7 +315,9 @@ class Game:
                     self.donut.jump()
                 if event.key == pg.K_w:
                     self.donutp2.jump()
-
+                if event.type == pg.K_SPACE:
+                    self.draw_text("PRESS SPACE TO CONTINUE", WHITE, HW, HH/2)
+                    self.wait_for_key()
 
     def change(self):
         if keyPressed("right"):
@@ -353,12 +332,20 @@ class Game:
             changeSpriteImage(self.donutp2, frame)
         else:
             changeSpriteImage(self.donutp2, 0)
-        pg.display.update()
+        # pg.display.update()
 
     def draw(self):
         self.all_sprites.draw(self.screen)
         ### 每次畫好畫滿所有的東西之後，就要flip。
         pg.display.flip()   # 把畫好的東西翻到正面的
+
+    def draw_text(self, text, size, color, x, y):
+        # 寫字
+        font = pg.font.SysFont(None, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
 
     def show_start_screen(self):
         # 開始畫面
@@ -384,17 +371,35 @@ class Game:
 
     def check_gameover(self):
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
-            self.playing = 0
+            for sprite in self.all_sprites:
+                sprite.rect.y += 10
             self.screen.fill(BLACK)
             self.gameover_img = pg.image.load('img/start.jpg')
             self.gameover_img_rect = self.gameover_img.get_rect()
             self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.gameover_img, self.gameover_img_rect)
+            self.playing = False
 
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
-        pass
+        self.screen.fill(BLACK)
+        self.draw_text("GAME OVER", 48, WHITE, HW, HH/2)
+        self.wait_for_key()
 
+    def wait_for_key(self):
+        # 等玩家按任何一個鍵
+        waiting = True
+        while waiting:
+            # 等的時候畫面更新也許可以慢一點
+            # self.clock.tick(FPS/2)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    # 如果玩家按了結束就結束
+                    waiting = False
+                    self.running = False
+                if event.type == pg.KEYUP:
+                    # 如果是其他任何其他鍵，就結束等待。
+                    waiting = False
 
 g = Game()
 #g.show_start_screen()
