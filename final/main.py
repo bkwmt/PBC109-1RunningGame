@@ -93,11 +93,11 @@ class Game:
         self.all_sprites.add(self.lo_p2)
         self.platforms.add(self.lo_p2)
 
-        self.drop = Dropdown()
+        self.drop = Dropdown("img/drenemy.png",4)
         self.all_sprites.add(self.drop)
         self.enemies.add(self.drop)
 
-        self.sbomb = Strangebomb()
+        self.sbomb = Strangebomb("img/flyenemy.png",8)
         self.all_sprites.add(self.sbomb)
         self.enemies.add(self.sbomb)
 
@@ -105,13 +105,15 @@ class Game:
         self.all_sprites.add(self.fball)
         self.enemies.add(self.fball)
 
+        self.genemy = GEnemy("img/genemy.png",8)
+        self.all_sprites.add(self.genemy)
+        self.enemies.add(self.genemy)
+
         self.reverse = Reverse()
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
 
-        self.genemy = GEnemy("img/genemy.png",8)
-        self.all_sprites.add(self.genemy)
-        #self.weapon.add(self.genemy)
+
         ### 執行遊戲
         self.run()
 
@@ -147,6 +149,8 @@ class Game:
         global life
         global life2
         global gframe
+        global drframe
+        global flframe
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
@@ -229,6 +233,7 @@ class Game:
         drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
         sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, False)
         fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, False)
+        grcrash = pg.sprite.spritecollide(self.genemy, self.superdonut, False)
         if crash and drcrash:
             self.drop.rect.top = -500
             life += 1
@@ -245,6 +250,13 @@ class Game:
             changeSpriteImage(self.blood, life)
         if crash and fbcrash:
             self.fball.rect.right = 2000
+            life += 1
+            if life >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.blood, life)
+        if crash and grcrash:
+            self.genemy.rect.right = 3000
             life += 1
             if life >= 5:
                 pg.quit()
@@ -271,6 +283,13 @@ class Game:
                 pg.quit()
                 sys.exit()
             changeSpriteImage(self.bloodp2, life2)
+        if crash2 and grcrash:
+            self.genemy.rect.right = 3000
+            life2 += 1
+            if life2 >= 5:
+                pg.quit()
+                sys.exit()
+            changeSpriteImage(self.bloodp2, life2)
 
         if gframe < 7:
             gframe += 0.05
@@ -278,6 +297,18 @@ class Game:
         else:
             gframe = 0
             changeSpriteImage(self.genemy, int(gframe))
+        if drframe < 3.5:
+            drframe += 0.05
+            changeSpriteImage(self.drop, int(drframe))
+        else:
+            drframe = 0
+            changeSpriteImage(self.drop, int(drframe))
+        if flframe < 7:
+            flframe += 0.05
+            changeSpriteImage(self.sbomb, int(flframe))
+        else:
+            flframe = 0
+            changeSpriteImage(self.sbomb, int(flframe))
         ### 利用地板出現的時間差製造會掉下去的洞
 
         # if self.gnd.rect.right > 0:

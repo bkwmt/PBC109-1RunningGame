@@ -42,6 +42,7 @@ BSPEED = 2      # 兩者之間的比例
 AMPLITUDE = 2   # 與運動軌跡有關
 ### 影響振幅？
 WAVE = 2.5
+flframe = 0
 
 ### firball用常數
 FSPEED = 10
@@ -49,6 +50,7 @@ fire_list = []
 add_fire_rate = 0
 
 ### dropdown用常數
+drframe = 0
 DSPEED = 1
 
 ### genemy用常數
