@@ -1,4 +1,3 @@
-# in PBC
 import os, time, math, random, sys
 import pygame as pg
 from pygame.locals import *
@@ -7,24 +6,20 @@ from players import *
 from platforms import *
 from enemies import *
 
-# 視窗環境設定
-os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
-
-class Game:
+class Game2:
     def __init__(self):
         # 初始化遊戲
         pg.init()           # 起手式
         pg.mixer.init()     # 有用聲音的起手式
-        self.screen = pg.display.set_mode(SIZE)  # 設定介面大小
+        self.screen = pg.display.set_mode(SIZE) #, pg.FULLSCREEN)  # 設定介面大小
         pg.display.set_caption(TITLE)
-
-        self.bkgd = pg.image.load("img/back.png").convert() # 匯入背景圖
+        self.bkgd = pg.image.load("img/bk.png").convert() #
         self.bkgd = pg.transform.scale(self.bkgd, (1550, 1150))
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
-        self.bgm()
+        # self.bgm()
 
     def new(self):
         # 重新開始一個遊戲
@@ -36,7 +31,6 @@ class Game:
         self.weapon = pg.sprite.Group()  # 初始化道具群組
         self.superdonut = pg.sprite.Group()  # 初始化donut群組
         self.p1 = pg.sprite.Group()
-        self.p2 = pg.sprite.Group()
 
 
 
@@ -44,15 +38,10 @@ class Game:
         self.donut = Superdonut(self, "img/don.png", 4)
         self.donutp2 = Superdonut2(self, "img/don2.png", 4)   # !!!!!!!!!!!!!!!!
         self.all_sprites.add(self.donut)
-        self.all_sprites.add(self.donutp2)
         self.superdonut.add(self.donut)
-        self.superdonut.add(self.donutp2)
         self.p1.add(self.donut)
-        self.p2.add(self.donutp2)
         self.blood = Blood("img/p1blood.png", 6, 0)
-        self.bloodp2 = Blood("img/p2blood.png", 6, 70)
         self.all_sprites.add(self.blood)
-        self.all_sprites.add(self.bloodp2)
 
         ### 讀入地板
         self.gnd = Ground(0, HEIGHT - GHEIGHT, WIDTH, GHEIGHT)     # 地板單獨設定
@@ -154,9 +143,9 @@ class Game:
         global drframe
         global flframe
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -300)) # 捲動螢幕
         if self.rel_x < WIDTH:
-            self.screen.blit(self.bkgd, (self.rel_x, -50))
+            self.screen.blit(self.bkgd, (self.rel_x, -300))
         Bstart -= PSPEED
 
         # 更新群組內每一個每個精靈的動作
@@ -182,56 +171,15 @@ class Game:
                     self.donut.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donut.vel.y = 0
 
-        oops1 = pg.sprite.spritecollide(self.donutp2, self.holes, False)
-        if not oops1:
-            if self.donutp2.vel.y > 0:    # 檢查落下（y>0）時的碰撞
-                hits = pg.sprite.spritecollide(self.donutp2, self.platforms, False)
-                hitsground = pg.sprite.spritecollide(self.donutp2, self.grounds, False)
-                if hits:
-                ### 撞到的話就讓他的位置維持在那個平台上，速度歸零。
-                    self.donutp2.pos.y = hits[0].rect.top + 1
-                    self.donutp2.vel.y = 0
-                elif hitsground:
-                ### 撞到的話就讓他的位置維持在地板上，速度歸零。
-                    self.donutp2.pos.y = hitsground[0].rect.top + 1
-                    self.donutp2.vel.y = 0
-            if self.donutp2.vel.y < 0:    # 檢查向上碰撞
-                hits = pg.sprite.spritecollide(self.donutp2, self.platforms, False)
-                if hits:
-                ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
-                    self.donutp2.pos.y = hits[0].rect.bottom + DONUT_W
-                    self.donutp2.vel.y = 0
-
         ###判斷是否吃到倒轉武器
         getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
         if getweapon:
             self.reverse.rect.right = 4000 #重置倒轉武器位置
             Direction *= -1  # 背景倒轉
 
-        ###donut互撞
-        if (self.donut.vel.x > 0 and self.donutp2.vel.x > 0) or (self.donut.vel.x < 0 and self.donutp2.vel.x < 0):
-            pass
-        else:
-            if self.donut.vel.x > 0:
-                push = pg.sprite.spritecollide(self.donut, self.p2, False)
-                if push:
-                    self.donut.pos.x = push[0].rect.right - DONUT_W * 1.5
-            if self.donut.vel.x < 0:
-                push = pg.sprite.spritecollide(self.donut, self.p2, False)
-                if push:
-                    self.donut.pos.x = push[0].rect.left + DONUT_W * 1.5
-            if self.donutp2.vel.x > 0:
-                push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
-                if push:
-                    self.donutp2.pos.x = push[0].rect.right - DONUT_W * 1.5
-            if self.donutp2.vel.x < 0:
-                push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
-                if push:
-                    self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.5
         ###donut撞enemies
 
         crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
-        crash2 = pg.sprite.spritecollide(self.donutp2, self.enemies, False)
         drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
         sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, False)
         fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, False)
@@ -264,34 +212,6 @@ class Game:
                 pg.quit()
                 sys.exit()
             changeSpriteImage(self.blood, life)
-        if crash2 and drcrash:
-            self.drop.rect.top = -500
-            life2 += 1
-            if life2 >= 5:
-                pg.quit()
-                sys.exit()
-            changeSpriteImage(self.bloodp2, life2)
-        if crash2 and sbcrash:
-            self.sbomb.rect.right = 3000
-            life2 += 1
-            if life2 >= 5:
-                pg.quit()
-                sys.exit()
-            changeSpriteImage(self.bloodp2, life2)
-        if crash2 and fbcrash:
-            self.fball.rect.right = 3000
-            life2 += 1
-            if life2 >= 5:
-                pg.quit()
-                sys.exit()
-            changeSpriteImage(self.bloodp2, life2)
-        if crash2 and grcrash:
-            self.genemy.rect.right = 3000
-            life2 += 1
-            if life2 >= 5:
-                pg.quit()
-                sys.exit()
-            changeSpriteImage(self.bloodp2, life2)
 
         if gframe < 7:
             gframe += 0.05
@@ -347,40 +267,12 @@ class Game:
             changeSpriteImage(self.donut, frame)
         else:
             changeSpriteImage(self.donut, 0)
-        if keyPressed("d"):
-            changeSpriteImage(self.donutp2, frame)
-        elif keyPressed("a"):
-            changeSpriteImage(self.donutp2, frame)
-        else:
-            changeSpriteImage(self.donutp2, 0)
         pg.display.update()
 
     def draw(self):
         self.all_sprites.draw(self.screen)
         ### 每次畫好畫滿所有的東西之後，就要flip。
         pg.display.flip()   # 把畫好的東西翻到正面的
-
-    def show_start_screen(self):
-        # 開始畫面
-        self.screen.fill(BLACK)
-        self.start_img = pg.image.load('img/start.jpg')
-        self.start_img_rect = self.start_img.get_rect()
-        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
-        self.screen.blit(self.start_img, self.start_img_rect)
-        go = True
-        while go:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    pg.quit()
-                    sys.exit()      # 結束在這裏
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_ESCAPE:
-                        pg.quit()
-                        sys.exit()      # 還有這裏
-                    else:
-                        go = False      # 停止迴圈
-                    #g.new()    # 寫這裡我都要按兩次才會結束誒
-            pg.display.update()
 
     def check_gameover(self):
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
@@ -390,19 +282,3 @@ class Game:
             self.gameover_img_rect = self.gameover_img.get_rect()
             self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.gameover_img, self.gameover_img_rect)
-
-    def show_go_screen(self):
-        # 遊戲結束／再來一場？的畫面
-        pass
-
-
-g = Game()
-#g.show_start_screen()
-while g.running:
-    g.show_start_screen()
-    g.new()
-    g.show_go_screen()
-
-# pg.quit()
-# sys.exit()
-# 上面有啦～我按一次就可以結束呀？
