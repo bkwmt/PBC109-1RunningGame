@@ -382,9 +382,10 @@ class Game:
 
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
-        self.screen.fill(BLACK)
-        self.draw_text("GAME OVER", 48, WHITE, HW, HH/2)
-        self.wait_for_key()
+        pass
+        # self.screen.fill(BLACK)
+        # self.draw_text("GAME OVER", 48, WHITE, HW, HH/2)
+        # self.wait_for_key()
 
     def wait_for_key(self):
         # 等玩家按任何一個鍵
