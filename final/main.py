@@ -6,6 +6,7 @@ from players import *
 from platforms import *
 from enemies import *
 from single_mode import *
+from moviepy.editor import *
 
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
@@ -354,12 +355,9 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
-        self.screen.fill(BLACK)
-        self.start_img = pg.image.load('img/start.jpg')
-        self.start_img = pg.transform.scale(self.start_img, (1250, 650))
-        self.start_img_rect = self.start_img.get_rect()
-        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
-        self.screen.blit(self.start_img, self.start_img_rect)
+        clip = VideoFileClip('img/start.mpg')
+        clip.resize(SIZE).preview()
+
         go = True
         while go:
             for event in pg.event.get():
@@ -374,6 +372,7 @@ class Game:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
+
     def choose_game(self):
         # 開始畫面
         global g
