@@ -86,7 +86,7 @@ class GEnemy(pg.sprite.Sprite):
         self.scale = 1
         self.rect = self.image.get_rect()
         self.rect.right = WIDTH + 500
-        self.rect.top = 520
+        self.rect.top = 519
 
     def update(self):
         self.speed = PSPEED
