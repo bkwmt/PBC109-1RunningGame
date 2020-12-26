@@ -15,7 +15,7 @@ class Game:
         # 初始化遊戲
         pg.init()           # 起手式
         pg.mixer.init()     # 有用聲音的起手式
-        self.screen = pg.display.set_mode(SIZE) #, pg.FULLSCREEN ) #加這個可以全螢幕  # 設定介面大小
+        self.screen = pg.display.set_mode(SIZE)# , pg.FULLSCREEN ) #加這個可以全螢幕  # 設定介面大小
         pg.display.set_caption(TITLE)
         self.bkgd = pg.image.load("img/bk.png").convert() # 
         self.bkgd = pg.transform.scale(self.bkgd, (1550, 1150))
@@ -361,6 +361,8 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
+        global g
+        g = Game2()
         def player1(self):
             self.screen.fill(BLACK)
             self.start_img = pg.image.load('img/startp1.png')
@@ -389,8 +391,10 @@ class Game:
                         sys.exit()      # 還有這裏
                     elif event.key == pg.K_DOWN:
                         startimg = player2(self)
+                        g = Game()
                     elif event.key == pg.K_UP:
                         startimg = player1(self)
+                        g = Game2()
                     else:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
@@ -414,7 +418,6 @@ g = Game()
 #g.show_start_screen()
 while g.running:
     g.show_start_screen()
-    g = Game2()
     g.new()
     g.show_go_screen()
 
