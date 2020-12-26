@@ -152,6 +152,7 @@ class Game:
         global gframe
         global drframe
         global flframe
+        global game
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -300)) # 捲動螢幕
         if self.rel_x < WIDTH:
@@ -239,57 +240,49 @@ class Game:
             self.drop.rect.top = -500
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
         if crash and sbcrash:
             self.sbomb.rect.right = 2000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
         if crash and fbcrash:
             self.fball.rect.right = 2000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
         if crash and grcrash:
             self.genemy.rect.right = 3000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
         if crash2 and drcrash:
             self.drop.rect.top = -500
             life2 += 1
             if life2 >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
         if crash2 and sbcrash:
             self.sbomb.rect.right = 3000
             life2 += 1
             if life2 >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
         if crash2 and fbcrash:
             self.fball.rect.right = 3000
             life2 += 1
             if life2 >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
         if crash2 and grcrash:
             self.genemy.rect.right = 3000
             life2 += 1
             if life2 >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
 
         if gframe < 7:
@@ -402,13 +395,29 @@ class Game:
 
 
     def check_gameover(self):
+        global game
+        global life
+        global life2
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
             self.playing = 0
             self.screen.fill(BLACK)
-            self.gameover_img = pg.image.load('img/start.jpg')
+            self.gameover_img = pg.image.load('img/startp1.png')
             self.gameover_img_rect = self.gameover_img.get_rect()
             self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.gameover_img, self.gameover_img_rect)
+            life = 0
+            life2 = 0
+        if game == "gameover":
+            self.playing = 0
+            self.screen.fill(BLACK)
+            self.gameover_img = pg.image.load('img/startp1.png')
+            self.gameover_img_rect = self.gameover_img.get_rect()
+            self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.gameover_img, self.gameover_img_rect)
+            game = "run"
+            life = 0
+            life2 = 0
+
 
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
