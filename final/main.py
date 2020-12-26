@@ -15,9 +15,10 @@ class Game:
         # 初始化遊戲
         pg.init()           # 起手式
         pg.mixer.init()     # 有用聲音的起手式
-        self.screen = pg.display.set_mode(SIZE)  # 設定介面大小
+        self.screen = pg.display.set_mode(SIZE, )#pg.FULLSCREEN)  # 設定介面大小
         pg.display.set_caption(TITLE)
-        self.bkgd = pg.image.load("img/back.png").convert() # 匯入背景圖
+        self.bkgd = pg.image.load("img/bk.png").convert() # 
+        self.bkgd = pg.transform.scale(self.bkgd, (1550, 1150))
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
@@ -152,9 +153,9 @@ class Game:
         global drframe
         global flframe
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -300)) # 捲動螢幕
         if self.rel_x < WIDTH:
-            self.screen.blit(self.bkgd, (self.rel_x, -50))
+            self.screen.blit(self.bkgd, (self.rel_x, -300))
         Bstart -= PSPEED
 
         # 更新群組內每一個每個精靈的動作
