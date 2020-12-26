@@ -361,13 +361,24 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
-        self.screen.fill(BLACK)
-        self.start_img = pg.image.load('img/start.jpg')
-        self.start_img_rect = self.start_img.get_rect()
-        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
-        self.screen.blit(self.start_img, self.start_img_rect)
+        def player1(self):
+            self.screen.fill(BLACK)
+            self.start_img = pg.image.load('img/startp1.png')
+            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+            self.start_img_rect = self.start_img.get_rect()
+            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.start_img, self.start_img_rect)
+        def player2(self):
+            self.screen.fill(BLACK)
+            self.start_img = pg.image.load('img/startp2.png')
+            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+            self.start_img_rect = self.start_img.get_rect()
+            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.start_img, self.start_img_rect)
+        startimg = player1(self)
         go = True
         while go:
+            startimg
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
@@ -376,6 +387,10 @@ class Game:
                     if event.key == pg.K_ESCAPE:
                         pg.quit()
                         sys.exit()      # 還有這裏
+                    elif event.key == pg.K_DOWN:
+                        startimg = player2(self)
+                    elif event.key == pg.K_UP:
+                        startimg = player1(self)
                     else:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
