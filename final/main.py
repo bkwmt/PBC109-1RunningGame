@@ -24,7 +24,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         self.bgm()
-
+       
     def new(self):
         # 重新開始一個遊戲
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
@@ -114,7 +114,6 @@ class Game:
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
 
-
         ### 執行遊戲
         self.run()
 
@@ -139,8 +138,9 @@ class Game:
             self.check_gameover()
 
     def bgm(self):
-        bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
-        pg.mixer.music.play( -1 , 0 )
+        bgm = ["bgm/one.mp3","bgm/mushroom dance.ogg"]
+        pg.mixer.music.load("bgm/one.mp3")
+        pg.mixer.music.play()
         pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
 
     def update(self):
@@ -399,6 +399,7 @@ class Game:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
+
 
     def check_gameover(self):
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:

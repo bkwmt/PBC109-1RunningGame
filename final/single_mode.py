@@ -19,7 +19,6 @@ class Game2:
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
-        self.bgm()
 
     def new(self):
         # 重新開始一個遊戲
