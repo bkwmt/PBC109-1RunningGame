@@ -11,7 +11,7 @@ from single_mode import *
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
 vec = pg.math.Vector2
-
+    
 class Game:
     def __init__(self):
         # 初始化遊戲
@@ -32,7 +32,7 @@ class Game:
 
     def new(self):
         # 重新開始一個遊戲
-        
+
         self.FPS = 60
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
         self.grounds = pg.sprite.Group()    # 初始化地面群組
@@ -118,6 +118,10 @@ class Game:
         self.genemy = GEnemy("img/genemy.png",8)
         self.all_sprites.add(self.genemy)
         self.enemies.add(self.genemy)
+
+        self.chaser = Chase()
+        self.all_sprites.add(self.chaser)
+        self.enemies.add(self.chaser)
 
         self.reverse = Reverse()
         self.all_sprites.add(self.reverse)
