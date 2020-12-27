@@ -26,6 +26,7 @@ class Game:
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
+        self.chasetar_pos = (-100, -100)
         self.bgm()
         # self.FPS = 80
         # self.font_name = pg.font.SysFont(FONT_NAME)
@@ -38,8 +39,10 @@ class Game:
         self.grounds = pg.sprite.Group()    # 初始化地面群組
         self.holes = pg.sprite.Group()    # 初始化洞群組
         self.platforms = pg.sprite.Group()    # 初始化平台群組
-        self.enemies = pg.sprite.Group()   # 初始化敵人群組
-        self.weapon = pg.sprite.Group()  # 初始化道具群組
+        self.enemies = pg.sprite.Group()    # 初始化敵人群組
+        self.weapon = pg.sprite.Group()     # 初始化加速道具群組
+        self.items = pg.sprite.Group()      # 初始化冰淇淋道具群組
+
         self.superdonut = pg.sprite.Group()  # 初始化donut群組
         self.p1 = pg.sprite.Group()
         self.p2 = pg.sprite.Group()
@@ -102,11 +105,12 @@ class Game:
         self.all_sprites.add(self.lo_p2)
         self.platforms.add(self.lo_p2)
 
-        ### 讀入怪物
+        # 掉落的冰淇淋
         self.drop = Dropdown()
         self.all_sprites.add(self.drop)
-        self.enemies.add(self.drop)
+        self.items.add(self.drop)
 
+        ### 讀入怪物
         self.sbomb = Strangebomb("img/flyenemy.png",8)
         self.all_sprites.add(self.sbomb)
         self.enemies.add(self.sbomb)
@@ -119,13 +123,13 @@ class Game:
         self.all_sprites.add(self.genemy)
         self.enemies.add(self.genemy)
 
-        self.chaser = Chase()
-        self.all_sprites.add(self.chaser)
-        self.enemies.add(self.chaser)
-
-        self.reverse = Reverse()
+        self.reverse = Reverse()    # 名為倒轉，實為加速。
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
+
+        self.chaser = Chase(self)   # 回傳
+        self.all_sprites.add(self.chaser)
+        self.enemies.add(self.chaser)
 
         ### 執行遊戲
         self.run()
@@ -324,45 +328,56 @@ class Game:
             changeSpriteImage(self.sbomb, int(flframe))
 
         ###Chaser
-        chase4sd1 = True    # 暫定先追一號
-        if chase4sd1:
-            position = (self.donut.pos.x, self.donut.pos.y)
-        else:
-            position = (self.donutp2.pos.x, self.donutp2.pos.y)
+        p1_get_item = pg.sprite.spritecollide(self.donut, self.items, False)
+        p2_get_item = pg.sprite.spritecollide(self.donutp2, self.items, False)
 
-        ### 計算向量
-        desired = (position - self.chaser.pos)
-        dist = desired.length()
-        ### 正常化初始速度
-        # desired.normalize_ip()
+        # chaser_go = True
+        if p1_get_item:
+            # 讓drop重新再掉下來
+            self.drop.rect.right = random.randint(50, (WIDTH - 50))
+            self.drop.rect.top = -300
 
-        if dist < APPROACH_RADIUS:
-            desired *= dist / APPROACH_RADIUS * MAX_SPEED
-        else:
-            desired *= MAX_SPEED
+        self.chasetar_pos = (self.donut.pos.x, self.donut.pos.y)    # 追一號
 
-        steer = (desired - self.chaser.vel)
-        if steer.length() > MAX_FORCE:
-            steer.scale_to_length(MAX_FORCE)
+        if p2_get_item:
+            # 讓drop重新再掉下來
+            self.drop.rect.right = random.randint(50, (WIDTH - 50))
+            self.drop.rect.top = -300
 
-        self.chaser.acc = steer
-        # 運動方式
-        self.chaser.vel += self.chaser.acc
-        if self.chaser.vel.length() > MAX_SPEED:
-            self.chaser.vel.scale_to_length(MAX_SPEED)
-            self.chaser.pos += self.chaser.vel
-        if self.chaser.pos.x > WIDTH:
-            self.chaser.pos.x = 0
-        if self.chaser.pos.x < 0:
-            self.chaser.pos.x = WIDTH
-        if self.chaser.pos.y > HEIGHT:
-            self.chaser.pos.y = 0
-        if self.chaser.pos.y < 0:
-            self.chaser.pos.y = HEIGHT
-        self.chaser.rect.center = self.chaser.pos
+        self.chasetar_pos = (self.donutp2.pos.x, self.donutp2.pos.y)
 
-
-
+        #
+        #
+        # ### 向量計算
+        # desired = (position - self.chaser.pos)
+        # dist = desired.length()
+        # ### 正常化初始速度（太慢了暫時取消
+        # # desired.normalize_ip()
+        #
+        # if dist < APPROACH_RADIUS:
+        #     desired *= dist / APPROACH_RADIUS * MAX_SPEED
+        # else:
+        #     desired *= MAX_SPEED
+        #
+        # steer = (desired - self.chaser.vel)
+        # if steer.length() > MAX_FORCE:
+        #     steer.scale_to_length(MAX_FORCE)
+        #
+        # self.chaser.acc = steer
+        # # 運動方式
+        # self.chaser.vel += self.chaser.acc
+        # if self.chaser.vel.length() > MAX_SPEED:
+        #     self.chaser.vel.scale_to_length(MAX_SPEED)
+        #     self.chaser.pos += self.chaser.vel
+        # if self.chaser.pos.x > WIDTH:
+        #     self.chaser.pos.x = 0
+        # if self.chaser.pos.x < 0:
+        #     self.chaser.pos.x = WIDTH
+        # if self.chaser.pos.y > HEIGHT:
+        #     self.chaser.pos.y = 0
+        # if self.chaser.pos.y < 0:
+        #     self.chaser.pos.y = HEIGHT
+        # self.chaser.rect.center = self.chaser.pos
 
     def events(self):
         for event in pg.event.get():
