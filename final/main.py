@@ -26,10 +26,12 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         self.bgm()
+        # self.FPS = 80
         # self.font_name = pg.font.SysFont(FONT_NAME)
 
     def new(self):
         # 重新開始一個遊戲
+        self.FPS = 60
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
         self.grounds = pg.sprite.Group()    # 初始化地面群組
         self.holes = pg.sprite.Group()    # 初始化洞群組
@@ -82,16 +84,19 @@ class Game:
         ### 待初始走遠後
         self.all_sprites.add(self.high_p1)
         self.platforms.add(self.high_p1)
+        
         self.all_sprites.add(self.high_p2)
         self.platforms.add(self.high_p2)
 
         self.all_sprites.add(self.mid_p1)
         self.platforms.add(self.mid_p1)
+
         self.all_sprites.add(self.mid_p2)
         self.platforms.add(self.mid_p2)
 
         self.all_sprites.add(self.lo_p1)
         self.platforms.add(self.lo_p1)
+
         self.all_sprites.add(self.lo_p2)
         self.platforms.add(self.lo_p2)
 
@@ -135,7 +140,7 @@ class Game:
                 else:
                     frame = 0
                 nextFrame += 40
-            self.clock.tick(FPS)
+            self.clock.tick(self.FPS)
             self.events()
             self.update()
             # self.draw()
@@ -157,7 +162,9 @@ class Game:
         global gframe
         global drframe
         global flframe
-        self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
+        # self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
+        self.rel_x = Bstart % self.bkgd.get_rect().width
+
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
             self.screen.blit(self.bkgd, (self.rel_x, -50))
@@ -206,11 +213,12 @@ class Game:
                     self.donutp2.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donutp2.vel.y = 0
 
-        ###判斷是否吃到倒轉武器
+        ###判斷是否吃到倒轉武器>>加速
         getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
         if getweapon:
             self.reverse.rect.right = 4000 #重置倒轉武器位置
-            Direction *= -1  # 背景倒轉
+            # Direction *= -1  # 背景倒轉
+            self.FPS += 20
 
         ###donut互撞
         if (self.donut.vel.x > 0 and self.donutp2.vel.x > 0) or (self.donut.vel.x < 0 and self.donutp2.vel.x < 0):
@@ -315,7 +323,6 @@ class Game:
             position = (self.donut.pos.x, self.donut.pos.y)
         else:
             position = (self.donutp2.pos.x, self.donutp2.pos.y)
-
 
         desired = (position - self.chaser.pos)
         # dist = desired.length()
