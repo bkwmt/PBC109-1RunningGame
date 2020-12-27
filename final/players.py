@@ -2,9 +2,11 @@
 import random
 import pygame as pg
 from settings import *
-
+pg.init()
 ### 向量用來製造加速與減速的感覺
 vec = pg.math.Vector2
+
+jump_sound = pg.mixer.Sound("bgm/jumpsound.wav")
 
 def keyPressed(keyCheck=""):
     global keydict
@@ -92,6 +94,7 @@ class Superdonut(pg.sprite.Sprite):
         hitsground = pg.sprite.spritecollide(self, self.game.grounds, False)
         if hits or hitsground:
             self.vel.y = JMP
+            jump_sound.play()
 
     def update(self):
         frame = 0
@@ -177,6 +180,7 @@ class Superdonut2(pg.sprite.Sprite):
         hitsground = pg.sprite.spritecollide(self, self.game.grounds, False)
         if hits or hitsground:
             self.vel.y = JMP
+            jump_sound.play()
 
     def update(self):
         frame = 0
