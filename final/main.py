@@ -6,7 +6,7 @@ from players import *
 from platforms import *
 from enemies import *
 from single_mode import *
-# from moviepy.editor import *
+from moviepy.editor import *
 
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
@@ -409,8 +409,8 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
-        # clip = VideoFileClip('img/start.mpg')
-        #clip.resize(SIZE).preview()
+        clip = VideoFileClip('img/start.mpg')
+        clip.resize(SIZE).preview()
 
         go = True
         while go:
