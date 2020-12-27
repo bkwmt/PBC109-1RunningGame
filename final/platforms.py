@@ -94,7 +94,7 @@ class Highplatform1(pg.sprite.Sprite):
 
 class Highplatform2(pg.sprite.Sprite):
     def __init__(self):
-        self.x = 3.5 * WIDTH + random.randint(5, 10)
+        self.x = 3.5 * WIDTH
         self.y = 170 - random.randint(-5, 5)
         self.w = PW * 1.2 + (PW/random.randint(15, 35))
         self.h = THICK
@@ -113,7 +113,7 @@ class Highplatform2(pg.sprite.Sprite):
 
 class Midplatform1(pg.sprite.Sprite):
     def __init__(self):
-        self.x = -2 * WIDTH + random.randint(-5, 10)
+        self.x = -2 * WIDTH
         self.y = HH + random.randint(-25, 5)
         self.w = PW * 1.5 + (PW/random.randint(5, 15))
         self.h = THICK
@@ -132,7 +132,7 @@ class Midplatform1(pg.sprite.Sprite):
 
 class Midplatform2(pg.sprite.Sprite):
     def __init__(self):
-        self.x = -2.5 * WIDTH + random.randint(-5, 10)
+        self.x = -2.5 * WIDTH
         self.y = HH + random.randint(-25, 5)
         self.w = PW * 1.5 + (PW/random.randint(5, 15))
         self.h = THICK
@@ -151,7 +151,7 @@ class Midplatform2(pg.sprite.Sprite):
 
 class Lowplatform1(pg.sprite.Sprite):
     def __init__(self):
-        self.x = 1.5 * WIDTH + random.randint(0, 10)
+        self.x = 1.5 * WIDTH
         self.y = HEIGHT - GHEIGHT - random.randint(135, 145)
         self.w = PW * 2.25 + (PW/random.randint(2, 5))
         self.h = THICK
@@ -170,7 +170,7 @@ class Lowplatform1(pg.sprite.Sprite):
 
 class Lowplatform2(pg.sprite.Sprite):
     def __init__(self):
-        self.x = 2 * WIDTH + random.randint(0, 10)
+        self.x = 2 * WIDTH
         self.y = HEIGHT - GHEIGHT - random.randint(135, 145)
         self.w = PW * 2.25 + (PW/random.randint(2, 5))
         self.h = THICK
