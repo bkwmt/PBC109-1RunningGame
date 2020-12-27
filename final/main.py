@@ -410,7 +410,7 @@ class Game:
     def show_start_screen(self):
         # 開始畫面
         # clip = VideoFileClip('img/start.mpg')
-        # clip.resize(SIZE).preview()
+        #clip.resize(SIZE).preview()
 
         go = True
         while go:
