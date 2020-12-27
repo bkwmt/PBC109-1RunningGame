@@ -31,7 +31,7 @@ class Dropdown(pg.sprite.Sprite):
         self.image = pg.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
         self.rect.right = random.randint(50, (WIDTH - 50))
-        self.rect.top = -500    # 從螢幕外掉進來
+        self.rect.top = -300    # 從螢幕外掉進來
 
     def update(self):
         # screen.blit(self.dropdown , self.dropdown_rect) 這行不需要
@@ -39,7 +39,7 @@ class Dropdown(pg.sprite.Sprite):
             self.rect.top += DSPEED
         else:
             self.rect.right = random.randint(50, (WIDTH - 50))
-            self.rect.top = -500
+            self.rect.top = -300
 
 """
 class Dropdown(pg.sprite.Sprite):
@@ -210,7 +210,7 @@ class GEnemy(pg.sprite.Sprite):
         self.mask = pg.mask.from_surface(self.image)
 
 class Chase(pg.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, game):
         # self.groups = all_sprites
         # pg.sprite.Sprite.__init__(self, self.groups)
         pg.sprite.Sprite.__init__(self)
@@ -221,6 +221,63 @@ class Chase(pg.sprite.Sprite):
         self.vel = vec(MAX_SPEED, 0).rotate(uniform(0, 360))
         self.acc = vec(0, 0)
         self.rect.center = self.pos
+        self.game = game
+
+    # def get_target_pos(self):
+    #     p1_get_item = pg.sprite.spritecollide(self.game.donut, self.game.items, False)
+    #     p2_get_item = pg.sprite.spritecollide(self.game.donutp2, self.game.items, False)
+    #
+    #     if p1_get_item:
+    #         # 讓drop重新再掉下來
+    #         self.game.drop.rect.right = random.randint(50, (WIDTH - 50))
+    #         self.game.drop.rect.top = -300
+    #         position = (self.game.donut.pos.x, self.game.donut.pos.y)    # 追一號
+    #
+    #     elif p2_get_item:
+    #         # 讓drop重新再掉下來
+    #         self.game.drop.rect.right = random.randint(50, (WIDTH - 50))
+    #         self.game.drop.rect.top = -300
+    #         position = (self.game.donutp2.pos.x, self.game.donutp2.pos.y)
+    #     else:
+    #         position = (WIDTH, HEIGHT)
+    #
+    #     return position
+
+    def seek_with_approach(self, target):
+        # 讓他越靠近目標時，會稍微減速
+        self.desired = (target - self.game.chaser.pos)
+        dist = self.desired.length()
+        ### 正常化初始速度（太慢了暫時取消
+        # desired.normalize_ip()
+
+        if dist < APPROACH_RADIUS:
+            self.desired *= dist / APPROACH_RADIUS * MAX_SPEED
+        else:
+            self.desired *= MAX_SPEED
+
+        steer = (self.desired - self.game.chaser.vel)
+        if steer.length() > MAX_FORCE:
+            steer.scale_to_length(MAX_FORCE)
+
+        return steer
+
+    def update(self):
+
+        self.game.chaser.acc = self.seek_with_approach(self.game.chasetar_pos)
+        # 運動方式
+        self.game.chaser.vel += self.game.chaser.acc
+        if self.game.chaser.vel.length() > MAX_SPEED:
+            self.game.chaser.vel.scale_to_length(MAX_SPEED)
+            self.game.chaser.pos += self.game.chaser.vel
+        if self.game.chaser.pos.x > WIDTH:
+            self.game.chaser.pos.x = 0
+        if self.game.chaser.pos.x < 0:
+            self.game.chaser.pos.x = WIDTH
+        if self.game.chaser.pos.y > HEIGHT:
+            self.game.chaser.pos.y = 0
+        if self.game.chaser.pos.y < 0:
+            self.game.chaser.pos.y = HEIGHT
+        self.game.chaser.rect.center = self.game.chaser.pos
 
     # def follow_mouse(self):
     #     mpos = pg.mouse.get_pos()
