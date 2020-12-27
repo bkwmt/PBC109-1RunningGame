@@ -11,6 +11,8 @@ AREA = WIDTH * HEIGHT
 GHEIGHT = 66    # 地面高度
 PSPEED = 1    ### 此為畫面捲動速度，敬請多加利用。
 game = "run" ##遊戲結束用
+STARTNEWGAME = 0
+
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

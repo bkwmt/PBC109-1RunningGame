@@ -26,7 +26,7 @@ def loadImage(fileName, useColorKey=False, img_W=100, img_H=100):
 
 def changeSpriteImage(sprite, index=0):
     sprite.changeImage(index)
-
+    
 def clock():
     current_time = pg.time.get_ticks()
     return current_time
@@ -68,7 +68,7 @@ class Superdonut(pg.sprite.Sprite):
         self.pos = vec(self.x, self.y)
         self.vel = vec(0, 0)    # 初速度
         self.acc = vec(0, 0)    # 加速度一般為零
-
+    
     def changeImage(self, index):
         self.currentImage = index
         if self.angle == 0 and self.scale == 1:
@@ -153,7 +153,6 @@ class Superdonut2(pg.sprite.Sprite):
         self.pos = vec(self.x, self.y)
         self.vel = vec(0, 0)    # 初速度
         self.acc = vec(0, 0)    # 加速度一般為零
-
     def changeImage(self, index):
         self.currentImage = index
         if self.angle == 0 and self.scale == 1:
@@ -167,6 +166,7 @@ class Superdonut2(pg.sprite.Sprite):
         self.originalHeight = originalRect.height
         self.rect.center = oldcenter
         self.mask = pg.mask.from_surface(self.image)
+    
 
     def jump(self):
         # 檢查是否有站在某個平台上，有站在上面才能跳。
