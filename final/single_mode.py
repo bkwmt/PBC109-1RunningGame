@@ -291,7 +291,6 @@ class Game2:
                         sys.exit()      # 還有這裏
                     else:
                         go = False      # 停止迴圈
-                    #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
     def choose_game(self):
         # 開始畫面

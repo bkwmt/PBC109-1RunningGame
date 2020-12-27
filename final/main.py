@@ -405,7 +405,6 @@ class Game:
         # 開始畫面
         #clip = VideoFileClip('img/start.mpg')
         #clip.resize(SIZE).preview()
-
         go = True
         while go:
             for event in pg.event.get():
@@ -424,7 +423,7 @@ class Game:
     def choose_game(self):
         # 開始畫面
         global g
-        #g = Game2()
+        g = Game2()
         def player1(self):
             self.screen.fill(BLACK)
             self.start_img = pg.image.load('img/startp1.png')
@@ -459,7 +458,6 @@ class Game:
                         g = Game2()
                     else:
                         go = False      # 停止迴圈
-                    #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
     def rule_explain(self):
         # 開始畫面
@@ -547,7 +545,7 @@ class Game:
 
 
 
-g = Game2()
+g = Game()
 #g.show_start_screen()
 while g.running:
     g.show_start_screen()
