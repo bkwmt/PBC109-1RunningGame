@@ -11,7 +11,7 @@ from single_mode import *
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
 vec = pg.math.Vector2
-
+    
 class Game:
     def __init__(self):
         # 初始化遊戲

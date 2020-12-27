@@ -2,7 +2,7 @@ import os, math , sys
 import pygame as pg
 ### 常數
 TITLE = "The Rolling Donuts"
-# FPS = 100    # 每秒刷新次數
+FPS = 100    # 每秒刷新次數
 ADD_FIRE_RATE = 200
 WIDTH, HEIGHT = 1250, 650   # 畫面大小
 SIZE = (WIDTH, HEIGHT)
