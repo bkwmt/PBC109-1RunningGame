@@ -11,7 +11,7 @@ from single_mode import *
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
 vec = pg.math.Vector2
-    
+
 class Game:
     def __init__(self):
         # 初始化遊戲
@@ -32,7 +32,7 @@ class Game:
 
     def new(self):
         # 重新開始一個遊戲
-
+        STARTNEWGAME = 0
         self.FPS = 60
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
         self.grounds = pg.sprite.Group()    # 初始化地面群組
@@ -328,33 +328,35 @@ class Game:
         else:
             position = (self.donutp2.pos.x, self.donutp2.pos.y)
 
+        ### 計算向量
         desired = (position - self.chaser.pos)
-        # dist = desired.length()
-        desired.normalize_ip()
+        dist = desired.length()
+        ### 正常化初始速度
+        # desired.normalize_ip()
 
-        # if dist < APPROACH_RADIUS:
-        #     desired *= dist / APPROACH_RADIUS * MAX_SPEED
-        # else:
-        desired *= MAX_SPEED
+        if dist < APPROACH_RADIUS:
+            desired *= dist / APPROACH_RADIUS * MAX_SPEED
+        else:
+            desired *= MAX_SPEED
 
         steer = (desired - self.chaser.vel)
-        # if steer.length() > MAX_FORCE:
-        #     steer.scale_to_length(MAX_FORCE)
-        #
+        if steer.length() > MAX_FORCE:
+            steer.scale_to_length(MAX_FORCE)
+
         self.chaser.acc = steer
-        # equations of motion
+        # 運動方式
         self.chaser.vel += self.chaser.acc
         if self.chaser.vel.length() > MAX_SPEED:
             self.chaser.vel.scale_to_length(MAX_SPEED)
             self.chaser.pos += self.chaser.vel
-        # if self.chaser.pos.x > WIDTH:
-        #     self.chaser.pos.x = 0
-        # if self.chaser.pos.x < 0:
-        #     self.chaser.pos.x = WIDTH
-        # if self.chaser.pos.y > HEIGHT:
-        #     self.chaser.pos.y = 0
-        # if self.chaser.pos.y < 0:
-        #     self.chaser.pos.y = HEIGHT
+        if self.chaser.pos.x > WIDTH:
+            self.chaser.pos.x = 0
+        if self.chaser.pos.x < 0:
+            self.chaser.pos.x = WIDTH
+        if self.chaser.pos.y > HEIGHT:
+            self.chaser.pos.y = 0
+        if self.chaser.pos.y < 0:
+            self.chaser.pos.y = HEIGHT
         self.chaser.rect.center = self.chaser.pos
 
 
