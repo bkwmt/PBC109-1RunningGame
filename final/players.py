@@ -206,7 +206,7 @@ class Blood(pg.sprite.Sprite):
     def __init__(self, filename, frames=1, pos=0):
         pg.sprite.Sprite.__init__(self)
         self.images = []
-        img = loadImage(filename, img_W=800, img_H=60)
+        img = loadImage(filename, img_W=1000, img_H=60)
         self.originalWidth = img.get_width() // frames
         self.originalHeight = img.get_height()
         frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
