@@ -438,21 +438,32 @@ class Game:
             pg.display.update()
     def check_gameover(self):
         global game
-        global life
-        global life2
+
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
             g.show_go_screen()
         if game == "gameover":
             g.show_go_screen()
             game = "run"
-            life = 0
-            life2 = 0
 
 
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
-        clip = VideoFileClip('img/gameoverp1.mpg')
-        clip.resize(SIZE).preview()
+        global life
+        global life2
+        if life2 >=5 or self.donutp2.pos.y > HEIGHT:
+            life2 = 0
+            life = 0
+            clip = VideoFileClip('img/gameoverp1.mpg')
+            clip.resize(SIZE).preview()
+        else:
+            life2 = 0
+            life = 0
+            self.screen.fill(BLACK)
+            self.start_img = pg.image.load('img/P2WIN.png')
+            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+            self.start_img_rect = self.start_img.get_rect()
+            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.start_img, self.start_img_rect)
 
         go = True
         while go:
