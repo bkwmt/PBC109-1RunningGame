@@ -376,7 +376,7 @@ class Game:
     def choose_game(self):
         # 開始畫面
         global g
-        g = Game2()
+        #g = Game2()
         def player1(self):
             self.screen.fill(BLACK)
             self.start_img = pg.image.load('img/startp1.png')
@@ -438,11 +438,22 @@ class Game:
             pg.display.update()
     def check_gameover(self):
         global game
-
+        global life
+        global life2
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
             g.show_go_screen()
+            life = 0
+            life2 = 0
+            changeSpriteImage(self.blood, life)
+            changeSpriteImage(self.bloodp2, life2)
+            g.choose_game()
         if game == "gameover":
             g.show_go_screen()
+            life = 0
+            life2 = 0
+            changeSpriteImage(self.blood, life)
+            changeSpriteImage(self.bloodp2, life2)
+            g.choose_game()
             game = "run"
 
 
@@ -476,7 +487,7 @@ class Game:
                         pg.quit()
                         sys.exit()      # 還有這裏
                     else:
-                        g.choose_game()      # 停止迴圈
+                        go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
 

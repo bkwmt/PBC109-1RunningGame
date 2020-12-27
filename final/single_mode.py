@@ -274,13 +274,13 @@ class Game2:
         pg.display.flip()   # 把畫好的東西翻到正面的
 
     def check_gameover(self):
+        global game
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
-            self.playing = 0
-            self.screen.fill(BLACK)
-            self.gameover_img = pg.image.load('img/start.jpg')
-            self.gameover_img_rect = self.gameover_img.get_rect()
-            self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
-            self.screen.blit(self.gameover_img, self.gameover_img_rect)
+            g.show_go_screen()
+        if game == "gameover":
+            g.show_go_screen()
+            game = "run"
+            
     def rule_explain(self):
         # 開始畫面
         self.screen.fill(BLACK)
@@ -304,6 +304,45 @@ class Game2:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
+    def choose_game(self):
+        # 開始畫面
+        global g
+        g = Game2()
+        def player1(self):
+            self.screen.fill(BLACK)
+            self.start_img = pg.image.load('img/startp1.png')
+            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+            self.start_img_rect = self.start_img.get_rect()
+            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.start_img, self.start_img_rect)
+        def player2(self):
+            self.screen.fill(BLACK)
+            self.start_img = pg.image.load('img/startp2.png')
+            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+            self.start_img_rect = self.start_img.get_rect()
+            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.start_img, self.start_img_rect)
+        startimg = player1(self)
+        go = True
+        while go:
+            startimg
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()      # 結束在這裏
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pg.quit()
+                        sys.exit()      # 還有這裏
+                    elif event.key == pg.K_DOWN:
+                        startimg = player2(self)
+                        g = Game()
+                    elif event.key == pg.K_UP:
+                        startimg = player1(self)
+                        g = Game2()
+                    else:
+                        go = False      # 停止迴圈
+                    #g.new()    # 寫這裡我都要按兩次才會結束誒
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
         pass
