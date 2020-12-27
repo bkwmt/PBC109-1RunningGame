@@ -20,7 +20,7 @@ class Game:
         self.screen = pg.display.set_mode(SIZE)# , pg.FULLSCREEN ) #加這個可以全螢幕  # 設定介面大小
         pg.display.set_caption(TITLE)
 
-        self.bkgd = pg.image.load("img/back.png").convert() # 匯入背景圖
+        self.bkgd = pg.image.load("img/bk.png").convert() # 匯入背景圖
         self.bkgd = pg.transform.scale(self.bkgd, (1550, 1150))
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
