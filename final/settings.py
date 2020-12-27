@@ -2,7 +2,7 @@ import os, math , sys
 import pygame as pg
 ### 常數
 TITLE = "The Rolling Donuts"
-FPS = 100    # 每秒刷新次數
+# FPS = 100    # 每秒刷新次數
 ADD_FIRE_RATE = 200
 WIDTH, HEIGHT = 1250, 650   # 畫面大小
 SIZE = (WIDTH, HEIGHT)
@@ -10,7 +10,9 @@ HW, HH = WIDTH / 2, HEIGHT / 2
 AREA = WIDTH * HEIGHT
 GHEIGHT = 66    # 地面高度
 PSPEED = 1    ### 此為畫面捲動速度，敬請多加利用。
+
 game = "run" ##遊戲結束用
+
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -45,7 +47,7 @@ WAVE = 2.5
 flframe = 0
 
 ### firball用常數
-FSPEED = 10
+FSPEED = 5
 fire_list = []
 add_fire_rate = 0
 
@@ -55,6 +57,13 @@ DSPEED = 1
 
 ### genemy用常數
 gframe = 0
+
+### Chaser用常數
+MAX_SPEED = 10
+CHASERSIZE = (50, 50)
+# APPROACH_RADIUS = 50
+# MAX_FORCE = 0.1
+
 ### 平台（x, y, 寬度, 厚度）
 ### 因為目前人物寬100，所以平台寬度至少150吧，暫定以５０為單位增加
 ### 或者寬度也可固定幾種
