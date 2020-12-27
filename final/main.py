@@ -169,9 +169,9 @@ class Game:
         # self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.rel_x = Bstart % self.bkgd.get_rect().width
 
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -250)) # 捲動螢幕
         if self.rel_x < WIDTH:
-            self.screen.blit(self.bkgd, (self.rel_x, -300))
+            self.screen.blit(self.bkgd, (self.rel_x, -250))
         Bstart -= PSPEED
 
         # 更新群組內每一個每個精靈的動作
