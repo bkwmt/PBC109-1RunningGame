@@ -129,8 +129,8 @@ class Game2:
             self.check_gameover()
 
     def bgm(self):
-        bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
-        pg.mixer.music.play( -1 , 0 )
+        bgm = pg.mixer.music.load("bgm/one.ogg")
+        pg.mixer.music.play( -1  )
         pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
 
     def update(self):

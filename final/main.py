@@ -152,8 +152,7 @@ class Game:
             self.draw()
 
     def bgm(self):
-        bgm = ["bgm/one.mp3","bgm/mushroom dance.ogg"]
-        pg.mixer.music.load("bgm/one.mp3")
+        pg.mixer.music.load("bgm/one.ogg")
         pg.mixer.music.play()
         pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
 
