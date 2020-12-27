@@ -26,7 +26,9 @@ class Game:
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
-        self.chasetar_pos = (-100, -100)
+        self.chasetar_pos1 = (0, 0)
+        self.chasetar_pos2 = (0, 0)
+        self.chase4p1 = True
         self.bgm()
         # self.FPS = 80
         # self.font_name = pg.font.SysFont(FONT_NAME)
@@ -336,15 +338,17 @@ class Game:
             # 讓drop重新再掉下來
             self.drop.rect.right = random.randint(50, (WIDTH - 50))
             self.drop.rect.top = -300
+            self.chase4p1 = False
 
-        self.chasetar_pos = (self.donut.pos.x, self.donut.pos.y)    # 追一號
+        self.chasetar_pos1 = (self.donut.pos.x, self.donut.pos.y)    # 追一號
 
         if p2_get_item:
             # 讓drop重新再掉下來
             self.drop.rect.right = random.randint(50, (WIDTH - 50))
             self.drop.rect.top = -300
+            self.chase4p1 = True
 
-        self.chasetar_pos = (self.donutp2.pos.x, self.donutp2.pos.y)
+        self.chasetar_pos2 = (self.donutp2.pos.x, self.donutp2.pos.y)
 
         #
         #

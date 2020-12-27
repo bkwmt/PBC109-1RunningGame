@@ -217,7 +217,7 @@ class Chase(pg.sprite.Sprite):
         self.image = pg.Surface(CHASERSIZE)
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.pos = vec(randint(0, WIDTH), randint(0, HEIGHT))
+        self.pos = vec(randint(HW, WIDTH), randint(HH, HEIGHT))
         self.vel = vec(MAX_SPEED, 0).rotate(uniform(0, 360))
         self.acc = vec(0, 0)
         self.rect.center = self.pos
@@ -263,7 +263,12 @@ class Chase(pg.sprite.Sprite):
 
     def update(self):
 
-        self.game.chaser.acc = self.seek_with_approach(self.game.chasetar_pos)
+        p1pos = self.game.chasetar_pos1
+        p2pos = self.game.chasetar_pos2
+        chase_pos = p1pos
+        if not self.game.chase4p1:
+            chase_pos = p2pos
+        self.game.chaser.acc = self.seek_with_approach(chase_pos)
         # 運動方式
         self.game.chaser.vel += self.game.chaser.acc
         if self.game.chaser.vel.length() > MAX_SPEED:
