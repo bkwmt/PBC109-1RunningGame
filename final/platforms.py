@@ -44,7 +44,7 @@ class Holeedge(pg.sprite.Sprite):
         self.image.fill(BLACK)  # 暫時用黑色，之後再調成一樣。
         self.rect = self.image.get_rect()
         # self.rect.left = 3 * WIDTH
-        self.rect.left = 8 * WIDTH
+        self.rect.left = 6 * WIDTH
         self.rect.top = HEIGHT - GHEIGHT
 
     def update(self):
@@ -153,7 +153,7 @@ class Lowplatform1(pg.sprite.Sprite):
     def __init__(self):
         self.x = 1.5 * WIDTH
         self.y = HEIGHT - GHEIGHT - random.randint(135, 145)
-        self.w = PW * 2.25 + (PW/random.randint(2, 5))
+        self.w = HW / 2
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
@@ -172,7 +172,7 @@ class Lowplatform2(pg.sprite.Sprite):
     def __init__(self):
         self.x = 2 * WIDTH
         self.y = HEIGHT - GHEIGHT - random.randint(135, 145)
-        self.w = PW * 2.25 + (PW/random.randint(2, 5))
+        self.w = HW / 2
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
