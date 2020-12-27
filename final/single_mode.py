@@ -273,11 +273,11 @@ class Game2:
         global game
         global life
         if self.donut.pos.y > HEIGHT:
-            show_go_screen()
+            self.show_go_screen()
             self.playing = False
         if game == "gameover":
             game = "run"
-            show_go_screen()
+            self.show_go_screen()
             self.playing = False
     def rule_explain(self):
         # 開始畫面
