@@ -11,6 +11,9 @@ AREA = WIDTH * HEIGHT
 GHEIGHT = 66    # 地面高度
 PSPEED = 1    ### 此為畫面捲動速度，敬請多加利用。
 
+###
+ANOTHERGAME = 0  # 要不要再玩一次
+
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -86,7 +89,7 @@ nextFrame = clock()
 
 # 鍵盤用
 keydict = {"space": pg.K_SPACE, "esc": pg.K_ESCAPE, "up": pg.K_UP, "down": pg.K_DOWN,
-           "left": pg.K_LEFT, "right": pg.K_RIGHT, "return": pg.K_RETURN,
+           "left": pg.K_LEFT, "right": pg.K_RIGHT, "return": pg.K_RETURN, "enter": pg.K_KP_ENTER,
            "a": pg.K_a,
            "b": pg.K_b,
            "c": pg.K_c,

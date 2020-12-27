@@ -129,15 +129,13 @@ class Game:
             self.update()
             self.draw()
             self.change()
-<<<<<<< HEAD
+
             self.check_gameover()
-=======
     
     def bgm(self):
         bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
         pg.mixer.music.play( -1 , 0 )
         pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
->>>>>>> 3f06c96e9e8423d83fb52ab1e53c042fbd42ec49
 
     def update(self):
         # 更新背景
@@ -312,17 +310,20 @@ class Game:
             self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.gameover_img, self.gameover_img_rect)
             
+'''           
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
         pass
-        
+ '''       
 
 g = Game()
 #g.show_start_screen()
 while g.running:
     g.show_start_screen()
     g.new()
-    g.show_go_screen()
+    if ANOTHERGAME == 1:
+        continue
+# g.show_go_screen()
 
 # pg.quit()
 # sys.exit()
