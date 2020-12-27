@@ -32,7 +32,6 @@ class Game:
 
     def new(self):
         # 重新開始一個遊戲
-        STARTNEWGAME = 0
         self.FPS = 60
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
         self.grounds = pg.sprite.Group()    # 初始化地面群組
@@ -529,7 +528,6 @@ class Game:
             self.start_img_rect = self.start_img.get_rect()
             self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.start_img, self.start_img_rect)
-            STARTNEWGAME = 1
         else:
             life2 = 0
             life = 0
@@ -539,7 +537,6 @@ class Game:
             self.start_img_rect = self.start_img.get_rect()
             self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.start_img, self.start_img_rect)
-            STARTNEWGAME = 1
 
         go = True
         while go:
