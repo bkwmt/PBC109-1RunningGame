@@ -19,7 +19,7 @@ class Hole(pg.sprite.Sprite):
         self.image.fill(DARKSLATEBLUE)
         self.rect = self.image.get_rect()
         # self.rect.left = 3 * WIDTH + 50
-        self.rect.left = 6 * WIDTH + 50
+        self.rect.left = 4 * WIDTH + 50
         self.rect.top = HEIGHT - GHEIGHT
 
     def update(self):
@@ -41,10 +41,10 @@ class Holeedge(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((260, GHEIGHT))
-        self.image.fill(BLACK)  # 暫時用黑色，之後再調成一樣。
+        self.image.fill(DARKSLATEBLUE)  # 暫時用黑色，之後再調成一樣。
         self.rect = self.image.get_rect()
         # self.rect.left = 3 * WIDTH
-        self.rect.left = 6 * WIDTH
+        self.rect.left = 4 * WIDTH
         self.rect.top = HEIGHT - GHEIGHT
 
     def update(self):
@@ -100,7 +100,7 @@ class Highplatform2(pg.sprite.Sprite):
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(GREEN)
+        self.image.fill(OLIVE)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
@@ -176,7 +176,7 @@ class Lowplatform2(pg.sprite.Sprite):
         self.h = THICK
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(BLUE)
+        self.image.fill(INDIGO)
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y

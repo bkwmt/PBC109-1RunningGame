@@ -144,7 +144,8 @@ class Game2:
         global flframe
         global game
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -300)) # 捲動螢幕
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, \
+                                     -300)) # 捲動螢幕
         if self.rel_x < WIDTH:
             self.screen.blit(self.bkgd, (self.rel_x, -300))
         Bstart -= PSPEED
@@ -155,8 +156,10 @@ class Game2:
         oops = pg.sprite.spritecollide(self.donut, self.holes, False)
         if not oops:
             if self.donut.vel.y > 0:    # 檢查落下（y>0）時的碰撞
-                hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
-                hitsground = pg.sprite.spritecollide(self.donut, self.grounds, False)
+                hits = pg.sprite.spritecollide(self.donut, self.platforms, \
+                       False)
+                hitsground = pg.sprite.spritecollide(self.donut, self.grounds, \
+                             False)
                 if hits:
                 ### 撞到的話就讓他的位置維持在那個平台上，速度歸零。
                     self.donut.pos.y = hits[0].rect.top + 1
@@ -166,25 +169,32 @@ class Game2:
                     self.donut.pos.y = hitsground[0].rect.top + 1
                     self.donut.vel.y = 0
             if self.donut.vel.y < 0:    # 檢查向上碰撞
-                hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
+                hits = pg.sprite.spritecollide(self.donut, self.platforms, \
+                       False)
                 if hits:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
                     self.donut.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donut.vel.y = 0
 
         ###判斷是否吃到倒轉武器
-        getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
+        getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, \
+                    False)
         if getweapon:
             self.reverse.rect.right = 4000 #重置倒轉武器位置
             Direction *= -1  # 背景倒轉
 
         ###donut撞enemies
 
-        crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
-        drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
-        sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, False)
-        fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, False)
-        grcrash = pg.sprite.spritecollide(self.genemy, self.superdonut, False)
+        crash = pg.sprite.spritecollide(self.donut, self.enemies, \
+                False, pg.sprite.collide_circle)
+        drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, \
+                  False, pg.sprite.collide_circle)
+        sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, \
+                  False, pg.sprite.collide_circle)
+        fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, \
+                  False, pg.sprite.collide_circle)
+        grcrash = pg.sprite.spritecollide(self.genemy, self.superdonut, \
+                  False, pg.sprite.collide_circle)
         if crash and drcrash:
             self.drop.rect.top = -500
             life += 1
@@ -226,24 +236,12 @@ class Game2:
         else:
             flframe = 0
             changeSpriteImage(self.sbomb, int(flframe))
-        ### 利用地板出現的時間差製造會掉下去的洞
-
-        # if self.gnd.rect.right > 0:
-        #     self.gnd.rect.right -= PSPEED
-        #
-        # if self.gnd.rect.right == WIDTH - 200:
-        #     new_gnd = Ground(WIDTH,
-        #                      HEIGHT - GHEIGHT,
-        #                      random.randint((2 * WIDTH - 350), (2 * WIDTH - 200)),
-        #                      GHEIGHT)
-        #     self.grounds.add(new_gnd)
-        #     self.all_sprites.add(new_gnd)
-        #     new_gnd.rect.left -= PSPEED
 
     def events(self):
         for event in pg.event.get():
             # 遊戲結束
-            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and \
+                                         event.key == pg.K_ESCAPE):
                 if self.playing:    # 不玩了
                     self.playing = False
                 self.running = False    # 不執行了

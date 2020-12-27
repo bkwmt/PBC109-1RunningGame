@@ -28,7 +28,7 @@ def loadImage(fileName, useColorKey=False, img_W=100, img_H=100):
 
 def changeSpriteImage(sprite, index=0):
     sprite.changeImage(index)
-    
+
 def clock():
     current_time = pg.time.get_ticks()
     return current_time
@@ -65,12 +65,13 @@ class Superdonut(pg.sprite.Sprite):
         self.x = 50
         self.y = 100
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.8 / 2)
         # self.rect.center = (self.x, self.y)
         ### 用向量來製造加減速的感覺
         self.pos = vec(self.x, self.y)
         self.vel = vec(0, 0)    # 初速度
         self.acc = vec(0, 0)    # 加速度一般為零
-    
+
     def changeImage(self, index):
         self.currentImage = index
         if self.angle == 0 and self.scale == 1:
@@ -151,6 +152,8 @@ class Superdonut2(pg.sprite.Sprite):
         self.x = WIDTH - 200
         self.y = 100
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.8 / 2)
+
         # self.rect.center = (self.x, self.y)
         ### 用向量來製造加減速的感覺
         self.pos = vec(self.x, self.y)
@@ -169,7 +172,7 @@ class Superdonut2(pg.sprite.Sprite):
         self.originalHeight = originalRect.height
         self.rect.center = oldcenter
         self.mask = pg.mask.from_surface(self.image)
-    
+
 
     def jump(self):
         # 檢查是否有站在某個平台上，有站在上面才能跳。
@@ -380,7 +383,7 @@ class Blood(pg.sprite.Sprite):
 #
 #         self.rect.top -= self.speed_y
 
-#集滿螢幕會倒轉
+#集滿螢幕會倒轉>>>改成螢幕更新頻率會變快
 class Reverse(pg.sprite.Sprite):
 
     def __init__(self):
@@ -388,6 +391,7 @@ class Reverse(pg.sprite.Sprite):
         self.image = pg.image.load(os.path.join(img_folder, "reverse.png"))
         self.image = pg.transform.scale(self.image, (70, 70))
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.8 / 2)
         self.rect.right = WIDTH
         self.rect.top = 530
 

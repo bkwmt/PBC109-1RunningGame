@@ -224,43 +224,51 @@ class Game:
                     self.donutp2.vel.y = 0
 
         ###判斷是否吃到倒轉武器>>加速
-        getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
+        getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, \
+                    False, pg.sprite.collide_circle)
         if getweapon:
             self.reverse.rect.right = 4000 #重置倒轉武器位置
             # Direction *= -1  # 背景倒轉
             self.FPS += 20
 
         ###donut互撞
-        if (self.donut.vel.x > 0 and self.donutp2.vel.x > 0) or (self.donut.vel.x < 0 and self.donutp2.vel.x < 0):
+        if (self.donut.vel.x > 0 and self.donutp2.vel.x > 0) or \
+           (self.donut.vel.x < 0 and self.donutp2.vel.x < 0):
             pass
         else:
             if self.donut.vel.x > 0:
                 push = pg.sprite.spritecollide(self.donut, self.p2, False)
                 if push:
-                    self.donut.pos.x = push[0].rect.right - DONUT_W * 1.5
+                    self.donut.pos.x = push[0].rect.right - DONUT_W * 1.4
             if self.donut.vel.x < 0:
                 push = pg.sprite.spritecollide(self.donut, self.p2, False)
                 if push:
-                    self.donut.pos.x = push[0].rect.left + DONUT_W * 1.5
+                    self.donut.pos.x = push[0].rect.left + DONUT_W * 1.4
             if self.donutp2.vel.x > 0:
                 push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
                 if push:
-                    self.donutp2.pos.x = push[0].rect.right - DONUT_W * 1.5
+                    self.donutp2.pos.x = push[0].rect.right - DONUT_W * 1.4
             if self.donutp2.vel.x < 0:
                 push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
                 if push:
-                    self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.5
+                    self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.4
 
         ###donut撞enemies
 
-        crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
-        crash2 = pg.sprite.spritecollide(self.donutp2, self.enemies, False)
-        drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
-        sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, False)
-        fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, False)
-        grcrash = pg.sprite.spritecollide(self.genemy, self.superdonut, False)
-        if crash and drcrash:
-            self.drop.rect.top = -500
+        crash = pg.sprite.spritecollide(self.donut, self.enemies, \
+                False, pg.sprite.collide_circle)
+        crash2 = pg.sprite.spritecollide(self.donutp2, self.enemies, \
+                 False, pg.sprite.collide_circle)
+        # 撞到chaser
+        chcrash = pg.sprite.spritecollide(self.chaser, self.superdonut, \
+                  False, pg.sprite.collide_circle)
+        sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, \
+                  False, pg.sprite.collide_circle)
+        fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, \
+                  False, pg.sprite.collide_circle)
+        grcrash = pg.sprite.spritecollide(self.genemy, self.superdonut,
+                  False, pg.sprite.collide_circle)
+        if crash and chcrash:
             life += 1
             if life >= 5:
                 game = "gameover"
@@ -287,8 +295,7 @@ class Game:
                 game = "gameover"
             changeSpriteImage(self.blood, life)
             self.hurt_sound.play()
-        if crash2 and drcrash:
-            self.drop.rect.top = -500
+        if crash2 and chcrash:
             life2 += 1
             if life2 >= 5:
                 game = "gameover"
@@ -330,17 +337,17 @@ class Game:
             changeSpriteImage(self.sbomb, int(flframe))
 
         ###Chaser
-        p1_get_item = pg.sprite.spritecollide(self.donut, self.items, False)
-        p2_get_item = pg.sprite.spritecollide(self.donutp2, self.items, False)
+        p1_get_item = pg.sprite.spritecollide(self.donut, self.items, False, pg.sprite.collide_circle)
+        p2_get_item = pg.sprite.spritecollide(self.donutp2, self.items, False, pg.sprite.collide_circle)
+        ### 兩位主角的位置
+        self.chasetar_pos1 = (self.donut.pos.x, self.donut.pos.y)
+        self.chasetar_pos2 = (self.donutp2.pos.x, self.donutp2.pos.y)
 
-        # chaser_go = True
         if p1_get_item:
             # 讓drop重新再掉下來
             self.drop.rect.right = random.randint(50, (WIDTH - 50))
             self.drop.rect.top = -300
             self.chase4p1 = False
-
-        self.chasetar_pos1 = (self.donut.pos.x, self.donut.pos.y)    # 追一號
 
         if p2_get_item:
             # 讓drop重新再掉下來
@@ -348,40 +355,6 @@ class Game:
             self.drop.rect.top = -300
             self.chase4p1 = True
 
-        self.chasetar_pos2 = (self.donutp2.pos.x, self.donutp2.pos.y)
-
-        #
-        #
-        # ### 向量計算
-        # desired = (position - self.chaser.pos)
-        # dist = desired.length()
-        # ### 正常化初始速度（太慢了暫時取消
-        # # desired.normalize_ip()
-        #
-        # if dist < APPROACH_RADIUS:
-        #     desired *= dist / APPROACH_RADIUS * MAX_SPEED
-        # else:
-        #     desired *= MAX_SPEED
-        #
-        # steer = (desired - self.chaser.vel)
-        # if steer.length() > MAX_FORCE:
-        #     steer.scale_to_length(MAX_FORCE)
-        #
-        # self.chaser.acc = steer
-        # # 運動方式
-        # self.chaser.vel += self.chaser.acc
-        # if self.chaser.vel.length() > MAX_SPEED:
-        #     self.chaser.vel.scale_to_length(MAX_SPEED)
-        #     self.chaser.pos += self.chaser.vel
-        # if self.chaser.pos.x > WIDTH:
-        #     self.chaser.pos.x = 0
-        # if self.chaser.pos.x < 0:
-        #     self.chaser.pos.x = WIDTH
-        # if self.chaser.pos.y > HEIGHT:
-        #     self.chaser.pos.y = 0
-        # if self.chaser.pos.y < 0:
-        #     self.chaser.pos.y = HEIGHT
-        # self.chaser.rect.center = self.chaser.pos
 
     def events(self):
         for event in pg.event.get():

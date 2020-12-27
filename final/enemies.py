@@ -11,8 +11,9 @@ class Fireball(pg.sprite.Sprite):
         # super().__init__() 這跟上面一行是一樣的作用，下面的都刪了
         self.image = pg.image.load(os.path.join(img_folder, "fireball.png"))
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.6 / 2)
         self.rect.right =  10 * WIDTH
-        self.rect.top = random.randint(50,600)
+        self.rect.top = random.randint(50, HEIGHT - GHEIGHT - 50)
 
     def update(self):
         # screen.blit(self.fireball, self.fireball_rect) 不需要
@@ -20,7 +21,7 @@ class Fireball(pg.sprite.Sprite):
             self.rect.left -= FSPEED
         else:
             self.rect.right = 5 * WIDTH + WIDTH
-            self.rect.top = randint(50,600)
+            self.rect.top = randint(50, HEIGHT - GHEIGHT - 50)
 
 # 上面掉落物
 class Dropdown(pg.sprite.Sprite):
@@ -30,6 +31,7 @@ class Dropdown(pg.sprite.Sprite):
         self.image = pg.image.load(os.path.join(img_folder, "icecream.png"))
         self.image = pg.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.7 / 2)
         self.rect.right = random.randint(50, (WIDTH - 50))
         self.rect.top = -300    # 從螢幕外掉進來
 
@@ -133,6 +135,7 @@ class Strangebomb(pg.sprite.Sprite):
         self.angle = 0
         self.scale = 1
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.7 / 2)
         self.rect.right = WIDTH + 100
         self.rect.top = randint(150, HEIGHT - 150)
 
@@ -185,6 +188,7 @@ class GEnemy(pg.sprite.Sprite):
         self.angle = 0
         self.scale = 1
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.7 / 2)
         self.rect.right = WIDTH + 500
         self.rect.top = 519
 
@@ -211,37 +215,18 @@ class GEnemy(pg.sprite.Sprite):
 
 class Chase(pg.sprite.Sprite):
     def __init__(self, game):
-        # self.groups = all_sprites
-        # pg.sprite.Sprite.__init__(self, self.groups)
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface(CHASERSIZE)
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.pos = vec(randint(HW, WIDTH), randint(HH, HEIGHT))
+        # for test
+        self.radius = int(self.rect.width * 0.6 / 2)
+        # pg.draw.circle(self.image, RED, self.rect.center, self.radius)
+        self.pos = vec(5 * WIDTH, 3 * HEIGHT)
         self.vel = vec(MAX_SPEED, 0).rotate(uniform(0, 360))
         self.acc = vec(0, 0)
         self.rect.center = self.pos
         self.game = game
-
-    # def get_target_pos(self):
-    #     p1_get_item = pg.sprite.spritecollide(self.game.donut, self.game.items, False)
-    #     p2_get_item = pg.sprite.spritecollide(self.game.donutp2, self.game.items, False)
-    #
-    #     if p1_get_item:
-    #         # 讓drop重新再掉下來
-    #         self.game.drop.rect.right = random.randint(50, (WIDTH - 50))
-    #         self.game.drop.rect.top = -300
-    #         position = (self.game.donut.pos.x, self.game.donut.pos.y)    # 追一號
-    #
-    #     elif p2_get_item:
-    #         # 讓drop重新再掉下來
-    #         self.game.drop.rect.right = random.randint(50, (WIDTH - 50))
-    #         self.game.drop.rect.top = -300
-    #         position = (self.game.donutp2.pos.x, self.game.donutp2.pos.y)
-    #     else:
-    #         position = (WIDTH, HEIGHT)
-    #
-    #     return position
 
     def seek_with_approach(self, target):
         # 讓他越靠近目標時，會稍微減速
@@ -262,9 +247,10 @@ class Chase(pg.sprite.Sprite):
         return steer
 
     def update(self):
-
+        # 取得兩位玩家的位置
         p1pos = self.game.chasetar_pos1
         p2pos = self.game.chasetar_pos2
+        # 總之先決定要追一位
         chase_pos = p1pos
         if not self.game.chase4p1:
             chase_pos = p2pos
@@ -274,68 +260,5 @@ class Chase(pg.sprite.Sprite):
         if self.game.chaser.vel.length() > MAX_SPEED:
             self.game.chaser.vel.scale_to_length(MAX_SPEED)
             self.game.chaser.pos += self.game.chaser.vel
-        if self.game.chaser.pos.x > WIDTH:
-            self.game.chaser.pos.x = 0
-        if self.game.chaser.pos.x < 0:
-            self.game.chaser.pos.x = WIDTH
-        if self.game.chaser.pos.y > HEIGHT:
-            self.game.chaser.pos.y = 0
-        if self.game.chaser.pos.y < 0:
-            self.game.chaser.pos.y = HEIGHT
+
         self.game.chaser.rect.center = self.game.chaser.pos
-
-    # def follow_mouse(self):
-    #     mpos = pg.mouse.get_pos()
-    #     self.acc = (mpos - self.pos).normalize() * 0.5
-
-    # def get_target_pos(self):
-    #     sd1 = Superdonut()
-    #     sd2 = Superdonutp2()
-    #     chase4sd1 = True    # 暫定
-    #     while chase4sd1:
-    #         position = (sd1.pos.x, sd1.pos.y)
-    #     else:
-    #         position = (sd2.pos.x, sd1.pos.y)
-    #     return position
-    #
-    # def follow_target(self):
-    #     targetpos = self.get_target_pos()
-    #     self.acc = (targetpos - self.pos).normalize() * 0.5
-    #
-    # def seek(self, target):
-    #     self.desired = (target - self.pos).normalize() * MAX_SPEED
-    #     steer = (self.desired - self.vel)
-    #     if steer.length() > MAX_FORCE:
-    #         steer.scale_to_length(MAX_FORCE)
-    #     return steer
-    #
-    # def seek_with_approach(self, target):
-    #     self.desired = (target - self.pos)
-    #     dist = self.desired.length()
-    #     self.desired.normalize_ip()
-    #     if dist < APPROACH_RADIUS:
-    #         self.desired *= dist / APPROACH_RADIUS * MAX_SPEED
-    #     else:
-    #         self.desired *= MAX_SPEED
-    #         steer = (self.desired - self.vel)
-    #     if steer.length() > MAX_FORCE:
-    #         steer.scale_to_length(MAX_FORCE)
-    #     return steer
-    #
-    # def update(self):
-    #     # self.follow_mouse()
-    #     self.acc = self.seek_with_approach(dpos)
-    #     # equations of motion
-    #     self.vel += self.acc
-    #     if self.vel.length() > MAX_SPEED:
-    #         self.vel.scale_to_length(MAX_SPEED)
-    #         self.pos += self.vel
-    #     if self.pos.x > WIDTH:
-    #         self.pos.x = 0
-    #     if self.pos.x < 0:
-    #         self.pos.x = WIDTH
-    #     if self.pos.y > HEIGHT:
-    #         self.pos.y = 0
-    #     if self.pos.y < 0:
-    #         self.pos.y = HEIGHT
-    #         self.rect.center = self.pos

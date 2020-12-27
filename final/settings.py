@@ -18,6 +18,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+OLIVE = (128, 128, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 LIGHTBLUE = (0, 155, 155)
@@ -28,6 +29,7 @@ ROSYBROWN = (188, 143, 143)
 STEELBLUE = (70, 130, 180)
 NAVY = (0, 0, 128)
 DARKSLATEBLUE = (72, 61, 139)
+INDIGO = (75, 0, 130)
 
 ### 精靈會用到的屬性
 life = 0
@@ -59,9 +61,9 @@ DSPEED = 1
 gframe = 0
 
 ### Chaser用常數
-MAX_SPEED = 1.2
+MAX_SPEED = 1.8
 CHASERSIZE = (50, 50)
-APPROACH_RADIUS = 60
+APPROACH_RADIUS = 55
 MAX_FORCE = 5
 
 ### 平台（x, y, 寬度, 厚度）
