@@ -1,4 +1,3 @@
-# in PBC
 import os, time, math, random, sys
 import pygame as pg
 from pygame.locals import *
@@ -6,6 +5,8 @@ from settings import *
 from players import *
 from platforms import *
 from enemies import *
+from single_mode import *
+from moviepy.editor import *
 
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
@@ -15,15 +16,16 @@ class Game:
         # 初始化遊戲
         pg.init()           # 起手式
         pg.mixer.init()     # 有用聲音的起手式
-        self.screen = pg.display.set_mode(SIZE)  # 設定介面大小
+        self.screen = pg.display.set_mode(SIZE)# , pg.FULLSCREEN ) #加這個可以全螢幕  # 設定介面大小
         pg.display.set_caption(TITLE)
-        self.bkgd = pg.image.load("img/back.png").convert() # 匯入背景圖
+        self.bkgd = pg.image.load("img/bk.png").convert() # 
+        self.bkgd = pg.transform.scale(self.bkgd, (1550, 1150))
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
         self.bgm()
-
+       
     def new(self):
         # 重新開始一個遊戲
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
@@ -93,11 +95,11 @@ class Game:
         self.all_sprites.add(self.lo_p2)
         self.platforms.add(self.lo_p2)
 
-        self.drop = Dropdown()
+        self.drop = Dropdown("img/drenemy.png",4)
         self.all_sprites.add(self.drop)
         self.enemies.add(self.drop)
 
-        self.sbomb = Strangebomb()
+        self.sbomb = Strangebomb("img/flyenemy.png",8)
         self.all_sprites.add(self.sbomb)
         self.enemies.add(self.sbomb)
 
@@ -105,12 +107,17 @@ class Game:
         self.all_sprites.add(self.fball)
         self.enemies.add(self.fball)
 
+        self.genemy = GEnemy("img/genemy.png",8)
+        self.all_sprites.add(self.genemy)
+        self.enemies.add(self.genemy)
+
         self.reverse = Reverse()
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
+
         ### 執行遊戲
         self.run()
-        
+
     def run(self):
         # 遊戲迴圈：
         self.playing = True
@@ -129,12 +136,12 @@ class Game:
             self.update()
             self.draw()
             self.change()
-
             self.check_gameover()
-    
+
     def bgm(self):
-        bgm = pg.mixer.music.load("bgm/mushroom dance.ogg")
-        pg.mixer.music.play( -1 , 0 )
+        bgm = ["bgm/one.mp3","bgm/mushroom dance.ogg"]
+        pg.mixer.music.load("bgm/one.mp3")
+        pg.mixer.music.play()
         pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
 
     def update(self):
@@ -142,10 +149,15 @@ class Game:
         global Bstart
         global Direction
         global life
+        global life2
+        global gframe
+        global drframe
+        global flframe
+        global game
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -300)) # 捲動螢幕
         if self.rel_x < WIDTH:
-            self.screen.blit(self.bkgd, (self.rel_x, -50))
+            self.screen.blit(self.bkgd, (self.rel_x, -300))
         Bstart -= PSPEED
 
         # 更新群組內每一個每個精靈的動作
@@ -220,16 +232,78 @@ class Game:
         ###donut撞enemies
 
         crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
+        crash2 = pg.sprite.spritecollide(self.donutp2, self.enemies, False)
         drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, False)
+        sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, False)
+        fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, False)
+        grcrash = pg.sprite.spritecollide(self.genemy, self.superdonut, False)
         if crash and drcrash:
             self.drop.rect.top = -500
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
+        if crash and sbcrash:
+            self.sbomb.rect.right = 2000
+            life += 1
+            if life >= 5:
+                game = "gameover"
+            changeSpriteImage(self.blood, life)
+        if crash and fbcrash:
+            self.fball.rect.right = 2000
+            life += 1
+            if life >= 5:
+                game = "gameover"
+            changeSpriteImage(self.blood, life)
+        if crash and grcrash:
+            self.genemy.rect.right = 3000
+            life += 1
+            if life >= 5:
+                game = "gameover"
+            changeSpriteImage(self.blood, life)
+        if crash2 and drcrash:
+            self.drop.rect.top = -500
+            life2 += 1
+            if life2 >= 5:
+                game = "gameover"
+            changeSpriteImage(self.bloodp2, life2)
+        if crash2 and sbcrash:
+            self.sbomb.rect.right = 3000
+            life2 += 1
+            if life2 >= 5:
+                game = "gameover"
+            changeSpriteImage(self.bloodp2, life2)
+        if crash2 and fbcrash:
+            self.fball.rect.right = 3000
+            life2 += 1
+            if life2 >= 5:
+                game = "gameover"
+            changeSpriteImage(self.bloodp2, life2)
+        if crash2 and grcrash:
+            self.genemy.rect.right = 3000
+            life2 += 1
+            if life2 >= 5:
+                game = "gameover"
+            changeSpriteImage(self.bloodp2, life2)
 
-
+        if gframe < 7:
+            gframe += 0.05
+            changeSpriteImage(self.genemy, int(gframe))
+        else:
+            gframe = 0
+            changeSpriteImage(self.genemy, int(gframe))
+        if drframe < 3.5:
+            drframe += 0.05
+            changeSpriteImage(self.drop, int(drframe))
+        else:
+            drframe = 0
+            changeSpriteImage(self.drop, int(drframe))
+        if flframe < 7:
+            flframe += 0.05
+            changeSpriteImage(self.sbomb, int(flframe))
+        else:
+            flframe = 0
+            changeSpriteImage(self.sbomb, int(flframe))
         ### 利用地板出現的時間差製造會掉下去的洞
 
         # if self.gnd.rect.right > 0:
@@ -281,11 +355,9 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
-        self.screen.fill(BLACK)
-        self.start_img = pg.image.load('img/start.jpg')
-        self.start_img_rect = self.start_img.get_rect()
-        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
-        self.screen.blit(self.start_img, self.start_img_rect)
+        clip = VideoFileClip('img/start.mpg')
+        clip.resize(SIZE).preview()
+
         go = True
         while go:
             for event in pg.event.get():
@@ -300,30 +372,96 @@ class Game:
                         go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
-    
-    def check_gameover(self):
-        if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
-            self.playing = 0
+
+    def choose_game(self):
+        # 開始畫面
+        global g
+        g = Game2()
+        def player1(self):
             self.screen.fill(BLACK)
-            self.gameover_img = pg.image.load('img/start.jpg')
-            self.gameover_img_rect = self.gameover_img.get_rect()
-            self.gameover_img_rect.center = (WIDTH/2, HEIGHT/2)
-            self.screen.blit(self.gameover_img, self.gameover_img_rect)
-            
-'''           
+            self.start_img = pg.image.load('img/startp1.png')
+            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+            self.start_img_rect = self.start_img.get_rect()
+            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.start_img, self.start_img_rect)
+        def player2(self):
+            self.screen.fill(BLACK)
+            self.start_img = pg.image.load('img/startp2.png')
+            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+            self.start_img_rect = self.start_img.get_rect()
+            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.start_img, self.start_img_rect)
+        startimg = player1(self)
+        go = True
+        while go:
+            startimg
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()      # 結束在這裏
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pg.quit()
+                        sys.exit()      # 還有這裏
+                    elif event.key == pg.K_DOWN:
+                        startimg = player2(self)
+                        g = Game()
+                    elif event.key == pg.K_UP:
+                        startimg = player1(self)
+                        g = Game2()
+                    else:
+                        go = False      # 停止迴圈
+                    #g.new()    # 寫這裡我都要按兩次才會結束誒
+            pg.display.update()
+    def rule_explain(self):
+        # 開始畫面
+        self.screen.fill(BLACK)
+        self.start_img = pg.image.load('img/rule.png')
+        self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+        self.start_img_rect = self.start_img.get_rect()
+        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+        self.screen.blit(self.start_img, self.start_img_rect)
+
+        go = True
+        while go:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()      # 結束在這裏
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pg.quit()
+                        sys.exit()      # 還有這裏
+                    else:
+                        go = False      # 停止迴圈
+                    #g.new()    # 寫這裡我都要按兩次才會結束誒
+            pg.display.update()
+    def check_gameover(self):
+        global game
+        global life
+        global life2
+        if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
+            g.choose_game()
+        if game == "gameover":
+            g.choose_game()
+            game = "run"
+            life = 0
+            life2 = 0
+
+
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
         pass
- '''       
+
 
 g = Game()
 #g.show_start_screen()
 while g.running:
     g.show_start_screen()
+    g.choose_game()
+    g.rule_explain()
     g.new()
-    if ANOTHERGAME == 1:
-        continue
-# g.show_go_screen()
+    g.show_go_screen()
 
 # pg.quit()
 # sys.exit()
