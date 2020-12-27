@@ -547,7 +547,7 @@ class Game:
 
 
 
-g = Game()
+g = Game2()
 #g.show_start_screen()
 while g.running:
     g.show_start_screen()
