@@ -141,6 +141,7 @@ class Game2:
         global gframe
         global drframe
         global flframe
+        global game
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -300)) # 捲動螢幕
         if self.rel_x < WIDTH:
@@ -187,29 +188,25 @@ class Game2:
             self.drop.rect.top = -500
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
         if crash and sbcrash:
             self.sbomb.rect.right = 2000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
         if crash and fbcrash:
             self.fball.rect.right = 2000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
         if crash and grcrash:
             self.genemy.rect.right = 3000
             life += 1
             if life >= 5:
-                pg.quit()
-                sys.exit()
+                game = "gameover"
             changeSpriteImage(self.blood, life)
 
         if gframe < 7:
@@ -269,11 +266,14 @@ class Game2:
 
     def check_gameover(self):
         global game
-        if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
-            g.show_go_screen()
+        global life
+        if self.donut.pos.y > HEIGHT:
+            show_go_screen()
+            self.playing = False
         if game == "gameover":
-            g.show_go_screen()
             game = "run"
+            show_go_screen()
+            self.playing = False
     def rule_explain(self):
         # 開始畫面
         self.screen.fill(BLACK)
@@ -332,51 +332,16 @@ class Game2:
                         g = Game2()
                     else:
                         go = False      # 停止迴圈
-    def check_gameover(self):
-        global game
-        global life
-        global life2
-        if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
-            self.playing = False
-            g.show_go_screen()
-            life = 0
-            life2 = 0
-            changeSpriteImage(self.blood, life)
-            changeSpriteImage(self.bloodp2, life2)
-            g.choose_game()
-        if game == "gameover":
-            self.playing = False
-            g.show_go_screen()
-            life = 0
-            life2 = 0
-            changeSpriteImage(self.blood, life)
-            changeSpriteImage(self.bloodp2, life2)
-            g.choose_game()
-            game = "run"
     def show_go_screen(self):
         # 遊戲結束／再來一場？的畫面
         global life
-        global life2
-        if life2 >=5 or self.donutp2.pos.y > HEIGHT:
-            life2 = 0
-            life = 0
-            # clip = VideoFileClip('img/gameoverp1.mpg')
-            # clip.resize(SIZE).preview()
-            self.screen.fill(BLACK)
-            self.start_img = pg.image.load('img/P1WIN.png')
-            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
-            self.start_img_rect = self.start_img.get_rect()
-            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
-            self.screen.blit(self.start_img, self.start_img_rect)
-        else:
-            life2 = 0
-            life = 0
-            self.screen.fill(BLACK)
-            self.start_img = pg.image.load('img/P2WIN.png')
-            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
-            self.start_img_rect = self.start_img.get_rect()
-            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
-            self.screen.blit(self.start_img, self.start_img_rect)
+        life = 0
+        self.screen.fill(BLACK)
+        self.start_img = pg.image.load('img/P2WIN.png')
+        self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+        self.start_img_rect = self.start_img.get_rect()
+        self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+        self.screen.blit(self.start_img, self.start_img_rect)
 
         go = True
         while go:

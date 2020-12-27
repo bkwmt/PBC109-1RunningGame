@@ -458,8 +458,6 @@ class Game:
                         g = Game2()
                     else:
                         go = False      # 停止迴圈
-                        g.rule_explain()
-                        g.new()
             pg.display.update()
     def rule_explain(self):
         # 開始畫面
@@ -488,22 +486,20 @@ class Game:
         global life
         global life2
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
-            self.playing = False
             g.show_go_screen()
             life = 0
             life2 = 0
             changeSpriteImage(self.blood, life)
             changeSpriteImage(self.bloodp2, life2)
-            g.choose_game()
+            self.playing = False
         if game == "gameover":
-            self.playing = False
             g.show_go_screen()
             life = 0
             life2 = 0
             changeSpriteImage(self.blood, life)
             changeSpriteImage(self.bloodp2, life2)
-            g.choose_game()
             game = "run"
+            self.playing = False
 
 
     def show_go_screen(self):
@@ -548,12 +544,12 @@ class Game:
 
 
 g = Game()
+g.show_start_screen()
 #g.show_start_screen()
 while g.running:
-    g.show_start_screen()
     g.choose_game()
-    #g.rule_explain()
-    #g.new()
+    g.rule_explain()
+    g.new()
 
 # pg.quit()
 # sys.exit()
