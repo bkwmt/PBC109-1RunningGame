@@ -23,13 +23,12 @@ class Fireball(pg.sprite.Sprite):
             self.rect.top = randint(50,600)
 
 # 上面掉落物
-"""
 class Dropdown(pg.sprite.Sprite):
 
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(os.path.join(img_folder, "orange.png"))
-        self.image = pg.transform.scale(self.image, (50, 50))
+        self.image = pg.image.load(os.path.join(img_folder, "icecream.png"))
+        self.image = pg.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
         self.rect.right = random.randint(50, (WIDTH - 50))
         self.rect.top = -500    # 從螢幕外掉進來
@@ -41,6 +40,7 @@ class Dropdown(pg.sprite.Sprite):
         else:
             self.rect.right = random.randint(50, (WIDTH - 50))
             self.rect.top = -500
+
 """
 class Dropdown(pg.sprite.Sprite):
 
@@ -86,6 +86,7 @@ class Dropdown(pg.sprite.Sprite):
         self.originalHeight = originalRect.height
         self.rect.center = oldcenter
         self.mask = pg.mask.from_surface(self.image)
+"""
 # 波狀飛行物
 """
 class Strangebomb(pg.sprite.Sprite):

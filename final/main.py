@@ -102,7 +102,7 @@ class Game:
         self.platforms.add(self.lo_p2)
 
         ### 讀入怪物
-        self.drop = Dropdown("img/drenemy.png",4)
+        self.drop = Dropdown()
         self.all_sprites.add(self.drop)
         self.enemies.add(self.drop)
 
@@ -308,12 +308,6 @@ class Game:
         else:
             gframe = 0
             changeSpriteImage(self.genemy, int(gframe))
-        if drframe < 3.5:
-            drframe += 0.05
-            changeSpriteImage(self.drop, int(drframe))
-        else:
-            drframe = 0
-            changeSpriteImage(self.drop, int(drframe))
         if flframe < 7:
             flframe += 0.05
             changeSpriteImage(self.sbomb, int(flframe))
@@ -488,7 +482,6 @@ class Game:
                         sys.exit()      # 還有這裏
                     else:
                         go = False      # 停止迴圈
-                    g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
     def check_gameover(self):
         global game
@@ -550,7 +543,6 @@ class Game:
                         sys.exit()      # 還有這裏
                     else:
                         go = False      # 停止迴圈
-                    #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
 
 

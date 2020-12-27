@@ -83,7 +83,7 @@ class Game2:
         self.all_sprites.add(self.lo_p2)
         self.platforms.add(self.lo_p2)
 
-        self.drop = Dropdown("img/drenemy.png",4)
+        self.drop = Dropdown()
         self.all_sprites.add(self.drop)
         self.enemies.add(self.drop)
 
@@ -218,12 +218,6 @@ class Game2:
         else:
             gframe = 0
             changeSpriteImage(self.genemy, int(gframe))
-        if drframe < 3.5:
-            drframe += 0.05
-            changeSpriteImage(self.drop, int(drframe))
-        else:
-            drframe = 0
-            changeSpriteImage(self.drop, int(drframe))
         if flframe < 7:
             flframe += 0.05
             changeSpriteImage(self.sbomb, int(flframe))
