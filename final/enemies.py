@@ -217,8 +217,8 @@ class Chase(pg.sprite.Sprite):
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.pos = vec(randint(0, WIDTH), randint(0, HEIGHT))
-        self.vel = vec(MAX_SPEED, 1).rotate(uniform(0, 360))
-        self.acc = vec(1, 1)
+        self.vel = vec(MAX_SPEED, 0).rotate(uniform(0, 360))
+        self.acc = vec(0, 0)
         self.rect.center = self.pos
 
     # def follow_mouse(self):
