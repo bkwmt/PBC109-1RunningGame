@@ -458,6 +458,8 @@ class Game:
                         g = Game2()
                     else:
                         go = False      # 停止迴圈
+                        g.rule_explain()
+                        g.new()
             pg.display.update()
     def rule_explain(self):
         # 開始畫面
@@ -550,8 +552,8 @@ g = Game()
 while g.running:
     g.show_start_screen()
     g.choose_game()
-    g.rule_explain()
-    g.new()
+    #g.rule_explain()
+    #g.new()
 
 # pg.quit()
 # sys.exit()

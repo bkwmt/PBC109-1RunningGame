@@ -274,24 +274,6 @@ class Game2:
         if game == "gameover":
             g.show_go_screen()
             game = "run"
-    def show_start_screen(self):
-        # 開始畫面
-        #clip = VideoFileClip('img/start.mpg')
-        #clip.resize(SIZE).preview()
-
-        go = True
-        while go:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    pg.quit()
-                    sys.exit()      # 結束在這裏
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_ESCAPE:
-                        pg.quit()
-                        sys.exit()      # 還有這裏
-                    else:
-                        go = False      # 停止迴圈
-            pg.display.update()     
     def rule_explain(self):
         # 開始畫面
         self.screen.fill(BLACK)
@@ -313,12 +295,9 @@ class Game2:
                         sys.exit()      # 還有這裏
                     else:
                         go = False      # 停止迴圈
-                    #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
     def choose_game(self):
         # 開始畫面
-        global g
-        g = Game2()
         def player1(self):
             self.screen.fill(BLACK)
             self.start_img = pg.image.load('img/startp1.png')
