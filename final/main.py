@@ -6,7 +6,7 @@ from players import *
 from platforms import *
 from enemies import *
 from single_mode import *
-# from moviepy.editor import *
+from moviepy.editor import *
 
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
@@ -20,7 +20,7 @@ class Game:
         self.screen = pg.display.set_mode(SIZE)# , pg.FULLSCREEN ) #加這個可以全螢幕  # 設定介面大小
         pg.display.set_caption(TITLE)
 
-        self.bkgd = pg.image.load("img/back.png").convert() # 匯入背景圖
+        self.bkgd = pg.image.load("img/bk.png").convert() # 匯入背景圖
         self.bkgd = pg.transform.scale(self.bkgd, (1550, 1150))
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
@@ -169,9 +169,9 @@ class Game:
         # self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.rel_x = Bstart % self.bkgd.get_rect().width
 
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -250)) # 捲動螢幕
         if self.rel_x < WIDTH:
-            self.screen.blit(self.bkgd, (self.rel_x, -300))
+            self.screen.blit(self.bkgd, (self.rel_x, -250))
         Bstart -= PSPEED
 
         # 更新群組內每一個每個精靈的動作
@@ -409,8 +409,8 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
-        # clip = VideoFileClip('img/start.mpg')
-        # clip.resize(SIZE).preview()
+        clip = VideoFileClip('img/start.mpg')
+        clip.resize(SIZE).preview()
 
         go = True
         while go:
