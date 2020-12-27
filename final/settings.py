@@ -2,7 +2,7 @@ import os, math , sys
 import pygame as pg
 ### 常數
 TITLE = "The Rolling Donuts"
-FPS = 100    # 每秒刷新次數
+FPS = 120    # 每秒刷新次數
 ADD_FIRE_RATE = 200
 WIDTH, HEIGHT = 1250, 650   # 畫面大小
 SIZE = (WIDTH, HEIGHT)
@@ -10,7 +10,10 @@ HW, HH = WIDTH / 2, HEIGHT / 2
 AREA = WIDTH * HEIGHT
 GHEIGHT = 66    # 地面高度
 PSPEED = 1    ### 此為畫面捲動速度，敬請多加利用。
-game = "run" ##遊戲結束用
+
+###
+ANOTHERGAME = 0  # 要不要再玩一次
+
 ### 定義一些顏色：混合RGB的比例 0-255
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -29,12 +32,11 @@ DARKSLATEBLUE = (72, 61, 139)
 
 ### 精靈會用到的屬性
 life = 0
-life2 = 0
 DONUT_W = 75    # 暫定
-DONUT_H = 75
-DONUT_ACC = 2#1.5             # 加速度，越大可以跑快一點
-DONUT_FRICTION = -0.35      # 摩擦力，越小會滑行越遠，最大速度亦會變大。
-GRAVITY = 0.75               # 重力
+DONUT_H = 300
+DONUT_ACC = 0.5             # 加速度，越大可以跑快一點
+DONUT_FRICTION = -0.035      # 摩擦力，越小會滑行越遠，最大速度亦會變大。
+GRAVITY = 0.6               # 重力
 JMP = -20                   # 跳躍力（加速度／絕對值越大越強）
 
 ### 波狀飛行物用常數
@@ -42,7 +44,6 @@ BSPEED = 2      # 兩者之間的比例
 AMPLITUDE = 2   # 與運動軌跡有關
 ### 影響振幅？
 WAVE = 2.5
-flframe = 0
 
 ### firball用常數
 FSPEED = 10
@@ -50,11 +51,8 @@ fire_list = []
 add_fire_rate = 0
 
 ### dropdown用常數
-drframe = 0
 DSPEED = 1
 
-### genemy用常數
-gframe = 0
 ### 平台（x, y, 寬度, 厚度）
 ### 因為目前人物寬100，所以平台寬度至少150吧，暫定以５０為單位增加
 ### 或者寬度也可固定幾種
@@ -91,7 +89,7 @@ nextFrame = clock()
 
 # 鍵盤用
 keydict = {"space": pg.K_SPACE, "esc": pg.K_ESCAPE, "up": pg.K_UP, "down": pg.K_DOWN,
-           "left": pg.K_LEFT, "right": pg.K_RIGHT, "return": pg.K_RETURN,
+           "left": pg.K_LEFT, "right": pg.K_RIGHT, "return": pg.K_RETURN, "enter": pg.K_KP_ENTER,
            "a": pg.K_a,
            "b": pg.K_b,
            "c": pg.K_c,

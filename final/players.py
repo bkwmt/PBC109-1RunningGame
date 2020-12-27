@@ -14,11 +14,11 @@ def keyPressed(keyCheck=""):
             return True
     return False
 
-def loadImage(fileName, useColorKey=False, img_W=100, img_H=100):
+def loadImage(fileName, useColorKey=False, img_H=DONUT_H, img_W=DONUT_W):
     if os.path.isfile(fileName):
         image = pg.image.load(fileName)
         image = image.convert_alpha()
-        image = pg.transform.scale(image, (img_W, img_H))
+        image = pg.transform.scale(image, (img_H, img_W))
         # Return the image
         return image
     else:
@@ -35,7 +35,7 @@ class Superdonut(pg.sprite.Sprite):
     def __init__(self, game, filename, frames=1):   # 注意這裡有來自Game裡Superdonut回傳的一個自己 frame donut move picture change
         pg.sprite.Sprite.__init__(self)
         self.images = []
-        img = loadImage(filename, img_W=DONUT_W*frames, img_H=DONUT_H)
+        img = loadImage(filename)
         self.originalWidth = img.get_width() // frames
         self.originalHeight = img.get_height()
         frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
@@ -121,7 +121,7 @@ class Superdonut2(pg.sprite.Sprite):
     def __init__(self, game, filename, frames=1):   # 注意這裡有來自Game裡Superdonut回傳的一個自己 frame donut move picture change
         pg.sprite.Sprite.__init__(self)
         self.images = []
-        img = loadImage(filename, img_W=DONUT_W*frames, img_H=DONUT_H)
+        img = loadImage(filename)
         self.originalWidth = img.get_width() // frames
         self.originalHeight = img.get_height()
         frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
@@ -206,7 +206,7 @@ class Blood(pg.sprite.Sprite):
     def __init__(self, filename, frames=1, pos=0):
         pg.sprite.Sprite.__init__(self)
         self.images = []
-        img = loadImage(filename, img_W=800, img_H=60)
+        img = loadImage(filename, img_H=800, img_W=60)
         self.originalWidth = img.get_width() // frames
         self.originalHeight = img.get_height()
         frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
