@@ -29,6 +29,7 @@ class Game:
         self.bgm()
         # self.FPS = 80
         # self.font_name = pg.font.SysFont(FONT_NAME)
+        self.hurt_sound = pg.mixer.Sound("bgm/hurt.wav")
 
     def new(self):
         # 重新開始一個遊戲
@@ -259,48 +260,56 @@ class Game:
             if life >= 5:
                 game = "gameover"
             changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
         if crash and sbcrash:
             self.sbomb.rect.right = 2000
             life += 1
             if life >= 5:
                 game = "gameover"
             changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
         if crash and fbcrash:
             self.fball.rect.right = 2000
             life += 1
             if life >= 5:
                 game = "gameover"
             changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
         if crash and grcrash:
             self.genemy.rect.right = 3000
             life += 1
             if life >= 5:
                 game = "gameover"
             changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
         if crash2 and drcrash:
             self.drop.rect.top = -500
             life2 += 1
             if life2 >= 5:
                 game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
+            self.hurt_sound.play()
         if crash2 and sbcrash:
             self.sbomb.rect.right = 3000
             life2 += 1
             if life2 >= 5:
                 game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
+            self.hurt_sound.play()
         if crash2 and fbcrash:
             self.fball.rect.right = 3000
             life2 += 1
             if life2 >= 5:
                 game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
+            self.hurt_sound.play()
         if crash2 and grcrash:
             self.genemy.rect.right = 3000
             life2 += 1
             if life2 >= 5:
                 game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
+            self.hurt_sound.play()
 
         if gframe < 7:
             gframe += 0.05

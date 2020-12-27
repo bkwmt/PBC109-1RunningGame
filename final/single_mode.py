@@ -19,6 +19,7 @@ class Game2:
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
+        self.hurt_sound = pg.mixer.Sound("bgm/hurt.wav")
 
     def new(self):
         # 重新開始一個遊戲
@@ -190,6 +191,7 @@ class Game2:
                 pg.quit()
                 sys.exit()
             changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
         if crash and sbcrash:
             self.sbomb.rect.right = 2000
             life += 1
@@ -197,6 +199,7 @@ class Game2:
                 pg.quit()
                 sys.exit()
             changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
         if crash and fbcrash:
             self.fball.rect.right = 2000
             life += 1
@@ -204,6 +207,7 @@ class Game2:
                 pg.quit()
                 sys.exit()
             changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
         if crash and grcrash:
             self.genemy.rect.right = 3000
             life += 1
@@ -211,6 +215,7 @@ class Game2:
                 pg.quit()
                 sys.exit()
             changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
 
         if gframe < 7:
             gframe += 0.05
