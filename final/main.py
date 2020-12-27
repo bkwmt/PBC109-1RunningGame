@@ -10,6 +10,7 @@ from moviepy.editor import *
 
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
+vec = pg.math.Vector2
 
 class Game:
     def __init__(self):
@@ -18,16 +19,20 @@ class Game:
         pg.mixer.init()     # 有用聲音的起手式
         self.screen = pg.display.set_mode(SIZE)# , pg.FULLSCREEN ) #加這個可以全螢幕  # 設定介面大小
         pg.display.set_caption(TITLE)
-        self.bkgd = pg.image.load("img/bk.png").convert() # 
+
+        self.bkgd = pg.image.load("img/back.png").convert() # 匯入背景圖
         self.bkgd = pg.transform.scale(self.bkgd, (1550, 1150))
         # self.background = pg.Surface(SIZE)  # ??跟screen有何不同
         # self.background.fill(( 0 , 0 , 120 ))  # 塗滿(之後可調整)
         self.clock = pg.time.Clock()
         self.running = True
         self.bgm()
-       
+        # self.FPS = 80
+        # self.font_name = pg.font.SysFont(FONT_NAME)
+
     def new(self):
         # 重新開始一個遊戲
+        self.FPS = 60
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
         self.grounds = pg.sprite.Group()    # 初始化地面群組
         self.holes = pg.sprite.Group()    # 初始化洞群組
@@ -37,8 +42,6 @@ class Game:
         self.superdonut = pg.sprite.Group()  # 初始化donut群組
         self.p1 = pg.sprite.Group()
         self.p2 = pg.sprite.Group()
-
-
 
         ### 送自己回去Superdonut，才能夠與這裡的platform群組檢查
         self.donut = Superdonut(self, "img/don.png", 4)
@@ -82,19 +85,23 @@ class Game:
         ### 待初始走遠後
         self.all_sprites.add(self.high_p1)
         self.platforms.add(self.high_p1)
+
         self.all_sprites.add(self.high_p2)
         self.platforms.add(self.high_p2)
 
         self.all_sprites.add(self.mid_p1)
         self.platforms.add(self.mid_p1)
+
         self.all_sprites.add(self.mid_p2)
         self.platforms.add(self.mid_p2)
 
         self.all_sprites.add(self.lo_p1)
         self.platforms.add(self.lo_p1)
+
         self.all_sprites.add(self.lo_p2)
         self.platforms.add(self.lo_p2)
 
+        ### 讀入怪物
         self.drop = Dropdown("img/drenemy.png",4)
         self.all_sprites.add(self.drop)
         self.enemies.add(self.drop)
@@ -131,12 +138,13 @@ class Game:
                 else:
                     frame = 0
                 nextFrame += 40
-            self.clock.tick(FPS)
+            self.clock.tick(self.FPS)
             self.events()
             self.update()
-            self.draw()
+            # self.draw()
             self.change()
             self.check_gameover()
+            self.draw()
 
     def bgm(self):
         bgm = ["bgm/one.mp3","bgm/mushroom dance.ogg"]
@@ -153,9 +161,10 @@ class Game:
         global gframe
         global drframe
         global flframe
-        global game
-        self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
-        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -300)) # 捲動螢幕
+        # self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
+        self.rel_x = Bstart % self.bkgd.get_rect().width
+
+        self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, -50)) # 捲動螢幕
         if self.rel_x < WIDTH:
             self.screen.blit(self.bkgd, (self.rel_x, -300))
         Bstart -= PSPEED
@@ -164,6 +173,7 @@ class Game:
         self.all_sprites.update()
         # 檢查「落下」碰撞（放入一個list）
         oops = pg.sprite.spritecollide(self.donut, self.holes, False)
+
         if not oops:
             if self.donut.vel.y > 0:    # 檢查落下（y>0）時的碰撞
                 hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
@@ -182,7 +192,6 @@ class Game:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
                     self.donut.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donut.vel.y = 0
-
         oops1 = pg.sprite.spritecollide(self.donutp2, self.holes, False)
         if not oops1:
             if self.donutp2.vel.y > 0:    # 檢查落下（y>0）時的碰撞
@@ -203,11 +212,12 @@ class Game:
                     self.donutp2.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donutp2.vel.y = 0
 
-        ###判斷是否吃到倒轉武器
+        ###判斷是否吃到倒轉武器>>加速
         getweapon = pg.sprite.spritecollide(self.reverse, self.superdonut, False)
         if getweapon:
             self.reverse.rect.right = 4000 #重置倒轉武器位置
-            Direction *= -1  # 背景倒轉
+            # Direction *= -1  # 背景倒轉
+            self.FPS += 20
 
         ###donut互撞
         if (self.donut.vel.x > 0 and self.donutp2.vel.x > 0) or (self.donut.vel.x < 0 and self.donutp2.vel.x < 0):
@@ -229,6 +239,7 @@ class Game:
                 push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
                 if push:
                     self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.5
+
         ###donut撞enemies
 
         crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
@@ -304,19 +315,44 @@ class Game:
         else:
             flframe = 0
             changeSpriteImage(self.sbomb, int(flframe))
-        ### 利用地板出現的時間差製造會掉下去的洞
 
-        # if self.gnd.rect.right > 0:
-        #     self.gnd.rect.right -= PSPEED
+        ###Chaser
+        chase4sd1 = True    # 暫定先追一號
+        if chase4sd1:
+            position = (self.donut.pos.x, self.donut.pos.y)
+        else:
+            position = (self.donutp2.pos.x, self.donutp2.pos.y)
+
+        desired = (position - self.chaser.pos)
+        # dist = desired.length()
+        desired.normalize_ip()
+
+        # if dist < APPROACH_RADIUS:
+        #     desired *= dist / APPROACH_RADIUS * MAX_SPEED
+        # else:
+        desired *= MAX_SPEED
+
+        steer = (desired - self.chaser.vel)
+        # if steer.length() > MAX_FORCE:
+        #     steer.scale_to_length(MAX_FORCE)
         #
-        # if self.gnd.rect.right == WIDTH - 200:
-        #     new_gnd = Ground(WIDTH,
-        #                      HEIGHT - GHEIGHT,
-        #                      random.randint((2 * WIDTH - 350), (2 * WIDTH - 200)),
-        #                      GHEIGHT)
-        #     self.grounds.add(new_gnd)
-        #     self.all_sprites.add(new_gnd)
-        #     new_gnd.rect.left -= PSPEED
+        self.chaser.acc = steer
+        # equations of motion
+        self.chaser.vel += self.chaser.acc
+        if self.chaser.vel.length() > MAX_SPEED:
+            self.chaser.vel.scale_to_length(MAX_SPEED)
+            self.chaser.pos += self.chaser.vel
+        # if self.chaser.pos.x > WIDTH:
+        #     self.chaser.pos.x = 0
+        # if self.chaser.pos.x < 0:
+        #     self.chaser.pos.x = WIDTH
+        # if self.chaser.pos.y > HEIGHT:
+        #     self.chaser.pos.y = 0
+        # if self.chaser.pos.y < 0:
+        #     self.chaser.pos.y = HEIGHT
+        self.chaser.rect.center = self.chaser.pos
+
+
 
     def events(self):
         for event in pg.event.get():
@@ -331,7 +367,9 @@ class Game:
                     self.donut.jump()
                 if event.key == pg.K_w:
                     self.donutp2.jump()
-
+                if event.type == pg.K_SPACE:
+                    self.draw_text("PRESS SPACE TO CONTINUE", WHITE, HW, HH/2)
+                    self.wait_for_key()
 
     def change(self):
         if keyPressed("right"):
@@ -346,12 +384,20 @@ class Game:
             changeSpriteImage(self.donutp2, frame)
         else:
             changeSpriteImage(self.donutp2, 0)
-        pg.display.update()
+        # pg.display.update()
 
     def draw(self):
         self.all_sprites.draw(self.screen)
         ### 每次畫好畫滿所有的東西之後，就要flip。
         pg.display.flip()   # 把畫好的東西翻到正面的
+
+    def draw_text(self, text, size, color, x, y):
+        # 寫字
+        font = pg.font.SysFont(None, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
 
     def show_start_screen(self):
         # 開始畫面
@@ -434,7 +480,7 @@ class Game:
                         sys.exit()      # 還有這裏
                     else:
                         go = False      # 停止迴圈
-                    #g.new()    # 寫這裡我都要按兩次才會結束誒
+                    g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
     def check_gameover(self):
         global game
