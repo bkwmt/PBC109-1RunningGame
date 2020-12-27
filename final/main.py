@@ -6,7 +6,7 @@ from players import *
 from platforms import *
 from enemies import *
 from single_mode import *
-from moviepy.editor import *
+# from moviepy.editor import *
 
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
@@ -32,6 +32,7 @@ class Game:
 
     def new(self):
         # 重新開始一個遊戲
+        
         self.FPS = 60
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
         self.grounds = pg.sprite.Group()    # 初始化地面群組
@@ -354,6 +355,7 @@ class Game:
 
 
 
+
     def events(self):
         for event in pg.event.get():
             # 遊戲結束
@@ -401,8 +403,8 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
-        clip = VideoFileClip('img/start.mpg')
-        clip.resize(SIZE).preview()
+        # clip = VideoFileClip('img/start.mpg')
+        # clip.resize(SIZE).preview()
 
         go = True
         while go:
@@ -422,7 +424,7 @@ class Game:
     def choose_game(self):
         # 開始畫面
         global g
-        g = Game2()
+        #g = Game2()
         def player1(self):
             self.screen.fill(BLACK)
             self.start_img = pg.image.load('img/startp1.png')
@@ -484,11 +486,24 @@ class Game:
             pg.display.update()
     def check_gameover(self):
         global game
-
+        global life
+        global life2
         if self.donut.pos.y > HEIGHT or self.donutp2.pos.y > HEIGHT:
+            self.playing = False
             g.show_go_screen()
+            life = 0
+            life2 = 0
+            changeSpriteImage(self.blood, life)
+            changeSpriteImage(self.bloodp2, life2)
+            g.choose_game()
         if game == "gameover":
+            self.playing = False
             g.show_go_screen()
+            life = 0
+            life2 = 0
+            changeSpriteImage(self.blood, life)
+            changeSpriteImage(self.bloodp2, life2)
+            g.choose_game()
             game = "run"
 
 
@@ -499,8 +514,15 @@ class Game:
         if life2 >=5 or self.donutp2.pos.y > HEIGHT:
             life2 = 0
             life = 0
-            clip = VideoFileClip('img/gameoverp1.mpg')
-            clip.resize(SIZE).preview()
+            # clip = VideoFileClip('img/gameoverp1.mpg')
+            # clip.resize(SIZE).preview()
+            self.screen.fill(BLACK)
+            self.start_img = pg.image.load('img/P1WIN.png')
+            self.start_img = pg.transform.scale(self.start_img, (1250, 650))
+            self.start_img_rect = self.start_img.get_rect()
+            self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
+            self.screen.blit(self.start_img, self.start_img_rect)
+            STARTNEWGAME = 1
         else:
             life2 = 0
             life = 0
@@ -510,6 +532,7 @@ class Game:
             self.start_img_rect = self.start_img.get_rect()
             self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.start_img, self.start_img_rect)
+            STARTNEWGAME = 1
 
         go = True
         while go:
@@ -522,7 +545,7 @@ class Game:
                         pg.quit()
                         sys.exit()      # 還有這裏
                     else:
-                        g.choose_game()      # 停止迴圈
+                        go = False      # 停止迴圈
                     #g.new()    # 寫這裡我都要按兩次才會結束誒
             pg.display.update()
 
@@ -535,6 +558,8 @@ while g.running:
     g.choose_game()
     g.rule_explain()
     g.new()
+    if STARTNEWGAME == 1:
+        continue
 
 # pg.quit()
 # sys.exit()
