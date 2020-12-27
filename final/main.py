@@ -9,6 +9,7 @@ from enemies import *
 
 # 視窗環境設定
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
+vec = pg.math.Vector2
 
 class Game:
     def __init__(self):
@@ -94,6 +95,7 @@ class Game:
         self.all_sprites.add(self.lo_p2)
         self.platforms.add(self.lo_p2)
 
+        ### 讀入怪物
         self.drop = Dropdown("img/drenemy.png",4)
         self.all_sprites.add(self.drop)
         self.enemies.add(self.drop)
@@ -113,6 +115,10 @@ class Game:
         self.reverse = Reverse()
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
+
+        self.chaser = Chase()
+        self.all_sprites.add(self.chaser)
+        self.enemies.add(self.chaser)
         ### 執行遊戲
         self.run()
 
@@ -161,6 +167,7 @@ class Game:
         self.all_sprites.update()
         # 檢查「落下」碰撞（放入一個list）
         oops = pg.sprite.spritecollide(self.donut, self.holes, False)
+
         if not oops:
             if self.donut.vel.y > 0:    # 檢查落下（y>0）時的碰撞
                 hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
@@ -179,7 +186,6 @@ class Game:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
                     self.donut.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donut.vel.y = 0
-
         oops1 = pg.sprite.spritecollide(self.donutp2, self.holes, False)
         if not oops1:
             if self.donutp2.vel.y > 0:    # 檢查落下（y>0）時的碰撞
@@ -226,6 +232,7 @@ class Game:
                 push = pg.sprite.spritecollide(self.donutp2, self.p1, False)
                 if push:
                     self.donutp2.pos.x = push[0].rect.left + DONUT_W * 1.5
+
         ###donut撞enemies
 
         crash = pg.sprite.spritecollide(self.donut, self.enemies, False)
@@ -301,6 +308,45 @@ class Game:
         else:
             flframe = 0
             changeSpriteImage(self.sbomb, int(flframe))
+
+        ###Chaser
+        chase4sd1 = True    # 暫定先追一號
+        if chase4sd1:
+            position = (self.donut.pos.x, self.donut.pos.y)
+        else:
+            position = (self.donutp2.pos.x, self.donutp2.pos.y)
+
+
+        desired = (position - self.chaser.pos)
+        # dist = desired.length()
+        desired.normalize_ip()
+
+        # if dist < APPROACH_RADIUS:
+        #     desired *= dist / APPROACH_RADIUS * MAX_SPEED
+        # else:
+        desired *= MAX_SPEED
+
+        steer = (desired - self.chaser.vel)
+        # if steer.length() > MAX_FORCE:
+        #     steer.scale_to_length(MAX_FORCE)
+        #
+        self.chaser.acc = steer
+        # equations of motion
+        self.chaser.vel += self.chaser.acc
+        if self.chaser.vel.length() > MAX_SPEED:
+            self.chaser.vel.scale_to_length(MAX_SPEED)
+            self.chaser.pos += self.chaser.vel
+        # if self.chaser.pos.x > WIDTH:
+        #     self.chaser.pos.x = 0
+        # if self.chaser.pos.x < 0:
+        #     self.chaser.pos.x = WIDTH
+        # if self.chaser.pos.y > HEIGHT:
+        #     self.chaser.pos.y = 0
+        # if self.chaser.pos.y < 0:
+        #     self.chaser.pos.y = HEIGHT
+        self.chaser.rect.center = self.chaser.pos
+
+
 
     def events(self):
         for event in pg.event.get():

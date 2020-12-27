@@ -57,6 +57,13 @@ DSPEED = 1
 
 ### genemy用常數
 gframe = 0
+
+### Chaser用常數
+MAX_SPEED = 10
+CHASERSIZE = (50, 50)
+# APPROACH_RADIUS = 50
+# MAX_FORCE = 0.1
+
 ### 平台（x, y, 寬度, 厚度）
 ### 因為目前人物寬100，所以平台寬度至少150吧，暫定以５０為單位增加
 ### 或者寬度也可固定幾種

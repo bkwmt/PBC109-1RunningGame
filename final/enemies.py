@@ -1,8 +1,9 @@
-import random
+from random import randint, uniform
 import pygame as pg
 from settings import *
 from players import *
 
+vec = pg.math.Vector2
 # 火球（正面飛行物）
 class Fireball(pg.sprite.Sprite):
     def __init__(self):
@@ -19,7 +20,7 @@ class Fireball(pg.sprite.Sprite):
             self.rect.left -= FSPEED
         else:
             self.rect.right = 5 * WIDTH + WIDTH
-            self.rect.top = random.randint(50,600)
+            self.rect.top = randint(50,600)
 
 # 上面掉落物
 """
@@ -62,7 +63,7 @@ class Dropdown(pg.sprite.Sprite):
         self.angle = 0
         self.scale = 1
         self.rect = self.image.get_rect()
-        self.rect.right = random.randint(50, (WIDTH - 50))
+        self.rect.right = randint(50, (WIDTH - 50))
         self.rect.top = -500    # 從螢幕外掉進來
 
     def update(self):
@@ -132,7 +133,7 @@ class Strangebomb(pg.sprite.Sprite):
         self.scale = 1
         self.rect = self.image.get_rect()
         self.rect.right = WIDTH + 100
-        self.rect.top = random.randint(150, HEIGHT - 150)
+        self.rect.top = randint(150, HEIGHT - 150)
 
     def update(self):
         # screen.blit(self.strangebomb , self.strangebomb_rect) 這行不需要
@@ -143,7 +144,7 @@ class Strangebomb(pg.sprite.Sprite):
             self.rect.left -= self.speed_x
         else:
             self.rect.left = WIDTH + 100
-            self.rect.top = random.randint(150, HEIGHT - 150)
+            self.rect.top = randint(150, HEIGHT - 150)
 
         self.rect.top -= self.speed_y
 
@@ -206,3 +207,72 @@ class GEnemy(pg.sprite.Sprite):
         self.originalHeight = originalRect.height
         self.rect.center = oldcenter
         self.mask = pg.mask.from_surface(self.image)
+
+class Chase(pg.sprite.Sprite):
+    def __init__(self):
+        # self.groups = all_sprites
+        # pg.sprite.Sprite.__init__(self, self.groups)
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.Surface(CHASERSIZE)
+        self.image.fill(BLACK)
+        self.rect = self.image.get_rect()
+        self.pos = vec(randint(0, WIDTH), randint(0, HEIGHT))
+        self.vel = vec(MAX_SPEED, 1).rotate(uniform(0, 360))
+        self.acc = vec(1, 1)
+        self.rect.center = self.pos
+
+    # def follow_mouse(self):
+    #     mpos = pg.mouse.get_pos()
+    #     self.acc = (mpos - self.pos).normalize() * 0.5
+
+    # def get_target_pos(self):
+    #     sd1 = Superdonut()
+    #     sd2 = Superdonutp2()
+    #     chase4sd1 = True    # 暫定
+    #     while chase4sd1:
+    #         position = (sd1.pos.x, sd1.pos.y)
+    #     else:
+    #         position = (sd2.pos.x, sd1.pos.y)
+    #     return position
+    #
+    # def follow_target(self):
+    #     targetpos = self.get_target_pos()
+    #     self.acc = (targetpos - self.pos).normalize() * 0.5
+    #
+    # def seek(self, target):
+    #     self.desired = (target - self.pos).normalize() * MAX_SPEED
+    #     steer = (self.desired - self.vel)
+    #     if steer.length() > MAX_FORCE:
+    #         steer.scale_to_length(MAX_FORCE)
+    #     return steer
+    #
+    # def seek_with_approach(self, target):
+    #     self.desired = (target - self.pos)
+    #     dist = self.desired.length()
+    #     self.desired.normalize_ip()
+    #     if dist < APPROACH_RADIUS:
+    #         self.desired *= dist / APPROACH_RADIUS * MAX_SPEED
+    #     else:
+    #         self.desired *= MAX_SPEED
+    #         steer = (self.desired - self.vel)
+    #     if steer.length() > MAX_FORCE:
+    #         steer.scale_to_length(MAX_FORCE)
+    #     return steer
+    #
+    # def update(self):
+    #     # self.follow_mouse()
+    #     self.acc = self.seek_with_approach(dpos)
+    #     # equations of motion
+    #     self.vel += self.acc
+    #     if self.vel.length() > MAX_SPEED:
+    #         self.vel.scale_to_length(MAX_SPEED)
+    #         self.pos += self.vel
+    #     if self.pos.x > WIDTH:
+    #         self.pos.x = 0
+    #     if self.pos.x < 0:
+    #         self.pos.x = WIDTH
+    #     if self.pos.y > HEIGHT:
+    #         self.pos.y = 0
+    #     if self.pos.y < 0:
+    #         self.pos.y = HEIGHT
+    #         self.rect.center = self.pos
