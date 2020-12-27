@@ -409,8 +409,8 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
-        clip = VideoFileClip('img/start.mpg')
-        clip.resize(SIZE).preview()
+        #clip = VideoFileClip('img/start.mpg')
+        #clip.resize(SIZE).preview()
 
         go = True
         while go:
@@ -562,8 +562,6 @@ while g.running:
     g.choose_game()
     g.rule_explain()
     g.new()
-    if STARTNEWGAME == 1:
-        continue
 
 # pg.quit()
 # sys.exit()
