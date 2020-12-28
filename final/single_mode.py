@@ -103,6 +103,10 @@ class Game2:
         self.reverse = Reverse()
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
+        
+        self.monster = Strangebomb2()
+        self.all_sprites.add(self.monster)
+        self.enemies.add(self.monster)
 
 
         ### 執行遊戲

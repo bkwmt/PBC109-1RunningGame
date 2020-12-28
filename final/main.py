@@ -132,6 +132,10 @@ class Game:
         self.chaser = Chase(self)   # 回傳
         self.all_sprites.add(self.chaser)
         self.enemies.add(self.chaser)
+        
+        self.monster = Strangebomb2()
+        self.all_sprites.add(self.monster)
+        self.enemies.add(self.monster)
 
         ### 執行遊戲
         self.run()

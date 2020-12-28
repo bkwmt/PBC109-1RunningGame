@@ -290,3 +290,23 @@ class Chase(pg.sprite.Sprite):
         self.originalHeight = originalRect.height
         self.rect.center = oldcenter
         self.mask = pg.mask.from_surface(self.image)
+
+class Strangebomb2(pg.sprite.Sprite):
+
+    def __init__(self):
+        pg.sprite.Sprite.__init__(self)
+        # super().__init__() 這跟上面一行是一樣的作用，下面的都刪了
+        self.image = pg.image.load(os.path.join(img_folder, "frame-1.png"))
+        self.image = pg.transform.scale(self.image, (100, 100))
+        self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.6 / 2)
+        self.rect.right =  -10 * WIDTH
+        self.rect.top = random.randint(50, HEIGHT - GHEIGHT - 50)
+
+    def update(self):
+        # screen.blit(self.fireball, self.fireball_rect) 不需要
+        if self.rect.left < 1400:
+            self.rect.left += FSPEED
+        else:
+            self.rect.right = -5 * WIDTH - WIDTH
+            self.rect.top = randint(50, HEIGHT - GHEIGHT - 50)
