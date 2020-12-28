@@ -340,7 +340,7 @@ class Game2:
         global life
         life = 0
         self.screen.fill(BLACK)
-        self.start_img = pg.image.load('img/P2WIN.png')
+        self.start_img = pg.image.load('img/LOSE.png')
         self.start_img = pg.transform.scale(self.start_img, (1250, 650))
         self.start_img_rect = self.start_img.get_rect()
         self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
