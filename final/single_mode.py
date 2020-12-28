@@ -84,10 +84,6 @@ class Game2:
         self.all_sprites.add(self.lo_p2)
         self.platforms.add(self.lo_p2)
 
-        self.drop = Dropdown()
-        self.all_sprites.add(self.drop)
-        self.enemies.add(self.drop)
-
         self.sbomb = Strangebomb("img/flyenemy.png",8)
         self.all_sprites.add(self.sbomb)
         self.enemies.add(self.sbomb)
@@ -192,8 +188,6 @@ class Game2:
 
         crash = pg.sprite.spritecollide(self.donut, self.enemies, \
                 False, pg.sprite.collide_circle)
-        drcrash = pg.sprite.spritecollide(self.drop, self.superdonut, \
-                  False, pg.sprite.collide_circle)
         sbcrash = pg.sprite.spritecollide(self.sbomb, self.superdonut, \
                   False, pg.sprite.collide_circle)
         fbcrash = pg.sprite.spritecollide(self.fball, self.superdonut, \
@@ -202,13 +196,6 @@ class Game2:
                   False, pg.sprite.collide_circle)
         mocrash = pg.sprite.spritecollide(self.monster, self.superdonut,
                   False, pg.sprite.collide_circle)
-        if crash and drcrash:
-            self.drop.rect.top = -500
-            life += 1
-            if life >= 5:
-                game = "gameover"
-            changeSpriteImage(self.blood, life)
-            self.hurt_sound.play()
         if crash and sbcrash:
             self.sbomb.rect.right = 2000
             life += 1
