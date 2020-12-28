@@ -405,8 +405,8 @@ class Game:
 
     def show_start_screen(self):
         # 開始畫面
-        #clip = VideoFileClip('img/start.mpg')
-        #clip.resize(SIZE).preview()
+        clip = VideoFileClip('img/moviestart.mpg')
+        clip.resize(SIZE).preview()
         go = True
         while go:
             for event in pg.event.get():
