@@ -270,6 +270,7 @@ class Game:
                   False, pg.sprite.collide_circle)
         if crash and chcrash:
             life += 1
+            self.chaser.pos = vec(  WIDTH, HEIGHT)
             if life >= 5:
                 game = "gameover"
             changeSpriteImage(self.blood, life)
@@ -297,6 +298,7 @@ class Game:
             self.hurt_sound.play()
         if crash2 and chcrash:
             life2 += 1
+            self.chaser.pos = vec( WIDTH , HEIGHT)
             if life2 >= 5:
                 game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
