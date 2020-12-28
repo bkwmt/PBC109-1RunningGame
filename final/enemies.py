@@ -222,7 +222,7 @@ class Chase(pg.sprite.Sprite):
         # for test
         self.radius = int(self.rect.width * 0.6 / 2)
         # pg.draw.circle(self.image, RED, self.rect.center, self.radius)
-        self.pos = vec(5 * WIDTH, 3 * HEIGHT)
+        self.pos = vec( 5 * WIDTH,  3 * HEIGHT)
         self.vel = vec(MAX_SPEED, 0).rotate(uniform(0, 360))
         self.acc = vec(0, 0)
         self.rect.center = self.pos
