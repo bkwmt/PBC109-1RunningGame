@@ -129,7 +129,7 @@ class Game:
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
 
-        self.chaser = Chase(self)   # 回傳
+        self.chaser = Chase(self,"img/drenemy.png",4)   # 回傳
         self.all_sprites.add(self.chaser)
         self.enemies.add(self.chaser)
 
@@ -337,6 +337,12 @@ class Game:
         else:
             flframe = 0
             changeSpriteImage(self.sbomb, int(flframe))
+        if drframe < 3:
+            drframe += 0.05
+            changeSpriteImage(self.chaser, int(drframe))
+        else:
+            drframe = 0
+            changeSpriteImage(self.chaser, int(drframe))
 
         ###Chaser
         p1_get_item = pg.sprite.spritecollide(self.donut, self.items, False, pg.sprite.collide_circle)
