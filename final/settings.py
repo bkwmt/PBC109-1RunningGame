@@ -60,6 +60,8 @@ DSPEED = 1
 ### genemy用常數
 gframe = 0
 
+###monster用
+leftframe = 0
 ### Chaser用常數
 MAX_SPEED = 1.8
 CHASERSIZE = (50, 50)

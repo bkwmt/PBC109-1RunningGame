@@ -133,7 +133,7 @@ class Game:
         self.all_sprites.add(self.chaser)
         self.enemies.add(self.chaser)
         
-        self.monster = Strangebomb2()
+        self.monster = Strangebomb2("img/leftenemy.png",6)
         self.all_sprites.add(self.monster)
         self.enemies.add(self.monster)
 
@@ -175,6 +175,7 @@ class Game:
         global gframe
         global drframe
         global flframe
+        global leftframe
         global game
         # self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.rel_x = Bstart % self.bkgd.get_rect().width
@@ -272,6 +273,8 @@ class Game:
                   False, pg.sprite.collide_circle)
         grcrash = pg.sprite.spritecollide(self.genemy, self.superdonut,
                   False, pg.sprite.collide_circle)
+        mocrash = pg.sprite.spritecollide(self.monster, self.superdonut,
+                  False, pg.sprite.collide_circle)
         if crash and chcrash:
             life += 1
             self.chaser.pos = vec(  WIDTH, HEIGHT)
@@ -295,6 +298,13 @@ class Game:
             self.hurt_sound.play()
         if crash and grcrash:
             self.genemy.rect.right = 3000
+            life += 1
+            if life >= 5:
+                game = "gameover"
+            changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
+        if crash and mocrash:
+            self.monster.rect.right = -500
             life += 1
             if life >= 5:
                 game = "gameover"
@@ -328,6 +338,13 @@ class Game:
                 game = "gameover"
             changeSpriteImage(self.bloodp2, life2)
             self.hurt_sound.play()
+        if crash2 and mocrash:
+            self.monster.rect.right = -500
+            life2 += 1
+            if life2 >= 5:
+                game = "gameover"
+            changeSpriteImage(self.bloodp2, life2)
+            self.hurt_sound.play()
 
         if gframe < 7:
             gframe += 0.05
@@ -347,6 +364,12 @@ class Game:
         else:
             drframe = 0
             changeSpriteImage(self.chaser, int(drframe))
+        if leftframe < 5:
+            leftframe += 0.05
+            changeSpriteImage(self.monster, int(leftframe))
+        else:
+            leftframe = 0
+            changeSpriteImage(self.monster, int(leftframe))
 
         ###Chaser
         p1_get_item = pg.sprite.spritecollide(self.donut, self.items, False, pg.sprite.collide_circle)

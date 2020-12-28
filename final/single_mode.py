@@ -104,7 +104,7 @@ class Game2:
         self.all_sprites.add(self.reverse)
         self.weapon.add(self.reverse)
         
-        self.monster = Strangebomb2()
+        self.monster = Strangebomb2("img/leftenemy.png",6)
         self.all_sprites.add(self.monster)
         self.enemies.add(self.monster)
 
@@ -146,6 +146,7 @@ class Game2:
         global gframe
         global drframe
         global flframe
+        global leftframe
         global game
         self.rel_x = Direction * Bstart % self.bkgd.get_rect().width
         self.screen.blit(self.bkgd, (self.rel_x - self.bkgd.get_rect().width, \
@@ -199,6 +200,8 @@ class Game2:
                   False, pg.sprite.collide_circle)
         grcrash = pg.sprite.spritecollide(self.genemy, self.superdonut, \
                   False, pg.sprite.collide_circle)
+        mocrash = pg.sprite.spritecollide(self.monster, self.superdonut,
+                  False, pg.sprite.collide_circle)
         if crash and drcrash:
             self.drop.rect.top = -500
             life += 1
@@ -227,6 +230,13 @@ class Game2:
                 game = "gameover"
             changeSpriteImage(self.blood, life)
             self.hurt_sound.play()
+        if crash and mocrash:
+            self.monster.rect.right = -500
+            life += 1
+            if life >= 5:
+                game = "gameover"
+            changeSpriteImage(self.blood, life)
+            self.hurt_sound.play()
 
         if gframe < 7:
             gframe += 0.05
@@ -240,6 +250,13 @@ class Game2:
         else:
             flframe = 0
             changeSpriteImage(self.sbomb, int(flframe))
+        if leftframe < 5:
+            leftframe += 0.05
+            changeSpriteImage(self.monster, int(leftframe))
+        else:
+            leftframe = 0
+            changeSpriteImage(self.monster, int(leftframe))
+        
 
     def events(self):
         for event in pg.event.get():
