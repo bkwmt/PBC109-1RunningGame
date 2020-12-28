@@ -213,11 +213,26 @@ class GEnemy(pg.sprite.Sprite):
         self.rect.center = oldcenter
         self.mask = pg.mask.from_surface(self.image)
 
+
 class Chase(pg.sprite.Sprite):
-    def __init__(self, game):
+    def __init__(self, game, filename, frames=1):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface(CHASERSIZE)
-        self.image.fill(BLACK)
+        self.images = []
+        img = loadImage(filename, img_W=280, img_H=70)
+        self.originalWidth = img.get_width() // frames
+        self.originalHeight = img.get_height()
+        frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
+        x = 0
+        for frameNo in range(frames):
+            frameSurf = pg.Surface((self.originalWidth, self.originalHeight), pg.SRCALPHA, 32)
+            frameSurf.blit(img, (x, 0))
+            self.images.append(frameSurf.copy())
+            x -= self.originalWidth
+        self.image = pg.Surface.copy(self.images[0])
+        self.currentImage = 0
+        self.mask = pg.mask.from_surface(self.image)
+        self.angle = 0
+        self.scale = 1
         self.rect = self.image.get_rect()
         # for test
         self.radius = int(self.rect.width * 0.6 / 2)
@@ -262,3 +277,16 @@ class Chase(pg.sprite.Sprite):
             self.game.chaser.pos += self.game.chaser.vel
 
         self.game.chaser.rect.center = self.game.chaser.pos
+    def changeImage(self, index):
+        self.currentImage = index
+        if self.angle == 0 and self.scale == 1:
+            self.image = self.images[index]
+        else:
+            self.image = pg.transform.rotozoom(self.images[self.currentImage], -self.angle, self.scale)
+        oldcenter = self.rect.center
+        self.rect = self.image.get_rect()
+        originalRect = self.images[self.currentImage].get_rect()
+        self.originalWidth = originalRect.width
+        self.originalHeight = originalRect.height
+        self.rect.center = oldcenter
+        self.mask = pg.mask.from_surface(self.image)
