@@ -33,6 +33,7 @@ class Game:
         # self.FPS = 80
         # self.font_name = pg.font.SysFont(FONT_NAME)
         self.hurt_sound = pg.mixer.Sound("bgm/hurt.wav")
+        self.icecream_sound = pg.mixer.Sound("bgm/button.wav")
 
     def new(self):
         # 重新開始一個遊戲
