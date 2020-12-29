@@ -544,14 +544,16 @@ class Game:
         if life2 >=5 or self.donutp2.pos.y > HEIGHT:
             life2 = 0
             life = 0
-            # clip = VideoFileClip('img/gameoverp1.mpg')
-            # clip.resize(SIZE).preview()
+            clip = VideoFileClip('img/gameoverp1.mpg')
+            clip.resize(SIZE).preview()
+            """
             self.screen.fill(BLACK)
             self.start_img = pg.image.load('img/P1WIN.png')
             self.start_img = pg.transform.scale(self.start_img, (1250, 650))
             self.start_img_rect = self.start_img.get_rect()
             self.start_img_rect.center = (WIDTH/2, HEIGHT/2)
             self.screen.blit(self.start_img, self.start_img_rect)
+            """
         else:
             life2 = 0
             life = 0
