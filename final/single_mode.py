@@ -23,6 +23,7 @@ class Game2:
 
     def new(self):
         # 重新開始一個遊戲
+        self.FPS = 60
         self.all_sprites = pg.sprite.Group()    # 初始化全部精靈群組
         self.grounds = pg.sprite.Group()    # 初始化地面群組
         self.holes = pg.sprite.Group()    # 初始化洞群組
@@ -121,7 +122,7 @@ class Game2:
                 else:
                     frame = 0
                 nextFrame += 40
-            self.clock.tick(FPS)
+            self.clock.tick(self.FPS)
             self.events()
             self.update()
             self.draw()
@@ -182,7 +183,8 @@ class Game2:
                     False)
         if getweapon:
             self.reverse.rect.right = 4000 #重置倒轉武器位置
-            Direction *= -1  # 背景倒轉
+            #Direction *= -1  # 背景倒轉
+            self.FPS += 60
 
         ###donut撞enemies
 
