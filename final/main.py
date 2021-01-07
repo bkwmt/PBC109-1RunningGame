@@ -129,6 +129,13 @@ class Game:
         self.chaser = Chase(self)   # 回傳
         self.all_sprites.add(self.chaser)
         self.enemies.add(self.chaser)
+<<<<<<< Updated upstream
+=======
+
+        self.monster = Strangebomb2("img/leftenemy.png",6)
+        self.all_sprites.add(self.monster)
+        self.enemies.add(self.monster)
+>>>>>>> Stashed changes
 
         ### 執行遊戲
         self.run()
@@ -161,7 +168,7 @@ class Game:
         pg.mixer.music.set_volume(1.0)  #調整音量大小(0.0-1.0)
 
     def update(self):
-        # 更新背景
+        # 每幀畫面的更新
         global Bstart
         global Direction
         global life
@@ -182,11 +189,12 @@ class Game:
         self.all_sprites.update()
         # 檢查「落下」碰撞（放入一個list）
         oops = pg.sprite.spritecollide(self.donut, self.holes, False)
-
         if not oops:
             if self.donut.vel.y > 0:    # 檢查落下（y>0）時的碰撞
-                hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
-                hitsground = pg.sprite.spritecollide(self.donut, self.grounds, False)
+                hits = pg.sprite.spritecollide(self.donut, self.platforms,\
+                                               False)
+                hitsground = pg.sprite.spritecollide(self.donut, self.grounds,\
+                                                     False)
                 if hits:
                 ### 撞到的話就讓他的位置維持在那個平台上，速度歸零。
                     self.donut.pos.y = hits[0].rect.top + 1
@@ -196,11 +204,13 @@ class Game:
                     self.donut.pos.y = hitsground[0].rect.top + 1
                     self.donut.vel.y = 0
             if self.donut.vel.y < 0:    # 檢查向上碰撞
-                hits = pg.sprite.spritecollide(self.donut, self.platforms, False)
+                hits = pg.sprite.spritecollide(self.donut, self.platforms,\
+                False)
                 if hits:
                 ### 撞到的話就瞬間降低一個主角的高度，並且速度歸零。
                     self.donut.pos.y = hits[0].rect.bottom + DONUT_W
                     self.donut.vel.y = 0
+
         oops1 = pg.sprite.spritecollide(self.donutp2, self.holes, False)
         if not oops1:
             if self.donutp2.vel.y > 0:    # 檢查落下（y>0）時的碰撞
@@ -563,13 +573,23 @@ class Game:
 
 
 g = Game()
+<<<<<<< Updated upstream
 #g.show_start_screen()
+=======
+g.show_start_screen()
+
+>>>>>>> Stashed changes
 while g.running:
     g.show_start_screen()
     g.choose_game()
+<<<<<<< Updated upstream
     #g.rule_explain()
     #g.new()
 
 # pg.quit()
 # sys.exit()
 # 上面有啦～我按一次就可以結束呀？
+=======
+    g.rule_explain()
+    g.new()
+>>>>>>> Stashed changes
