@@ -29,7 +29,7 @@ class Game:
         self.chasetar_pos1 = (0, 0)
         self.chasetar_pos2 = (0, 0)
         self.chase4p1 = True
-        self.bgm()
+        self.bgm()  # 音樂
         # self.FPS = 80
         # self.font_name = pg.font.SysFont(FONT_NAME)
         self.hurt_sound = pg.mixer.Sound("bgm/hurt.wav")
